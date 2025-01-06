@@ -1,23 +1,23 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Vote {
-    private LocalDateTime dateTime;
+    private Date date;
     private User user;
     private Restaurant restaurant;
 
     public Vote() {
     }
 
-    public Vote(LocalDateTime dateTime, User user, Restaurant restaurant) {
-        this.dateTime = dateTime;
+    public Vote(Date date, User user, Restaurant restaurant) {
+        this.date = date;
         this.user = user;
         this.restaurant = restaurant;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public Date getDate() {
+        return date;
     }
 
     public User getUser() {
@@ -28,8 +28,8 @@ public class Vote {
         return restaurant;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setUser(User user) {
