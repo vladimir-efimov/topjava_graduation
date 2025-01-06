@@ -1,2 +1,17 @@
-# topjava_graduation
-Graduation project for TopJava course.
+# Graduation project for TopJava course
+
+REST API (without frontend) for voting system for deciding where to have lunch.
+
+## Technologies:
+- Hibernate
+- Spring/SpringMVC
+
+## Functionality
+
+Users can vote for a restaurant they want to have a lunch today. Only one vote is counted per user.
+
+If user votes again the same day:
+- If it is before 11:00 we assume that he changed his mind.
+- If it is after 11:00 then it is too late, vote can't be changed
+
+Restaurants may provide a new menu each day updated by administrators.
