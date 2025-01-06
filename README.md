@@ -1,4 +1,4 @@
-# Graduation project for TopJava course
+# Graduation project for <a href="https://github.com/JavaOPs/topjava" target=_blank>TopJava course</a>
 
 REST API (without frontend) for voting system for deciding where to have lunch.
 
