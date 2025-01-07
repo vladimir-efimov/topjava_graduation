@@ -1,8 +1,9 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import java.util.EnumSet;
 import java.util.Set;
 
-public class User extends AbstractBaseEntity {
+public class User extends AbstractManagedEntity {
     private String name;
     private String email;
     private Set<Role> roles;
@@ -11,8 +12,8 @@ public class User extends AbstractBaseEntity {
     public User() {
     }
 
-    public User(Integer id, String name, String email, Set<Role> roles, String password) {
-        super(id);
+    public User(Integer id, boolean enabled, String name, String email, Set<Role> roles, String password) {
+        super(id, enabled);
         this.name = name;
         this.email = email;
         this.roles = roles;
@@ -44,10 +45,21 @@ public class User extends AbstractBaseEntity {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        this.roles = roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email=" + email +
+                ", name=" + name +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
+                '}';
     }
 }

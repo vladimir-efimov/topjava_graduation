@@ -41,4 +41,13 @@ public class Menu extends AbstractBaseEntity {
     public void setMeals(Set<Meal> meals) {
         this.meals = meals;
     }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "date=" + date +
+                ", restaurant=" + (restaurant == null ? "null" : restaurant.getName()) +
+                ", meals=" + (meals == null ? "[]" : meals.toString()) +
+                '}';
+    }
 }

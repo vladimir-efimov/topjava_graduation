@@ -39,4 +39,13 @@ public class Vote {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "date=" + date +
+                ", user=" + (user == null ? "null" : user.getName()) +
+                ", restaurant=" + (restaurant == null ? "null" : restaurant.getName()) +
+                '}';
+    }
 }
