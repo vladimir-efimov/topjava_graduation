@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class User extends AbstractManagedEntity {
-    private String name;
     private String email;
     private Set<Role> roles;
     private String password;
@@ -13,15 +12,10 @@ public class User extends AbstractManagedEntity {
     }
 
     public User(Integer id, boolean enabled, String name, String email, Set<Role> roles, String password) {
-        super(id, enabled);
-        this.name = name;
+        super(id, enabled, name);
         this.email = email;
         this.roles = roles;
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getEmail() {
@@ -34,10 +28,6 @@ public class User extends AbstractManagedEntity {
 
     public String getPassword() {
         return password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setEmail(String email) {

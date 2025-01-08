@@ -1,22 +1,27 @@
 package ru.javawebinar.topjavagraduation.model;
 
-public class Restaurant extends AbstractBaseEntity {
-    private String name;
+public class Restaurant extends AbstractManagedEntity {
+
+    private String address;
 
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name) {
-        super(id);
-        this.name = name;
+    public Restaurant(Integer id, boolean enabled, String name, String address) {
+        super(id, enabled, name);
+        this.address = address;
     }
 
-    public String getName() {
-        return name;
+    public Restaurant(String name, String address) {
+        this(null, true, name, address);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
@@ -24,6 +29,8 @@ public class Restaurant extends AbstractBaseEntity {
         return "Restaurant{" +
                 "id=" + id +
                 ", name=" + name +
+                ", address=" + address +
+                ", enabled=" + enabled +
                 '}';
     }
 }
