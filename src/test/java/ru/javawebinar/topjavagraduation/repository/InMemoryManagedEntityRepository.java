@@ -10,16 +10,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryManagedEntityRepository<T extends AbstractManagedEntity> implements ManagedEntityRepository<T> {
 
-    static final AtomicInteger idValue = new AtomicInteger(1);
+    final AtomicInteger idValue = new AtomicInteger(0);
     final Map<Integer, T> entities = new ConcurrentHashMap<>();
 
     @Override
     public T save(T entity) {
         Objects.requireNonNull(entity, "Entity must not be null");
         if (entity.isNew()) {
-            entity.setId(idValue.incrementAndGet());
-            entities.put(entity.getId(), entity);
-            return entity;
+            T newEntity;
+            try {
+                newEntity = (T) entity.clone();
+            } catch(CloneNotSupportedException ex) {
+                newEntity = entity;
+            }
+            newEntity.setId(idValue.incrementAndGet());
+            entities.put(newEntity.getId(), newEntity);
+            return newEntity;
         }
         return entities.computeIfPresent(entity.getId(), (id, oldT) -> entity);
     }

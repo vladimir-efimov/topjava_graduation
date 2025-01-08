@@ -1,6 +1,6 @@
 package ru.javawebinar.topjavagraduation.model;
 
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements Cloneable {
 
     protected Integer id;
 
@@ -21,5 +21,10 @@ public abstract class AbstractBaseEntity {
 
     public boolean isNew() {
         return id == null;
+    }
+
+    @Override
+    public AbstractBaseEntity clone() throws CloneNotSupportedException {
+        return (AbstractBaseEntity) super.clone();
     }
 }

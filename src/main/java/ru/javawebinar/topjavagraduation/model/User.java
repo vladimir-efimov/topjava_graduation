@@ -18,6 +18,13 @@ public class User extends AbstractManagedEntity {
         this.password = password;
     }
 
+    public User(String name, String email, Set<Role> roles, String password) {
+        this(null, true, name, email, roles, password);
+    }
+
+    public User(String name, String email, Role role, String password) {
+        this(name, email,Set.of(role), password);
+    }
     public String getEmail() {
         return email;
     }
