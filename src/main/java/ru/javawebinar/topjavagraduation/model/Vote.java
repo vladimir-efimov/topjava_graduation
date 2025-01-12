@@ -2,7 +2,7 @@ package ru.javawebinar.topjavagraduation.model;
 
 import java.util.Date;
 
-public class Vote {
+public class Vote extends AbstractBaseEntity {
     private Date date;
     private User user;
     private Restaurant restaurant;

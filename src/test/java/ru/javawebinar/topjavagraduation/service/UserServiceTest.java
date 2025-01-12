@@ -23,7 +23,6 @@ public class UserServiceTest {
     @BeforeEach
     void setup() {
         service = new UserService(new InMemoryUserRepository());
-        System.out.println(service.getAll());
     }
 
     @Test
