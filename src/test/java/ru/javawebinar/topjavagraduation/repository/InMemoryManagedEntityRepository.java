@@ -2,7 +2,7 @@ package ru.javawebinar.topjavagraduation.repository;
 
 import ru.javawebinar.topjavagraduation.model.AbstractManagedEntity;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,19 +41,19 @@ public class InMemoryManagedEntityRepository<T extends AbstractManagedEntity> im
     }
 
     @Override
-    public Collection<T> getAll() {
-        return entities.values();
+    public List<T> getAll() {
+        return entities.values().stream().toList();
     }
 
     @Override
-    public Collection<T> getEnabled() {
+    public List<T> getEnabled() {
         return entities.values().stream()
                 .filter(AbstractManagedEntity::isEnabled)
                 .toList();
     }
 
     @Override
-    public Collection<T> findByName(String name) {
+    public List<T> findByName(String name) {
         return entities.values().stream()
                 .filter(e -> e.getName().equals(name))
                 .toList();

@@ -6,7 +6,7 @@ import ru.javawebinar.topjavagraduation.repository.UserRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -26,7 +26,27 @@ public class UserService {
         }
     }
 
-    public void save(User user) {
+    public User create(User user) {
+        if(user == null) {
+            throw new IllegalArgumentException("User can't be null");
+        }
+        if(user.getId() != null) {
+            throw new IllegalStateException("Illegal operation for user with not null id");
+        }
+        User savedUser = repository.save(user);
+        if ( savedUser == null) {
+            throw new IllegalStateException("Failed to save user");
+        }
+        return savedUser;
+    }
+
+    public void update(User user) {
+        if(user == null) {
+            throw new IllegalArgumentException("User can't be null");
+        }
+        if(user.getId() == null) {
+            throw new IllegalStateException("User id should not be null");
+        }
         if(isSystemUser(user)) {
             throw new IllegalStateException("Can't modify system user");
         }
@@ -36,7 +56,7 @@ public class UserService {
     }
 
     public void delete(int id) {
-        User user = repository.get(id);
+        User user = get(id);
         if(isSystemUser(user)) {
             throw new IllegalStateException("Can't delete system user");
         }
@@ -53,15 +73,15 @@ public class UserService {
         return user;
     }
 
-    public Collection<User> getAll() {
+    public List<User> getAll() {
         return repository.getAll();
     }
 
-    public Collection<User> getEnabled() {
+    public List<User> getEnabled() {
         return repository.getEnabled();
     }
 
-    public Collection<User> findByName(String name) {
+    public List<User> findByName(String name) {
         return repository.findByName(name);
     }
 

@@ -2,7 +2,7 @@ package ru.javawebinar.topjavagraduation.repository;
 
 import ru.javawebinar.topjavagraduation.model.AbstractManagedEntity;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface ManagedEntityRepository<T extends AbstractManagedEntity> {
     // returns null if entity is not saved or entity with id
@@ -12,9 +12,9 @@ public interface ManagedEntityRepository<T extends AbstractManagedEntity> {
 
     T get(int id);
 
-    Collection<T> getAll();
+    List<T> getAll();
 
-    Collection<T> getEnabled();
+    List<T> getEnabled();
 
-    Collection<T> findByName(String name);
+    List<T> findByName(String name);
 }
