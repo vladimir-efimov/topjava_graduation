@@ -3,6 +3,7 @@ package ru.javawebinar.topjavagraduation.service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.UserRepository;
+import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,23 +26,31 @@ public class UserService {
         }
     }
 
-    public User save(User user) {
+    public void save(User user) {
         if(isSystemUser(user)) {
-            throw new IllegalArgumentException("Can't modify system user");
+            throw new IllegalStateException("Can't modify system user");
         }
-        return repository.save(user);
+        if (repository.save(user) == null) {
+            throw new IllegalStateException("Failed to save user");
+        }
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) {
         User user = repository.get(id);
         if(isSystemUser(user)) {
-            throw new IllegalArgumentException("Can't delete system user");
+            throw new IllegalStateException("Can't delete system user");
         }
-        return repository.delete(id);
+        if (!repository.delete(id)) {
+            throw new IllegalStateException("Can't delete user with id " + id);
+        }
     }
 
     public User get(int id) {
-        return repository.get(id);
+        User user = repository.get(id);
+        if (user == null) {
+            throw new NotFoundException("User with id " + id + "is not found");
+        }
+        return user;
     }
 
     public Collection<User> getAll() {
@@ -60,7 +69,11 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
-    private boolean isSystemUser(User user) {
+    static User[] getSystemUsers() {
+        return systemUsers;
+    }
+
+    static boolean isSystemUser(User user) {
         if(user == null) return false;
         return Arrays.stream(systemUsers)
                 .anyMatch(u -> u.getEmail().equals(user.getEmail()));

@@ -25,12 +25,12 @@ public class UserServiceTest {
     void tryModifySystemUser() {
         User user = new User();
         user.setEmail("admin@restaurants.ru");
-        Assertions.assertThrows(IllegalArgumentException.class, () -> service.save(user));
+        Assertions.assertThrows(IllegalStateException.class, () -> service.save(user));
     }
 
     @Test
     void tryDeleteSystemUser() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> service.delete(2));
+        Assertions.assertThrows(IllegalStateException.class, () -> service.delete(2));
     }
 
 }
