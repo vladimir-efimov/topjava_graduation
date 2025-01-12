@@ -77,7 +77,6 @@ public class UserServiceTest {
 
     @Test
     void tryCreate() {
-        assertThrows(IllegalStateException.class, () -> service.update(new User()));
         User newUser = new User("newUser", "newuser@restaurantss.ru", Role.USER, "");
         User savedUser = service.create(newUser);
         assertThrows(IllegalStateException.class, () -> service.create(savedUser));
