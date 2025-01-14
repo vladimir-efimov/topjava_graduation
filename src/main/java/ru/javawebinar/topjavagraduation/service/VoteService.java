@@ -6,8 +6,9 @@ import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.VoteRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     private final static int END_VOTE_HOURS = 11;
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
-    private Date testingPurposeDate = null;
+    private LocalDateTime testingPurposeDate = null;
 
     public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository) {
         super(repository);
@@ -24,19 +25,29 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public List<Vote> findByUser(int id) {
-        return repository.findByUser(id);
+    public Vote get(int id, int userId) {
+        Vote vote = repository.get(id);
+        if(!vote.getUser().getId().equals(userId)) {
+            throw new NotFoundException("Attempt to access not owned vote");
+        }
+        return vote;
     }
 
-    public List<Vote> findByDate(Date date) {
+    //todo: service should set actual voting date
+
+    public List<Vote> findByUser(int userId) {
+        return repository.findByUser(userId);
+    }
+
+    public List<Vote> findByDate(LocalDate date) {
         return repository.findByDate(date);
     }
 
     public Restaurant getElected() {
-        if (getCurrentDate().getHours() < END_VOTE_HOURS) {
+        if (getCurrentDateTime().getHour() < END_VOTE_HOURS) {
             throw new IllegalStateException("Voting is in progress. Call this method after " + END_VOTE_HOURS + " hours");
         }
-        List<Vote> votes = findByDate(getCurrentDate());
+        List<Vote> votes = findByDate(getCurrentDateTime().toLocalDate());
         if (votes.isEmpty()) {
             throw new NotFoundException("No votes found for today");
         }
@@ -67,7 +78,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     private void assertVoteOperationIsAllowed(Vote vote) {
-        if (getCurrentDate().getHours() >= END_VOTE_HOURS) {
+        if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
             throw new IllegalStateException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
         }
         if(vote.getDate() == null) {
@@ -78,20 +89,22 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
     }
 
-    void setDate(Date date) {
+    void setDateTime(LocalDateTime date) {
         testingPurposeDate = date;
     }
 
-    private Date getCurrentDate() {
+    static int getEndVoteHours() {
+        return END_VOTE_HOURS;
+    }
+
+    private LocalDateTime getCurrentDateTime() {
         if(testingPurposeDate == null) {
-            return new Date(System.currentTimeMillis());
+            return LocalDateTime.now();
         }
         return testingPurposeDate;
     }
 
-    private boolean beforeToday(Date date) {
-        Date currentDate = getCurrentDate();
-        Date today = new Date(currentDate.getYear(), currentDate.getMonth(), currentDate.getDay());
-        return date.before(today);
+    private boolean beforeToday(LocalDate date) {
+        return date.isBefore(getCurrentDateTime().toLocalDate());
     }
 }

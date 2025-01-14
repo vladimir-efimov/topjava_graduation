@@ -1,22 +1,27 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Vote extends AbstractBaseEntity {
-    private Date date;
+    private LocalDate date;
     private User user;
     private Restaurant restaurant;
 
     public Vote() {
     }
 
-    public Vote(Date date, User user, Restaurant restaurant) {
+    public Vote(LocalDate date, User user, Restaurant restaurant) {
+        this(null, date, user, restaurant);
+    }
+
+    public Vote(Integer id, LocalDate date, User user, Restaurant restaurant) {
+        super(id);
         this.date = date;
         this.user = user;
         this.restaurant = restaurant;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -28,7 +33,7 @@ public class Vote extends AbstractBaseEntity {
         return restaurant;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
