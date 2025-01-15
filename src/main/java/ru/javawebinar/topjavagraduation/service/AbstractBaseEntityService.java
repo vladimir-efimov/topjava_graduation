@@ -16,7 +16,8 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     public T create(T entity) {
         validateOnCreate(entity);
         T savedEntity = repository.save(entity);
-        if ( savedEntity == null) {
+        if (savedEntity == null) {
+            //todo: substitute exception
             throw new IllegalStateException("Failed to create " + entity.getClass().getSimpleName());
         }
         return savedEntity;

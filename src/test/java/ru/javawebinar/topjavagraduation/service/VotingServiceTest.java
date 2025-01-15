@@ -45,7 +45,7 @@ public class VotingServiceTest {
 
     @Test
     void vote() {
-        Vote vote = new Vote(TestData.date, TestData.users[2], TestData.restaurants[3]);
+        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         Vote savedVote = service.create(vote);
         assertNotNull(savedVote.getId());
         assertEquals(TestData.date, savedVote.getDate());
@@ -55,7 +55,7 @@ public class VotingServiceTest {
 
     @Test
     void tryVoteAfterVotingIsCompleted() {
-        Vote vote = new Vote(TestData.date, TestData.users[2], TestData.restaurants[3]);
+        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(VoteService.getEndVoteHours() + 1);
         service.setDateTime(dateTime);
         assertThrows(IllegalStateException.class, () -> service.create(vote));

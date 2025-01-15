@@ -28,8 +28,8 @@ public class TestData {
     public static final Restaurant popularRestaurant = TestData.restaurants[2];
 
     public static final Vote[] votes = {
-        new Vote(date, TestData.users[1], TestData.restaurants[0]),
-        new Vote(date, TestData.users[2], popularRestaurant),
-        new Vote(date, TestData.users[3], popularRestaurant),
+        new Vote(1, date, TestData.users[1], TestData.restaurants[0]),
+        new Vote(2, date, TestData.users[2], popularRestaurant),
+        new Vote(3, date, TestData.users[3], popularRestaurant),
     };
 }

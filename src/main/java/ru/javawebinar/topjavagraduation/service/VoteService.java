@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class VoteService extends AbstractBaseEntityService<Vote> {
@@ -33,7 +34,11 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return vote;
     }
 
-    //todo: service should set actual voting date
+    @Override
+    public Vote create(Vote vote) {
+        Vote modifiedVote = new Vote(null, getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
+        return super.create(modifiedVote);
+    }
 
     public List<Vote> findByUser(int userId) {
         return repository.findByUser(userId);
@@ -55,7 +60,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
                 .collect(Collectors.groupingBy(v -> v.getRestaurant().getId(), Collectors.counting()))
                 .entrySet();
         int restaurantId = groupedVotes.stream()
-                .max(Comparator.comparingLong(entry -> entry.getValue())).get().getKey();
+                .max(Comparator.comparingLong(Map.Entry::getValue)).get().getKey();
         return restaurantRepository.get(restaurantId);
     }
 
