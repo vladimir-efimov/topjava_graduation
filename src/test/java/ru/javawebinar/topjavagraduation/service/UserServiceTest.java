@@ -38,8 +38,8 @@ public class UserServiceTest {
 
     @Test
     void tryModifySystemUser() {
-        User user = new User();
-        user.setEmail("admin@restaurants.ru");
+        User user = service.get(SYSTEM_USER_ID);
+        user.setEmail("system@restaurants.ru");
         assertThrows(IllegalStateException.class, () -> service.update(user));
     }
 

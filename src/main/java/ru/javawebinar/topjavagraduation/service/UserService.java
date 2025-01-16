@@ -5,7 +5,9 @@ import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.UserRepository;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserService extends AbstractManagedEntityService<User> {
 
@@ -14,14 +16,15 @@ public class UserService extends AbstractManagedEntityService<User> {
         new User("Admin", "admin@restaurants.ru", Role.ADMIN, ""),
         new User("SimpleUser", "user@restaurants.ru", Role.USER, "")
     };
+    private Set<Integer> systemUserIds = new HashSet<>();
 
     public UserService(UserRepository repository) {
         super(repository);
         this.repository = repository;
         for(User user: systemUsers) {
-            if(findByEmail(user.getEmail()).isEmpty()) {
-                repository.save(user);
-            }
+            Optional<User> result = findByEmail(user.getEmail());
+            Integer id = result.isEmpty() ? repository.save(user).getId() : result.get().getId();
+            systemUserIds.add(id);
         }
     }
 
@@ -33,10 +36,8 @@ public class UserService extends AbstractManagedEntityService<User> {
         return systemUsers;
     }
 
-    static boolean isSystemUser(User user) {
-        if(user == null) return false;
-        return Arrays.stream(systemUsers)
-                .anyMatch(u -> u.getEmail().equals(user.getEmail()));
+    boolean isSystemUser(User user) {
+        return systemUserIds.contains(user.getId());
     }
 
     @Override
