@@ -14,7 +14,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     }
 
     public T create(T entity) {
-        validateOnCreate(entity);
+        validateOperation(entity, CrudOperation.CREATE);
         T savedEntity = repository.save(entity);
         if (savedEntity == null) {
             //todo: substitute exception
@@ -24,7 +24,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     }
 
     public void update(T entity) {
-        validateOnUpdate(entity);
+        validateOperation(entity, CrudOperation.UPDATE);
         if (repository.save(entity) == null) {
             throw new IllegalStateException("Failed to update " + entity.getClass().getSimpleName());
         }
@@ -32,7 +32,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
 
     public void delete(int id) {
         T entity = get(id);
-        validateOnDelete(entity);
+        validateOperation(entity, CrudOperation.DELETE);
         if (!repository.delete(id)) {
             throw new IllegalStateException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
         }
@@ -50,18 +50,15 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
         return repository.getAll();
     }
 
-    protected void validateOnCreate(T entity) {
-       if(entity.getId() != null) {
-            throw new IllegalStateException("Id should be null for create operation");
+    protected void validateOperation(T entity, CrudOperation operation) {
+        if (entity.getId() == null) {
+            if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
+                throw new IllegalArgumentException("Id should not be null for " + operation +" operation");
+            }
+        } else {
+            if (operation == CrudOperation.CREATE) {
+                throw new IllegalArgumentException("Id should be null for create operation");
+            }
         }
-    }
-
-    protected void validateOnUpdate(T entity) {
-        if(entity.getId() == null) {
-            throw new IllegalStateException("Id should not be null for update operation");
-        }
-    }
-
-    protected void validateOnDelete(T entity) {
     }
 }

@@ -6,6 +6,7 @@ import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.InMemoryUserRepository;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
+import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,12 +41,12 @@ public class UserServiceTest {
     void tryModifySystemUser() {
         User user = service.get(SYSTEM_USER_ID);
         user.setEmail("system@restaurants.ru");
-        assertThrows(IllegalStateException.class, () -> service.update(user));
+        assertThrows(IllegalOperationException.class, () -> service.update(user));
     }
 
     @Test
     void tryDeleteSystemUser() {
-        assertThrows(IllegalStateException.class, () -> service.delete(SYSTEM_USER_ID));
+        assertThrows(IllegalOperationException.class, () -> service.delete(SYSTEM_USER_ID));
     }
 
     @Test
@@ -72,13 +73,24 @@ public class UserServiceTest {
 
     @Test
     void tryUpdate() {
-        assertThrows(IllegalStateException.class, () -> service.update(new User()));
+        assertThrows(IllegalArgumentException.class, () -> service.update(new User()));
+    }
+
+    @Test
+    void checkExceptionMessage() {
+        String message = "";
+        try {
+            service.update(new User());
+        } catch(IllegalArgumentException ex) {
+            message = ex.getMessage();
+        }
+        assertTrue(message.contains("update"));
     }
 
     @Test
     void tryCreate() {
         User newUser = new User("newUser", "newuser@restaurantss.ru", Role.USER, "");
         User savedUser = service.create(newUser);
-        assertThrows(IllegalStateException.class, () -> service.create(savedUser));
+        assertThrows(IllegalArgumentException.class, () -> service.create(savedUser));
     }
 }

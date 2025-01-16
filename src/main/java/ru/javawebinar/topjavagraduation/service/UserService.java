@@ -3,8 +3,8 @@ package ru.javawebinar.topjavagraduation.service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.UserRepository;
+import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -41,18 +41,12 @@ public class UserService extends AbstractManagedEntityService<User> {
     }
 
     @Override
-    protected void validateOnUpdate(User user) {
-        super.validateOnUpdate(user);
-        if(isSystemUser(user)) {
-            throw new IllegalStateException("Can't modify system user");
-        }
-    }
-
-    @Override
-    protected void validateOnDelete(User user) {
-        super.validateOnDelete(user);
-        if(isSystemUser(user)) {
-            throw new IllegalStateException("Can't delete system user");
+    protected void validateOperation(User user, CrudOperation operation) {
+        super.validateOperation(user, operation);
+        if(operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
+            if(isSystemUser(user)) {
+                throw new IllegalOperationException("Can't " + operation + " system user");
+            }
         }
     }
 }

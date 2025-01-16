@@ -13,6 +13,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.repository.InMemoryRestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.InMemoryVoteRepository;
 import ru.javawebinar.topjavagraduation.model.Vote;
+import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 
@@ -58,7 +59,7 @@ public class VotingServiceTest {
         Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(VoteService.getEndVoteHours() + 1);
         service.setDateTime(dateTime);
-        assertThrows(IllegalStateException.class, () -> service.create(vote));
+        assertThrows(IllegalOperationException.class, () -> service.create(vote));
     }
 
     @Test
@@ -78,7 +79,7 @@ public class VotingServiceTest {
 
     @Test
     void tryGetElectedWhileVotingIsInProgress() {
-        assertThrows(IllegalStateException.class, () -> service.getElected());
+        assertThrows(IllegalOperationException.class, () -> service.getElected());
     }
 
     @Test

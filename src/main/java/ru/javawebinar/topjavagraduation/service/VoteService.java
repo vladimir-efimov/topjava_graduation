@@ -4,6 +4,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.VoteRepository;
+import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -50,7 +51,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public Restaurant getElected() {
         if (getCurrentDateTime().getHour() < END_VOTE_HOURS) {
-            throw new IllegalStateException("Voting is in progress. Call this method after " + END_VOTE_HOURS + " hours");
+            throw new IllegalOperationException("Voting is in progress. Call this method after " + END_VOTE_HOURS + " hours");
         }
         List<Vote> votes = findByDate(getCurrentDateTime().toLocalDate());
         if (votes.isEmpty()) {
@@ -65,29 +66,13 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     @Override
-    protected void validateOnCreate(Vote vote) {
-        super.validateOnCreate(vote);
-        assertVoteOperationIsAllowed(vote);
-    }
-
-    @Override
-    protected void validateOnUpdate(Vote vote) {
-        super.validateOnUpdate(vote);
-        assertVoteOperationIsAllowed(vote);
-    }
-
-    @Override
-    protected void validateOnDelete(Vote vote) {
-        super.validateOnDelete(vote);
-        assertVoteOperationIsAllowed(vote);
-    }
-
-    private void assertVoteOperationIsAllowed(Vote vote) {
+    protected void validateOperation(Vote vote, CrudOperation operation) {
+        super.validateOperation(vote, operation);
         if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
-            throw new IllegalStateException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
+            throw new IllegalOperationException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
         }
         if(beforeToday(vote.getDate())) {
-            throw new IllegalStateException("Can't operate with date in the past");
+            throw new IllegalOperationException("Can't operate with date in the past");
         }
     }
 
