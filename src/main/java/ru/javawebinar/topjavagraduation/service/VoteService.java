@@ -86,9 +86,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
             throw new IllegalStateException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
         }
-        if(vote.getDate() == null) {
-            throw new IllegalArgumentException("Vote should has not null date");
-        }
         if(beforeToday(vote.getDate())) {
             throw new IllegalStateException("Can't operate with date in the past");
         }

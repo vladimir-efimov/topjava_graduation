@@ -51,18 +51,12 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     }
 
     protected void validateOnCreate(T entity) {
-        if(entity == null) {
-            throw new IllegalArgumentException("Input can't be null");
-        }
-        if(entity.getId() != null) {
+       if(entity.getId() != null) {
             throw new IllegalStateException("Id should be null for create operation");
         }
     }
 
     protected void validateOnUpdate(T entity) {
-        if(entity == null) {
-            throw new IllegalArgumentException("Input data can't be null");
-        }
         if(entity.getId() == null) {
             throw new IllegalStateException("Id should not be null for update operation");
         }
