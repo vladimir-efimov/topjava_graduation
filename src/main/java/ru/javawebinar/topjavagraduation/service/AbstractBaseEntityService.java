@@ -3,6 +3,7 @@ package ru.javawebinar.topjavagraduation.service;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.repository.BaseEntityRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
 import java.util.List;
 
@@ -17,8 +18,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
         validateOperation(entity, CrudOperation.CREATE);
         T savedEntity = repository.save(entity);
         if (savedEntity == null) {
-            //todo: substitute exception
-            throw new IllegalStateException("Failed to create " + entity.getClass().getSimpleName());
+            throw new RepositoryOperationException("Failed to create " + entity.getClass().getSimpleName());
         }
         return savedEntity;
     }
@@ -26,7 +26,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     public void update(T entity) {
         validateOperation(entity, CrudOperation.UPDATE);
         if (repository.save(entity) == null) {
-            throw new IllegalStateException("Failed to update " + entity.getClass().getSimpleName());
+            throw new RepositoryOperationException("Failed to update " + entity.getClass().getSimpleName());
         }
     }
 
@@ -34,7 +34,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
         T entity = get(id);
         validateOperation(entity, CrudOperation.DELETE);
         if (!repository.delete(id)) {
-            throw new IllegalStateException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
+            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
         }
     }
 
