@@ -30,7 +30,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     public Vote get(int id, int userId) {
         Vote vote = repository.get(id);
         if(!vote.getUser().getId().equals(userId)) {
-            throw new NotFoundException("Attempt to access not owned vote");
+            throw new SecurityException("User with id=" + userId + ":attempt to access not owned vote");
         }
         return vote;
     }
@@ -39,6 +39,12 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     public Vote create(Vote vote) {
         Vote modifiedVote = new Vote(null, getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
         return super.create(modifiedVote);
+    }
+
+    @Override
+    public void update(Vote vote) {
+        Vote modifiedVote = new Vote(vote.getId(), getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
+        super.update(modifiedVote);
     }
 
     public List<Vote> findByUser(int userId) {
@@ -68,6 +74,10 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     @Override
     protected void validateOperation(Vote vote, CrudOperation operation) {
         super.validateOperation(vote, operation);
+
+        if(operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
+            get(vote.getId(), vote.getUser().getId()); // assert is own
+        }
         if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
             throw new IllegalOperationException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
         }

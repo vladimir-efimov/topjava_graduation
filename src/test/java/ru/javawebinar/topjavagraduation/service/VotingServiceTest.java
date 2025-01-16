@@ -45,13 +45,34 @@ public class VotingServiceTest {
     }
 
     @Test
-    void vote() {
+    void create() {
         Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         Vote savedVote = service.create(vote);
         assertNotNull(savedVote.getId());
         assertEquals(TestData.date, savedVote.getDate());
         assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
         assertEquals(vote.getUser(), savedVote.getUser());
+    }
+
+    @Test
+    void createAndUpdate() {
+        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
+        Vote savedVote = service.create(vote);
+        savedVote.setRestaurant(TestData.restaurants[0]);
+        service.update(savedVote);
+        vote = service.get(savedVote.getId(), TestData.users[2].getId());
+        assertNotNull(vote);
+        assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
+    }
+
+    @Test
+    void tryUpdateNotOwnVote() {
+        Vote vote = TestData.votes[0];
+        assertNotEquals(TestData.users[3], vote.getUser());
+        // correct setting of user is responsibility of controller,
+        // but user can send incorrect id of vote
+        Vote corruptedVote = new Vote(vote.getId(), TestData.date, TestData.users[3], TestData.restaurants[0]);
+        assertThrows(SecurityException.class, () -> service.update(corruptedVote));
     }
 
     @Test
@@ -64,7 +85,7 @@ public class VotingServiceTest {
 
     @Test
     void getNotOwned() {
-        assertThrows(NotFoundException.class, () -> service.get(votes.getFirst().getId(), 999));
+        assertThrows(SecurityException.class, () -> service.get(votes.getFirst().getId(), 999));
     }
 
     @Test
