@@ -1,7 +1,6 @@
 package ru.javawebinar.topjavagraduation.service;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
@@ -47,7 +46,6 @@ public class MenuServiceTest {
     }
 
     @Test
-    @Disabled
     void tryUpdateInvalid() {
         assertThrows(IllegalOperationException.class, () -> service.update(TestData.invalidUpdateMenu));
     }

@@ -16,7 +16,7 @@ public class UserService extends AbstractManagedEntityService<User> {
         new User("Admin", "admin@restaurants.ru", Role.ADMIN, ""),
         new User("SimpleUser", "user@restaurants.ru", Role.USER, "")
     };
-    private Set<Integer> systemUserIds = new HashSet<>();
+    private final Set<Integer> systemUserIds = new HashSet<>();
 
     public UserService(UserRepository repository) {
         super(repository);
