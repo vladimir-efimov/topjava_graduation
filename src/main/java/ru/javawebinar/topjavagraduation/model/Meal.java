@@ -1,21 +1,20 @@
 package ru.javawebinar.topjavagraduation.model;
 
-public class Meal extends AbstractBaseEntity {
-    private String name;
+public class Meal extends AbstractManagedEntity {
     private float price;
     private Restaurant restaurant;
 
     public Meal() {
     }
 
-    public Meal(int id, float price, Restaurant restaurant) {
-        super(id);
-        this.price = price;
-        this.restaurant = restaurant;
+    public Meal(String name, float price, Restaurant restaurant) {
+        this(null, true, name, price, restaurant);
     }
 
-    public String getName() {
-        return name;
+    public Meal(Integer id, boolean enabled, String name, float price, Restaurant restaurant) {
+        super(id, enabled, name);
+        this.price = price;
+        this.restaurant = restaurant;
     }
 
     public float getPrice() {
@@ -24,10 +23,6 @@ public class Meal extends AbstractBaseEntity {
 
     public Restaurant getRestaurant() {
         return restaurant;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPrice(float price) {
@@ -44,6 +39,7 @@ public class Meal extends AbstractBaseEntity {
                 "id=" + id +
                 ", name=" + name +
                 ", price=" + price +
+                ", restaurant=" + restaurant +
                 '}';
     }
 }

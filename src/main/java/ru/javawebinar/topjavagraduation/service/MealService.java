@@ -5,7 +5,7 @@ import ru.javawebinar.topjavagraduation.repository.MealRepository;
 
 import java.util.List;
 
-public class MealService extends AbstractBaseEntityService<Meal> {
+public class MealService extends AbstractManagedEntityService<Meal> {
     private final MealRepository repository;
 
     public MealService(MealRepository repository) {

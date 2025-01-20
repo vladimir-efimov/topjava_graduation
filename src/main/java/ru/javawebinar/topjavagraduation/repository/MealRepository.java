@@ -4,7 +4,7 @@ import ru.javawebinar.topjavagraduation.model.Meal;
 
 import java.util.List;
 
-public interface MealRepository extends BaseEntityRepository<Meal> {
+public interface MealRepository extends ManagedEntityRepository<Meal> {
 
     List<Meal> findByName(String name);
 

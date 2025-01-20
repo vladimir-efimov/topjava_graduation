@@ -4,7 +4,7 @@ import ru.javawebinar.topjavagraduation.model.Meal;
 
 import java.util.List;
 
-public class InMemoryMealRepository extends InMemoryBaseEntityRepository<Meal> implements MealRepository {
+public class InMemoryMealRepository extends InMemoryManagedEntityRepository<Meal> implements MealRepository {
 
     @Override
     public List<Meal> findByName(String name) {
