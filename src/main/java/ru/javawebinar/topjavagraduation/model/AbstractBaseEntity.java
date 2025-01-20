@@ -45,7 +45,7 @@ public abstract class AbstractBaseEntity implements Cloneable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        return id != null && id == ((AbstractBaseEntity) o).getId();
+        return id != null && id.equals(((AbstractBaseEntity) o).getId());
     }
 
     @Override
