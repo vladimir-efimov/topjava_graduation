@@ -1,24 +1,24 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class Menu extends AbstractBaseEntity {
-    Date date;
+    LocalDate date;
     Restaurant restaurant;
     Set<Meal> meals;
 
     public Menu () {
     }
 
-    public Menu(Integer id, Date date, Restaurant restaurant, Set<Meal> meals) {
+    public Menu(Integer id, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
         super(id);
         this.date = date;
         this.restaurant = restaurant;
         this.meals = meals;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -30,7 +30,7 @@ public class Menu extends AbstractBaseEntity {
         return meals;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
