@@ -52,4 +52,10 @@ public abstract class AbstractBaseEntity implements Cloneable {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    /**
+     * Override and throw Exception if entity is not valid
+     */
+    public void assertValid() {
+    }
 }

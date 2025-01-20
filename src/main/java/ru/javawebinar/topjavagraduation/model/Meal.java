@@ -34,6 +34,13 @@ public class Meal extends AbstractManagedEntity {
     }
 
     @Override
+    public void assertValid() {
+        if(!restaurant.isEnabled()) {
+            throw new IllegalArgumentException("Meal refers to disabled restaurant");
+        }
+    }
+
+    @Override
     public String toString() {
         return "Meal{" +
                 "id=" + id +

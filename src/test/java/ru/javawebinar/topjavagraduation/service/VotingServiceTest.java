@@ -13,6 +13,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.repository.InMemoryRestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.InMemoryVoteRepository;
 import ru.javawebinar.topjavagraduation.model.Vote;
+import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 
@@ -20,10 +21,11 @@ public class VotingServiceTest {
 
     VoteService service;
     ArrayList<Vote> votes = new ArrayList<>();
+    RestaurantRepository restaurantRepository;
 
     @BeforeEach
     void setup() {
-        var restaurantRepository = new InMemoryRestaurantRepository();
+        restaurantRepository = new InMemoryRestaurantRepository();
         service = new VoteService(new InMemoryVoteRepository(), restaurantRepository);
         LocalDateTime dateTime = TestData.date.atStartOfDay();
         service.setDateTime(dateTime);
@@ -62,6 +64,14 @@ public class VotingServiceTest {
         vote = service.get(savedVote.getId(), TestData.users[2].getId());
         assertNotNull(vote);
         assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
+    }
+
+    @Test
+    void createInvalid() {
+        Restaurant restaurant = restaurantRepository.get(1);
+        restaurant.disable();
+        Vote vote = new Vote(TestData.users[1], restaurant);
+        assertThrows(IllegalArgumentException.class, () -> service.create(vote));
     }
 
     @Test

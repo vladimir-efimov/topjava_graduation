@@ -43,6 +43,22 @@ public class Menu extends AbstractBaseEntity {
     }
 
     @Override
+    public void assertValid() {
+        if(!restaurant.isEnabled()) {
+            throw new IllegalArgumentException("Meal refers to disabled restaurant");
+        }
+        for(Meal meal: meals) {
+            if(!meal.isEnabled()) {
+                throw new IllegalArgumentException("Menu contains disabled meal with id=" + meal.getId());
+            }
+            if(!restaurant.getId().equals(meal.getRestaurant().getId())) {
+                throw new IllegalArgumentException("Menu contains meal with id=" + meal.getId() +
+                        " which belongs to another restaurant");
+            }
+        }
+    }
+
+    @Override
     public String toString() {
         return "Menu{" +
                 "date=" + date +

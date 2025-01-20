@@ -52,5 +52,6 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
                 throw new IllegalArgumentException("Id should be null for create operation");
             }
         }
+        entity.assertValid();
     }
 }
