@@ -14,7 +14,6 @@ import ru.javawebinar.topjavagraduation.repository.InMemoryRestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.InMemoryVoteRepository;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 
 public class VotingServiceTest {
@@ -63,6 +62,14 @@ public class VotingServiceTest {
         vote = service.get(savedVote.getId(), TestData.users[2].getId());
         assertNotNull(vote);
         assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
+    }
+
+    @Test
+    void delete() {
+        Vote vote = TestData.votes[0];
+        assertTrue(service.getAll().contains(vote));
+        service.delete(vote.getId(), vote.getUser().getId());
+        assertFalse(service.getAll().contains(vote));
     }
 
     @Test

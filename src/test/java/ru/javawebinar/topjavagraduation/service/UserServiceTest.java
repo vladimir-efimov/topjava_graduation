@@ -7,7 +7,6 @@ import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.InMemoryUserRepository;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,16 +41,6 @@ public class UserServiceTest {
         User user = service.get(SYSTEM_USER_ID);
         user.setEmail("system@restaurants.ru");
         assertThrows(IllegalOperationException.class, () -> service.update(user));
-    }
-
-    @Test
-    void tryDeleteSystemUser() {
-        assertThrows(IllegalOperationException.class, () -> service.delete(SYSTEM_USER_ID));
-    }
-
-    @Test
-    void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND_USER_ID));
     }
 
     @Test

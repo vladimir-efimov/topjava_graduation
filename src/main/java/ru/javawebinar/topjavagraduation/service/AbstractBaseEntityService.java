@@ -30,14 +30,6 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
         }
     }
 
-    public void delete(int id) {
-        T entity = get(id);
-        validateOperation(entity, CrudOperation.DELETE);
-        if (!repository.delete(id)) {
-            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
-        }
-    }
-
     public T get(int id) {
         T entity = repository.get(id);
         if (entity == null) {

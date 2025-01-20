@@ -6,6 +6,7 @@ import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.VoteRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -83,6 +84,14 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
         if(beforeToday(vote.getDate())) {
             throw new IllegalOperationException("Can't operate with date in the past");
+        }
+    }
+
+    public void delete(int id, int userId) {
+        Vote entity = get(id, userId);
+        validateOperation(entity, CrudOperation.DELETE);
+        if (!repository.delete(id)) {
+            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
         }
     }
 
