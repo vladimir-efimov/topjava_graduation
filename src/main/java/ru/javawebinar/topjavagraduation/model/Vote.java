@@ -1,10 +1,24 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name="vote", uniqueConstraints = {
+        @UniqueConstraint(name="vote_unique_date_user_idx", columnNames = {"date", "user_id"})
+})
 public class Vote extends AbstractBaseEntity {
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
     public Vote() {

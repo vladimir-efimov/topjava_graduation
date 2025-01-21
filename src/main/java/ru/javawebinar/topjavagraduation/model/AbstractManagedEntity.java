@@ -1,11 +1,15 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class AbstractManagedEntity extends AbstractBaseEntity {
 
+    @Column(name = "enabled", nullable = false)
     protected boolean enabled = true;
+
+    @Column(name = "name", nullable = false, length = 64)
     protected String name;
 
     protected AbstractManagedEntity() {

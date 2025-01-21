@@ -1,7 +1,17 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
+@Entity
+@Table(name="restaurant", uniqueConstraints = {
+        @UniqueConstraint(name="restaurant_unique_name_address_idx", columnNames = {"name", "address"})
+})
 public class Restaurant extends AbstractManagedEntity {
 
+    @Column(name = "address", nullable = false, length = 128)
     private String address;
 
     public Restaurant() {

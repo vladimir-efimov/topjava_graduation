@@ -8,6 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name="users")
 public class User extends AbstractManagedEntity {
+
+    @Column(name = "email", nullable = false, unique = true, length = 64)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -17,6 +19,7 @@ public class User extends AbstractManagedEntity {
     @JoinColumn
     private Set<Role> roles;
 
+    @Column(name = "password", nullable = false)
     private String password;
 
     public User() {

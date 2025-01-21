@@ -1,11 +1,27 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
+@Table(name="menu", uniqueConstraints = {
+        @UniqueConstraint(name="menu_unique_date_restaurant_idx", columnNames = {"date", "restaurant_id"})
+})
 public class Menu extends AbstractBaseEntity {
+    @Column(name = "date", nullable = false)
     LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     Restaurant restaurant;
+
+    // todo: check column definition and write test for it
+    @CollectionTable(name = "menu_meal", joinColumns = @JoinColumn(name = "menu_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "meal_id"}, name = "uk_menu_meal")})
+    @Column(name = "meal")
+    @JoinColumn
     Set<Meal> meals;
 
     public Menu () {

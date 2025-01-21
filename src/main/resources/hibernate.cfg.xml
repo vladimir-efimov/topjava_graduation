@@ -15,7 +15,10 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create-drop</property>
         <!-- Classes -->
+        <mapping class="ru.javawebinar.topjavagraduation.model.Meal" />
+        <mapping class="ru.javawebinar.topjavagraduation.model.Restaurant" />
         <mapping class="ru.javawebinar.topjavagraduation.model.Role" />
         <mapping class="ru.javawebinar.topjavagraduation.model.User" />
+        <mapping class="ru.javawebinar.topjavagraduation.model.Vote" />
     </session-factory>
 </hibernate-configuration>

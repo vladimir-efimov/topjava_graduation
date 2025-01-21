@@ -1,7 +1,19 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="meal", uniqueConstraints = {
+        @UniqueConstraint(name="meal_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
+})
 public class Meal extends AbstractManagedEntity {
+
+    @Column(name="price", nullable = false)
     private float price;
+
+    // todo: check if it is OK to use cascade persisting in testing
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
     public Meal() {
