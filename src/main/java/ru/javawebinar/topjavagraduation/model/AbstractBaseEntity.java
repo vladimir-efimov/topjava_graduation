@@ -1,7 +1,14 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.*;
+
+
+@MappedSuperclass
+@Access(AccessType.FIELD)
 public abstract class AbstractBaseEntity implements Cloneable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
     protected AbstractBaseEntity() {

@@ -1,5 +1,8 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class AbstractManagedEntity extends AbstractBaseEntity {
 
     protected boolean enabled = true;
