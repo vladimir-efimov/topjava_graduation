@@ -17,11 +17,10 @@ public class Menu extends AbstractBaseEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     Restaurant restaurant;
 
-    // todo: check column definition and write test for it
-    @CollectionTable(name = "menu_meal", joinColumns = @JoinColumn(name = "menu_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "meal_id"}, name = "uk_menu_meal")})
-    @Column(name = "meal")
-    @JoinColumn
+    @ManyToMany
+    @JoinTable(name = "menu_meal",
+            joinColumns = {@JoinColumn(name = "menu_id")},
+            inverseJoinColumns = {@JoinColumn(name = "meal_id")})
     Set<Meal> meals;
 
     public Menu () {

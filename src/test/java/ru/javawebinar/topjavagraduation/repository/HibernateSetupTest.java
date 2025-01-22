@@ -3,6 +3,9 @@ package ru.javawebinar.topjavagraduation.repository;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.topjavagraduation.model.*;
+import ru.javawebinar.topjavagraduation.service.TestData;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -67,4 +70,25 @@ public class HibernateSetupTest {
             System.out.println(session.createSelectionQuery("from Vote").getSingleResult());
         });
     }
+
+    @Test
+    void checkMenuSave() {
+        SessionFactory sessionFactory = HibernateSetup.getSessionFactory();
+        sessionFactory.inTransaction(session -> {
+            Restaurant restaurant = new Restaurant("cafe5", "address5");
+            session.persist(restaurant);
+            Meal meal11 = new Meal("meal11", 250.0f, restaurant);
+            session.persist(meal11);
+            Meal meal12 = new Meal("meal12", 250.0f, restaurant);
+            session.persist(meal12);
+            Set<Meal> meals = Set.of(meal11, meal12);
+            Menu menu = new Menu(null, TestData.date, restaurant, meals);
+            session.persist(menu);
+        });
+
+        sessionFactory.inSession(session -> {
+            System.out.println(session.createSelectionQuery("from Menu").getSingleResult());
+        });
+    }
+
 }
