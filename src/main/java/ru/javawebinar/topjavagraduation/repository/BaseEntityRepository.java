@@ -14,4 +14,6 @@ public interface BaseEntityRepository <T extends AbstractBaseEntity> {
     T get(int id);
 
     List<T> getAll();
+
+    void clean();
 }

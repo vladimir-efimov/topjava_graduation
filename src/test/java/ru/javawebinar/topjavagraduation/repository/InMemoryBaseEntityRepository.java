@@ -5,13 +5,11 @@ import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
 
 public class InMemoryBaseEntityRepository <T extends AbstractBaseEntity> implements BaseEntityRepository<T> {
 
-    protected final AtomicInteger idValue = new AtomicInteger(0);
-    protected final Map<Integer, T> entities = new ConcurrentHashMap<>();
+    protected final Map<Integer, T> entities = new HashMap<>();
 
     @Override
     public T save(T entity) {
@@ -23,7 +21,7 @@ public class InMemoryBaseEntityRepository <T extends AbstractBaseEntity> impleme
             } catch(CloneNotSupportedException ex) {
                 newEntity = entity;
             }
-            newEntity.setId(idValue.incrementAndGet());
+            newEntity.setId(entities.size() + 1);
             entities.put(newEntity.getId(), newEntity);
             return newEntity;
         }
@@ -43,5 +41,10 @@ public class InMemoryBaseEntityRepository <T extends AbstractBaseEntity> impleme
     @Override
     public List<T> getAll() {
         return entities.values().stream().toList();
+    }
+
+    @Override
+    public void clean() {
+        entities.clear();
     }
 }
