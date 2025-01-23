@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.UserRepository;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class UserService extends AbstractManagedEntityService<User> {
 
     private final UserRepository repository;
@@ -21,11 +23,7 @@ public class UserService extends AbstractManagedEntityService<User> {
     public UserService(UserRepository repository) {
         super(repository);
         this.repository = repository;
-        for(User user: systemUsers) {
-            Optional<User> result = findByEmail(user.getEmail());
-            Integer id = result.isEmpty() ? repository.save(user).getId() : result.get().getId();
-            systemUserIds.add(id);
-        }
+        init();
     }
 
     public Optional<User> findByEmail(String email) {
@@ -47,6 +45,15 @@ public class UserService extends AbstractManagedEntityService<User> {
             if(isSystemUser(user)) {
                 throw new IllegalOperationException("Can't " + operation + " system user");
             }
+        }
+    }
+
+    void init() {
+        systemUserIds.clear();
+        for(User user: systemUsers) {
+            Optional<User> result = findByEmail(user.getEmail());
+            Integer id = result.isEmpty() ? repository.save(user).getId() : result.get().getId();
+            systemUserIds.add(id);
         }
     }
 }

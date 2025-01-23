@@ -1,11 +1,13 @@
 package ru.javawebinar.topjavagraduation.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Menu;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class InMemoryMenuRepository extends InMemoryBaseEntityRepository<Menu> implements MenuRepository {
     public List<Menu> findByRestaurant(int id) {
         return entities.values().stream()

@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.MenuRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MenuService extends AbstractBaseEntityService<Menu> {
     private final MenuRepository repository;
     private LocalDateTime testingPurposeDate = null;

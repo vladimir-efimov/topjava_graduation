@@ -1,11 +1,13 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.repository.MealRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 import java.util.List;
 
+@Service
 public class MealService extends AbstractManagedEntityService<Meal> {
     private final MealRepository repository;
 

@@ -1,9 +1,11 @@
 package ru.javawebinar.topjavagraduation.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Meal;
 
 import java.util.List;
 
+@Repository
 public class InMemoryMealRepository extends InMemoryManagedEntityRepository<Meal> implements MealRepository {
 
     @Override

@@ -1,5 +1,14 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
@@ -8,13 +17,7 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+@Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
     private final static int END_VOTE_HOURS = 11;
@@ -30,7 +33,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public Vote get(int id, int userId) {
         Vote vote = repository.get(id);
-        if(!vote.getUser().getId().equals(userId)) {
+        if (!vote.getUser().getId().equals(userId)) {
             throw new SecurityException("User with id=" + userId + ":attempt to access not owned vote");
         }
         return vote;
@@ -76,13 +79,13 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     protected void validateOperation(Vote vote, CrudOperation operation) {
         super.validateOperation(vote, operation);
 
-        if(operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
+        if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
             get(vote.getId(), vote.getUser().getId()); // assert is own
         }
         if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
             throw new IllegalOperationException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
         }
-        if(beforeToday(vote.getDate())) {
+        if (beforeToday(vote.getDate())) {
             throw new IllegalOperationException("Can't operate with date in the past");
         }
     }
@@ -104,7 +107,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     private LocalDateTime getCurrentDateTime() {
-        if(testingPurposeDate == null) {
+        if (testingPurposeDate == null) {
             return LocalDateTime.now();
         }
         return testingPurposeDate;
