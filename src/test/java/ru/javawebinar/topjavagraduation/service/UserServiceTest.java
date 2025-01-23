@@ -13,7 +13,8 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringJUnitConfig(locations = {
-        "classpath:spring/inmemory.xml"
+        "classpath:spring/inmemory.xml",
+        "classpath:spring/spring-app.xml",
 })
 public class UserServiceTest {
 
