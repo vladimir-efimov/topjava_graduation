@@ -2,81 +2,43 @@ package ru.javawebinar.topjavagraduation.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.javawebinar.topjavagraduation.data.TestData;
+import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.repository.InMemoryRestaurantRepository;
-import ru.javawebinar.topjavagraduation.repository.InMemoryVoteRepository;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 
-public class VotingServiceTest {
+public class VotingServiceTest extends AbstractServiceTest<Vote> {
 
-    VoteService service;
-    ArrayList<Vote> votes = new ArrayList<>();
-    RestaurantRepository restaurantRepository;
+    private final VoteService service;
+    @Autowired
+    TestDataProvider<Restaurant> restaurantDataProvider;
+
+    public VotingServiceTest(@Autowired VoteService service, @Autowired TestDataProvider<Vote> dataProvider) {
+        super(service, dataProvider);
+        this.service = service;
+        service.setDateTime(TestData.date.atStartOfDay());
+    }
 
     @BeforeEach
     void setup() {
-        restaurantRepository = new InMemoryRestaurantRepository();
-        service = new VoteService(new InMemoryVoteRepository(), restaurantRepository);
-        LocalDateTime dateTime = TestData.date.atStartOfDay();
-        service.setDateTime(dateTime);
-        for(Restaurant restaurant: TestData.restaurants) {
-            restaurantRepository.save(new Restaurant(restaurant.getName(), restaurant.getAddress()));
-        }
-        votes.clear();
-        for (Vote vote: TestData.votes) {
-            votes.add(service.create(vote));
-        }
-    }
-
-    @Test
-    void get() {
-        Vote vote = service.get(votes.getFirst().getId(), TestData.votes[0].getUser().getId());
-        assertEquals(votes.getFirst(), vote);
-        //todo: nice to compare with vote object from TestData
-    }
-
-    @Test
-    void create() {
-        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
-        Vote savedVote = service.create(vote);
-        assertNotNull(savedVote.getId());
-        assertEquals(TestData.date, savedVote.getDate());
-        assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
-        assertEquals(vote.getUser(), savedVote.getUser());
-    }
-
-    @Test
-    void createAndUpdate() {
-        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
-        Vote savedVote = service.create(vote);
-        savedVote.setRestaurant(TestData.restaurants[0]);
-        service.update(savedVote);
-        vote = service.get(savedVote.getId(), TestData.users[2].getId());
-        assertNotNull(vote);
-        assertEquals(vote.getRestaurant(), savedVote.getRestaurant());
-    }
-
-    @Test
-    void createInvalid() {
-        Restaurant restaurant = restaurantRepository.get(1);
-        restaurant.disable();
-        Vote vote = new Vote(TestData.users[1], restaurant);
-        assertThrows(IllegalArgumentException.class, () -> service.create(vote));
+        super.setup();
+        restaurantDataProvider.init();
     }
 
     @Test
     void delete() {
-        Vote vote = TestData.votes[0];
+        Vote vote = dataProvider.getFirst();
         assertTrue(service.getAll().contains(vote));
         service.delete(vote.getId(), vote.getUser().getId());
         assertFalse(service.getAll().contains(vote));
@@ -84,7 +46,7 @@ public class VotingServiceTest {
 
     @Test
     void tryUpdateNotOwnVote() {
-        Vote vote = TestData.votes[0];
+        Vote vote = dataProvider.getFirst();
         assertNotEquals(TestData.users[3], vote.getUser());
         // correct setting of user is responsibility of controller,
         // but user can send incorrect id of vote
@@ -102,14 +64,15 @@ public class VotingServiceTest {
 
     @Test
     void getNotOwned() {
-        assertThrows(SecurityException.class, () -> service.get(votes.getFirst().getId(), 999));
+        assertThrows(SecurityException.class, () -> service.get(dataProvider.getFirst().getId(), 999));
     }
 
     @Test
     void findByDate() {
+        List<Vote> votes = dataProvider.getAll();
         List<Vote> foundVotes = service.findByDate(TestData.date);
         assertEquals(votes.size(), foundVotes.size());
-        for(int i=0; i<foundVotes.size(); i++) {
+        for (int i = 0; i < foundVotes.size(); i++) {
             assertEquals(foundVotes.get(i), votes.get(i));
         }
         assertTrue(service.findByDate(LocalDate.EPOCH).isEmpty());
@@ -117,7 +80,7 @@ public class VotingServiceTest {
 
     @Test
     void tryGetElectedWhileVotingIsInProgress() {
-        assertThrows(IllegalOperationException.class, () -> service.getElected());
+        assertThrows(IllegalOperationException.class, service::getElected);
     }
 
     @Test

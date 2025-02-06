@@ -3,7 +3,7 @@ package ru.javawebinar.topjavagraduation.repository;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.topjavagraduation.model.*;
-import ru.javawebinar.topjavagraduation.service.TestData;
+import ru.javawebinar.topjavagraduation.data.TestData;
 
 import java.util.Set;
 

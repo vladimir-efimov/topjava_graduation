@@ -26,18 +26,6 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         return repository.findByRestaurant(id);
     }
 
-    @Override
-    public Menu create(Menu menu) {
-        Menu modifiedMenu = new Menu(null, getCurrentDateTime().toLocalDate(), menu.getRestaurant(), menu.getMeals());
-        return super.create(modifiedMenu);
-    }
-
-    @Override
-    public void update(Menu menu) {
-        Menu modifiedMenu = new Menu(menu.getId(), getCurrentDateTime().toLocalDate(), menu.getRestaurant(), menu.getMeals());
-        super.update(modifiedMenu);
-    }
-
     public Optional<Menu> findByRestaurantAndDate(int id, Date date) {
         return findByRestaurantAndDate(id, date);
     }
@@ -45,10 +33,12 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
     @Override
     protected void validateOperation(Menu menu, CrudOperation operation) {
         super.validateOperation(menu, operation);
-        if(operation == CrudOperation.UPDATE) {
-            if(beforeToday(menu.getDate())) {
+        if(operation == CrudOperation.CREATE || operation == CrudOperation.UPDATE) {
+            if (beforeToday(menu.getDate())) {
                 throw new IllegalOperationException("Can't operate with menu for the past date");
             }
+        }
+        if(operation == CrudOperation.UPDATE) {
             Menu savedMenu = get(menu.getId());
             if(!savedMenu.getRestaurant().equals(menu.getRestaurant())) {
                 throw new IllegalOperationException("Can't substitute restaurant");

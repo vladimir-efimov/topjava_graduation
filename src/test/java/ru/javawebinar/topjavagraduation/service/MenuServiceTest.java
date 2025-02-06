@@ -1,52 +1,28 @@
 package ru.javawebinar.topjavagraduation.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.javawebinar.topjavagraduation.data.TestData;
+import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Menu;
-import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.repository.InMemoryMenuRepository;
-import ru.javawebinar.topjavagraduation.repository.InMemoryRestaurantRepository;
-import ru.javawebinar.topjavagraduation.repository.MenuRepository;
-import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
-public class MenuServiceTest {
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    RestaurantRepository restaurantRepository;
-    MenuRepository menuRepository;
-    MenuService service;
+public class MenuServiceTest extends AbstractServiceTest<Menu> {
 
-    @BeforeEach
-    void setup() {
-        restaurantRepository = new InMemoryRestaurantRepository();
-        menuRepository = new InMemoryMenuRepository();
-        service = new MenuService(menuRepository);
-        for (Restaurant restaurant : TestData.restaurants) {
-            restaurantRepository.save(new Restaurant(restaurant.getName(), restaurant.getAddress()));
-        }
-        for (Menu menu : TestData.menus) {
-            menuRepository.save(new Menu(null, menu.getDate(), menu.getRestaurant(), menu.getMeals()));
-        }
+    public MenuServiceTest(@Autowired MenuService service, @Autowired TestDataProvider<Menu> dataProvider) {
+        super(service, dataProvider);
+        service.setDateTime(TestData.date.atStartOfDay());
     }
 
     @Test
-    void create() {
-        Menu savedMenu = service.create(TestData.newMenu);
-        assertNotNull(savedMenu.getId());
-        assertEquals(TestData.newMenu.getRestaurant(), savedMenu.getRestaurant());
-    }
-
-    @Test
-    void tryCreateInvalid() {
-        for (Menu menu : TestData.invalidMenus) {
-            assertThrows(IllegalArgumentException.class, () -> service.create(menu));
-        }
-    }
-
-    @Test
+    @Override
     void tryUpdateInvalid() {
-        assertThrows(IllegalOperationException.class, () -> service.update(TestData.invalidUpdateMenu));
+        List<Menu> invalidEntities = dataProvider.getUpdatedInvalid();
+        invalidEntities.forEach( enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
     }
+
 }

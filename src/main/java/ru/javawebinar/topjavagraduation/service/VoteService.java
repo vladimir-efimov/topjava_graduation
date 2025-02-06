@@ -41,7 +41,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     @Override
     public Vote create(Vote vote) {
-        Vote modifiedVote = new Vote(null, getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
+        Vote modifiedVote = new Vote(vote.getId(), getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
         return super.create(modifiedVote);
     }
 
