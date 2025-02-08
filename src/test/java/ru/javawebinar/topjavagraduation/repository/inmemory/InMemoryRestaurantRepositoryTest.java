@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.repository;
+package ru.javawebinar.topjavagraduation.repository.inmemory;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

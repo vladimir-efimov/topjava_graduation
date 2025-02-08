@@ -1,6 +1,7 @@
-package ru.javawebinar.topjavagraduation.repository;
+package ru.javawebinar.topjavagraduation.repository.inmemory;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
+import ru.javawebinar.topjavagraduation.repository.BaseEntityRepository;
 
 import java.util.List;
 import java.util.Map;

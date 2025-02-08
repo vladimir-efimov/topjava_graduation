@@ -1,7 +1,8 @@
-package ru.javawebinar.topjavagraduation.repository;
+package ru.javawebinar.topjavagraduation.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
+import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 
 import java.util.Optional;
 

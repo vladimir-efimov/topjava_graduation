@@ -1,7 +1,8 @@
-package ru.javawebinar.topjavagraduation.repository;
+package ru.javawebinar.topjavagraduation.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Vote;
+import ru.javawebinar.topjavagraduation.repository.VoteRepository;
 
 import java.time.LocalDate;
 import java.util.List;

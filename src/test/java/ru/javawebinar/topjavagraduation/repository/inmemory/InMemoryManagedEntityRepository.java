@@ -1,6 +1,7 @@
-package ru.javawebinar.topjavagraduation.repository;
+package ru.javawebinar.topjavagraduation.repository.inmemory;
 
 import ru.javawebinar.topjavagraduation.model.AbstractManagedEntity;
+import ru.javawebinar.topjavagraduation.repository.ManagedEntityRepository;
 
 import java.util.List;
 
