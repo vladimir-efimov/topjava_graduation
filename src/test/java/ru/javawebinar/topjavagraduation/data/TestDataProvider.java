@@ -3,12 +3,10 @@ package ru.javawebinar.topjavagraduation.data;
 import java.util.List;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
-import ru.javawebinar.topjavagraduation.repository.BaseEntityRepository;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
 
 public class TestDataProvider<T extends AbstractBaseEntity> {
 
-    private final BaseEntityRepository<T> repository;
     private final List<T> entities;
     private final T newEntity;
     private final T updatedEntity;
@@ -16,28 +14,14 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
     private final List<T> invalidUpdateEntities;
     private final MatcherFactory.Matcher<T> matcher;
 
-    protected TestDataProvider(BaseEntityRepository<T> repository, List<T> entities, T newEntity, T updatedEntity,
+    protected TestDataProvider(List<T> entities, T newEntity, T updatedEntity,
                                List<T> invalidNewEntities, List<T> invalidUpdateEntities, MatcherFactory.Matcher<T> matcher) {
-        this.repository = repository;
         this.entities = entities;
         this.newEntity = newEntity;
         this.updatedEntity = updatedEntity;
         this.invalidNewEntities = invalidNewEntities;
         this.invalidUpdateEntities = invalidUpdateEntities;
         this.matcher = matcher;
-    }
-
-    public void init() {
-        repository.clean();
-        try {
-            for (T entity: entities) {
-                T copy = (T) entity.clone();
-                copy.setId(null);
-                repository.save(copy);
-            }
-        } catch (CloneNotSupportedException ex) {
-            throw new IllegalStateException("Unexpected CloneNotSupportedException: " + ex.getMessage());
-        }
     }
 
     public T getNew() {

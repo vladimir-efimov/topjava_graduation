@@ -2,12 +2,13 @@ package ru.javawebinar.topjavagraduation.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import ru.javawebinar.topjavagraduation.data.TestDataInitializer;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     protected final TestDataProvider<T> dataProvider;
     protected final MatcherFactory.Matcher<T> matcher;
 
+    @Autowired
+    private TestDataInitializer dataInitializer;
+
     protected AbstractServiceTest(AbstractBaseEntityService<T> service, TestDataProvider<T> dataProvider) {
         this.service = service;
         this.dataProvider = dataProvider;
@@ -33,7 +37,7 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
 
     @BeforeEach
     void setup() {
-        dataProvider.init();
+        dataInitializer.init();
     }
 
     @Test

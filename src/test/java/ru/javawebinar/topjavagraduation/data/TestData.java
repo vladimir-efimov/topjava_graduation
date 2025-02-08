@@ -1,13 +1,8 @@
 package ru.javawebinar.topjavagraduation.data;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.javawebinar.topjavagraduation.model.*;
-import ru.javawebinar.topjavagraduation.repository.MenuRepository;
-import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
-import ru.javawebinar.topjavagraduation.repository.UserRepository;
-import ru.javawebinar.topjavagraduation.repository.VoteRepository;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
 
 import java.time.LocalDate;
@@ -57,6 +52,15 @@ public class TestData {
             new Meal(7, true, "meal7", 300.0f, restaurants[2]),
             disabledMeal
     };
+    public static final Meal newMeal = new Meal("newMeal", 115.0f, restaurants[0]);
+    public static final Meal updatedMeal = new Meal(2, true, "meal2", 250.0f, restaurants[0]);
+    public static final List<Meal> invalidMeals = List.of();
+    public static final List<Meal> invalidUpdateMeals = List.of(
+            // change of restaurant is not allowed
+            new Meal(2, true, "meal2", 250.0f, restaurants[1])
+    );
+    private static final MatcherFactory.Matcher<Meal> MEAL_MATCHER =
+            MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "id");
 
     public static final LocalDate yestarday = LocalDate.of(2024, 1, 12);
     public static final LocalDate date = LocalDate.of(2024, 1, 13);
@@ -69,13 +73,13 @@ public class TestData {
     };
     public static final Menu newMenu = new Menu(null, date, restaurants[2], Set.of(meals[5], meals[6]));
     public static final Menu updatedMenu = new Menu(2, date, restaurants[0], Set.of(meals[0], meals[1]));
-    public static final Menu[] invalidMenus = {
+    public static final List<Menu> invalidMenus = List.of(
             new Menu(null, date, restaurants[2], Set.of(meals[5], meals[7])),
-            new Menu(null, date, restaurants[2], Set.of(meals[0], meals[6])),
-    };
-    public static final Menu[] invalidUpdateMenus = {
+            new Menu(null, date, restaurants[2], Set.of(meals[0], meals[6]))
+            );
+    public static final List<Menu> invalidUpdateMenus = List.of(
             new Menu(2, date, restaurants[2], Set.of(meals[6]))
-    };
+    );
     private static final MatcherFactory.Matcher<Menu> MENU_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "id");
 
@@ -86,49 +90,42 @@ public class TestData {
     };
     public static final Vote newVote = new Vote(null, date, users[1], popularRestaurant);
     public static final Vote updatedVote = new Vote(2, date, users[2], restaurants[3]);
-    public static final Vote[] invalidNewVotes = {
+    public static final List<Vote> invalidNewVotes = List.of(
             new Vote(null, date, users[3], disabledRestaurant)
-    };
-    public static final Vote[] invalidUpdateVotes = {
+    );
+    public static final List<Vote> invalidUpdateVotes = List.of(
             new Vote(2, date, users[2], disabledRestaurant)
-    };
+    );
     private static final MatcherFactory.Matcher<Vote> VOTE_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "id");
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RestaurantRepository restaurantRepository;
-
-    @Autowired
-    MenuRepository menuRepository;
-
-    @Autowired
-    VoteRepository voteRepository;
-
     @Bean
     TestDataProvider<User> getUserProvider() {
-        return new TestDataProvider<>(userRepository, List.of(users), newUser, updatedUser,
+        return new TestDataProvider<>(List.of(users), newUser, updatedUser,
                 invalidUsers, invalidUsers, USER_MATCHER);
     }
 
     @Bean
     TestDataProvider<Restaurant> getRestaurantProvider() {
-        return new TestDataProvider<>(restaurantRepository, List.of(restaurants), newRestaurant, updatedRestaurant,
+        return new TestDataProvider<>(List.of(restaurants), newRestaurant, updatedRestaurant,
                 invalidRestaurants, invalidRestaurants, RESTAURANT_MATCHER);
     }
 
     @Bean
+    TestDataProvider<Meal> getMealProvider() {
+        return new TestDataProvider<>(List.of(meals), newMeal, updatedMeal,
+                invalidMeals, invalidUpdateMeals, MEAL_MATCHER);
+    }
+
+    @Bean
     TestDataProvider<Menu> getMenuProvider() {
-        return new TestDataProvider<>(menuRepository, List.of(menus), newMenu, updatedMenu,
-                List.of(invalidMenus), List.of(invalidUpdateMenus), MENU_MATCHER);
+        return new TestDataProvider<>(List.of(menus), newMenu, updatedMenu,
+                invalidMenus, invalidUpdateMenus, MENU_MATCHER);
     }
 
     @Bean
     TestDataProvider<Vote> getVoteProvider() {
-        return new TestDataProvider<>(voteRepository, List.of(votes), newVote, updatedVote,
-                List.of(invalidNewVotes), List.of(invalidUpdateVotes), VOTE_MATCHER);
+        return new TestDataProvider<>(List.of(votes), newVote, updatedVote,
+                invalidNewVotes, invalidUpdateVotes, VOTE_MATCHER);
     }
-
 }

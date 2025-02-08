@@ -6,7 +6,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +13,17 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
-import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 
 public class VotingServiceTest extends AbstractServiceTest<Vote> {
 
     private final VoteService service;
-    @Autowired
-    TestDataProvider<Restaurant> restaurantDataProvider;
 
     public VotingServiceTest(@Autowired VoteService service, @Autowired TestDataProvider<Vote> dataProvider) {
         super(service, dataProvider);
         this.service = service;
         service.setDateTime(TestData.date.atStartOfDay());
-    }
-
-    @BeforeEach
-    void setup() {
-        super.setup();
-        restaurantDataProvider.init();
     }
 
     @Test
