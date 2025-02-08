@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
@@ -23,7 +24,6 @@ public class UserService extends AbstractManagedEntityService<User> {
     public UserService(UserRepository repository) {
         super(repository);
         this.repository = repository;
-        init();
     }
 
     public Optional<User> findByEmail(String email) {
@@ -48,6 +48,7 @@ public class UserService extends AbstractManagedEntityService<User> {
         }
     }
 
+    @PostConstruct
     void init() {
         systemUserIds.clear();
         for(User user: systemUsers) {
