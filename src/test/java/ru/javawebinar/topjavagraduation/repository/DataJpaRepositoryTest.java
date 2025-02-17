@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-app.xml",
-        "classpath:spring/repository.xml",
+        "classpath:spring/spring-db.xml",
         "classpath:spring/test.xml",
 })
 public class DataJpaRepositoryTest {
