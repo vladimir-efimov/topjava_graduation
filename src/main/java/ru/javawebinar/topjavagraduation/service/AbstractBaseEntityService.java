@@ -33,7 +33,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     public T get(int id) {
         T entity = repository.get(id);
         if (entity == null) {
-            throw new NotFoundException("User with id " + id + "is not found");
+            throw new NotFoundException("Entity with id " + id + " is not found");
         }
         return entity;
     }

@@ -20,6 +20,8 @@
         <hsqldb.version>2.4.0</hsqldb.version>
         <!-- Web -->
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
+        <!-- JSON -->
+        <jackson.version>2.18.1</jackson.version>
         <!-- Tests -->
         <junit.jupiter.version>5.11.3</junit.jupiter.version>
         <assertj.version>3.26.3</assertj.version>
@@ -76,6 +78,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <!-- Tests -->
        <dependency>

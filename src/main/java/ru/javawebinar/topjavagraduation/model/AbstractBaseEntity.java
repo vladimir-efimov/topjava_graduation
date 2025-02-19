@@ -1,10 +1,15 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.persistence.*;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
 public abstract class AbstractBaseEntity implements Cloneable {
 
     @Id
