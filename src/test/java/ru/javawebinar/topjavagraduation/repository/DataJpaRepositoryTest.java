@@ -39,7 +39,7 @@ public class DataJpaRepositoryTest {
     void checkRestaurantSave() {
         restaurantRepository.clean();
         restaurantRepository.save(new Restaurant("cafe1", "address1"));
-        Restaurant restaurant = restaurantRepository.findByName("cafe1").getFirst();
+        Restaurant restaurant = restaurantRepository.findByName("cafe1").get(0);
         assertNotNull(restaurant);
         assertEquals("cafe1", restaurant.getName());
     }
@@ -52,7 +52,7 @@ public class DataJpaRepositoryTest {
         restaurantRepository.getAll(); // cache clean-up
         Restaurant restaurant = restaurantRepository.save(new Restaurant("cafe1", "address1"));
         mealRepository.save(new Meal("meal1", 250.0f, restaurant));
-        Meal meal = mealRepository.findByName("meal1").getFirst();
+        Meal meal = mealRepository.findByName("meal1").get(0);
         assertEquals("meal1", meal.getName());
     }
 
@@ -68,7 +68,7 @@ public class DataJpaRepositoryTest {
         Meal meal12 = mealRepository.save(new Meal("meal12", 250.0f, restaurant));
         Set<Meal> meals = Set.of(meal11, meal12);
         menuRepository.save(new Menu(null, TestData.date, restaurant, meals));
-        Menu menu = menuRepository.getAll().getFirst();
+        Menu menu = menuRepository.getAll().get(0);
         assertNotNull(menu);
         assertEquals(restaurant, menu.getRestaurant());
     }

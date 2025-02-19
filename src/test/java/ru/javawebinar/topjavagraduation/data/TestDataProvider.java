@@ -29,7 +29,7 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
     }
 
     public T getFirst() {
-        return entities.getFirst();
+        return entities.get(0);
     }
 
     public List<T> getAll() {
