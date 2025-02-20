@@ -1,7 +1,6 @@
 package ru.javawebinar.topjavagraduation.web;
 
 import jakarta.annotation.PostConstruct;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -56,11 +55,10 @@ public class UserRestControllerTest {
     }
 
     @Test
-    @Disabled // todo: fix functionality and enable test
     void getEnabled() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/enabled"))
                 .andDo(print())
-//                .andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         ;
     }

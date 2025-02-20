@@ -13,7 +13,7 @@ public abstract class JpaManagedEntityRepository<T extends AbstractManagedEntity
 
     // It seems HQL is not applicable for template classes, so decided to use specifications
     private final Specification<T> getEnabledSpecification =
-        (root, query, builder) -> builder.equal(root.get("isEnabled"), true);
+        (root, query, builder) -> builder.equal(root.get("enabled"), true);
 
     private Specification<T> hasName(String name) {
         return (root, query, builder) -> builder.equal(root.get("name"), name);
