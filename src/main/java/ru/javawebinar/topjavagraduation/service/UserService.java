@@ -53,7 +53,9 @@ public class UserService extends AbstractManagedEntityService<User> {
         systemUserIds.clear();
         for(User user: systemUsers) {
             Optional<User> result = findByEmail(user.getEmail());
-            Integer id = result.isEmpty() ? repository.save(user).getId() : result.get().getId();
+            Integer id = result.isEmpty() ?
+                    repository.save(new User(user.getName(), user.getEmail(), user.getRoles(), user.getPassword())).getId()
+                    : result.get().getId();
             systemUserIds.add(id);
         }
     }
