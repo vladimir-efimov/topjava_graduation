@@ -16,10 +16,6 @@ public class MealService extends AbstractManagedEntityService<Meal> {
         this.repository = repository;
     }
 
-    public List<Meal> findByName(String name) {
-        return repository.findByName(name);
-    }
-
     public List<Meal> findByRestaurant(int id) {
         return repository.findByRestaurant(id);
     }
