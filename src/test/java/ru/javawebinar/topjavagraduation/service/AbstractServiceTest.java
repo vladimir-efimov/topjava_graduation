@@ -13,7 +13,6 @@ import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringJUnitConfig(locations = {
