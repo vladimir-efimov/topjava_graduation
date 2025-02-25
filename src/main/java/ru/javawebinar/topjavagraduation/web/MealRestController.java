@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.service.MealService;
+import ru.javawebinar.topjavagraduation.to.MealTo;
+import ru.javawebinar.topjavagraduation.utils.Convertor;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = MealRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class MealRestController extends AbstractManagedEntityRestController<Meal> {
+public class MealRestController extends AbstractManagedEntityRestController<Meal, MealTo> {
     public static final String REST_URL = "/rest/meals";
     private final MealService service;
 
@@ -26,4 +28,8 @@ public class MealRestController extends AbstractManagedEntityRestController<Meal
         return service.findByRestaurant(id);
     }
 
+    @Override
+    public Meal convertTo(MealTo mealTo) {
+        return Convertor.convertMealTo(mealTo);
+    }
 }

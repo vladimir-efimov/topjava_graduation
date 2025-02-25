@@ -7,22 +7,22 @@ import ru.javawebinar.topjavagraduation.service.AbstractManagedEntityService;
 
 import java.util.List;
 
-public class AbstractManagedEntityRestController<T extends AbstractManagedEntity> extends AbstractBaseEntityRestController<T> {
+public abstract class AbstractManagedEntityRestController<E extends AbstractManagedEntity, TO> extends AbstractBaseEntityRestController<E, TO> {
 
-    protected final AbstractManagedEntityService<T> service;
+    protected final AbstractManagedEntityService<E> service;
 
-    public AbstractManagedEntityRestController(AbstractManagedEntityService<T> service, String restUrl) {
+    public AbstractManagedEntityRestController(AbstractManagedEntityService<E> service, String restUrl) {
         super(service, restUrl);
         this.service = service;
     }
 
     @GetMapping("/enabled")
-    public List<T> getEnabled() {
+    public List<E> getEnabled() {
         return service.getEnabled();
     }
 
     @GetMapping("/filter")
-    public List<T> findByName(@RequestParam String name) {
+    public List<E> findByName(@RequestParam String name) {
         return service.findByName(name);
     }
 }

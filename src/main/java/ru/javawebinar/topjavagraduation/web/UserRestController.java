@@ -11,7 +11,7 @@ import ru.javawebinar.topjavagraduation.service.UserService;
 
 @RestController
 @RequestMapping(value = UserRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserRestController extends AbstractManagedEntityRestController<User> {
+public class UserRestController extends AbstractManagedEntityRestController<User, User> {
     public static final String REST_URL = "/rest/users";
     private final UserService service;
 
@@ -23,5 +23,10 @@ public class UserRestController extends AbstractManagedEntityRestController<User
     @GetMapping("/find")
     public User findByEmail(@RequestParam String email) {
         return service.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public User convertTo(User user) {
+        return user;
     }
 }

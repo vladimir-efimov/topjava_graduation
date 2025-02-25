@@ -12,35 +12,37 @@ import java.net.URI;
 import java.util.List;
 
 
-public class AbstractBaseEntityRestController<T extends AbstractBaseEntity> {
+public abstract class AbstractBaseEntityRestController<E extends AbstractBaseEntity, TO> {
 
-    protected final AbstractBaseEntityService<T> service;
+    protected final AbstractBaseEntityService<E> service;
     private final String restUrl;
 
-    protected AbstractBaseEntityRestController(AbstractBaseEntityService<T> service, String restUrl) {
+    protected AbstractBaseEntityRestController(AbstractBaseEntityService<E> service, String restUrl) {
         this.service = service;
         this.restUrl = restUrl;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<T> getAll() {
+    public List<E> getAll() {
         return service.getAll();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public T get(@PathVariable int id) {
+    public E get(@PathVariable int id) {
         return service.get(id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody T entity, @PathVariable int id) {
+    public void update(@RequestBody TO to, @PathVariable int id) {
+        E entity = convertTo(to);
         service.update(entity);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<T> createWithLocation(@RequestBody T entity) {
-        T created = service.create(entity);
+    public ResponseEntity<E> createWithLocation(@RequestBody TO to) {
+        E entity = convertTo(to);
+        E created = service.create(entity);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(restUrl + "/{id}")
@@ -49,4 +51,5 @@ public class AbstractBaseEntityRestController<T extends AbstractBaseEntity> {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
+    public abstract E convertTo(TO to);
 }
