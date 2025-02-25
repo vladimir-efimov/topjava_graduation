@@ -11,8 +11,7 @@ public class Meal extends AbstractManagedEntity {
     @Column(name="price", nullable = false)
     private float price;
 
-    // todo: check if it is OK to use cascade persisting in testing
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
