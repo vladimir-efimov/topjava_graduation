@@ -105,7 +105,7 @@ meal_operations() {
     echo -e "\n"
     echo "Add meal"
     curl -s -i -X POST \
-      -d '{"name":"meal1", "price":100.0, "restaurant":{"id":1}}' \
+      -d '{"name":"meal1", "price":100.0, "restaurant_id":1}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/meals
 
