@@ -46,5 +46,4 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
         assertNotNull(menu.getMeals());
         assertEquals(2, menu.getMeals().size());
     }
-
 }

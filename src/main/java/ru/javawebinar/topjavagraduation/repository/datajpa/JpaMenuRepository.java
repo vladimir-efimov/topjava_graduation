@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.MenuRepository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,12 @@ public class JpaMenuRepository extends JpaBaseEntityRepository<Menu> implements 
     }
 
     @Override
-    public Optional<Menu> findByRestaurantAndDate(int id, Date date) {
+    public List<Menu> findByDate(LocalDate date) {
+        return repository.findByDate(date);
+    }
+
+    @Override
+    public Optional<Menu> findByRestaurantAndDate(int id, LocalDate date) {
         return repository.findByRestaurantAndDate(id, date);
     }
 }

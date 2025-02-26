@@ -7,7 +7,6 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +25,12 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         return repository.findByRestaurant(id);
     }
 
-    public Optional<Menu> findByRestaurantAndDate(int id, Date date) {
-        return findByRestaurantAndDate(id, date);
+    public List<Menu> findByDate(LocalDate date) {
+        return repository.findByDate(date);
+    }
+
+    public Optional<Menu> findByRestaurantAndDate(int id, LocalDate date) {
+        return repository.findByRestaurantAndDate(id, date);
     }
 
     @Override

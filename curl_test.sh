@@ -128,6 +128,22 @@ menu_operations() {
       http://localhost:8080/topjava-graduation/rest/menus
 
     echo -e "\n"
+    echo "Get single menu"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/1
+
+    echo -e "\n"
+    echo "Get menus for restaurant"
+    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=1"
+
+    echo -e "\n"
+    echo "Get menus for date"
+    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?date=${today}"
+
+    echo -e "\n"
+    echo "Get menus for restaurant and date"
+    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=1&date=${today}"
+
+    echo -e "\n"
     echo "Get all menus"
     curl -s http://localhost:8080/topjava-graduation/rest/menus
 }
