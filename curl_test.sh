@@ -101,20 +101,39 @@ restaurant_operations() {
 meal_operations() {
     echo -e "\nOperations with meals\n"
 
-    # detached entity passed to persist - !!!
     echo -e "\n"
     echo "Add meal"
-    curl -s -i -X POST \
-      -d '{"name":"meal1", "price":100.0, "restaurant_id":1}' \
-      -H 'Content-Type:application/json;charset=UTF-8' \
-      http://localhost:8080/topjava-graduation/rest/meals
+    for i in 1 2; do
+        curl -s -i -X POST \
+         -d "{\"name\":\"meal${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurant_id\":1}" \
+         -H 'Content-Type:application/json;charset=UTF-8' \
+         http://localhost:8080/topjava-graduation/rest/meals
+    done
 
     echo -e "\n"
     echo "Get all meals"
     curl -s http://localhost:8080/topjava-graduation/rest/meals
-
 }
+
+
+menu_operations() {
+    echo -e "\nOperations with menus\n"
+
+    echo -e "\n"
+    today=$(date '+%Y-%m-%d')
+    echo "Add menu for ${today}"
+    curl -s -i -X POST \
+      -d "{\"restaurant_id\":1, \"date\":\"${today}\", \"meals\": [1, 2]}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    echo "Get all menus"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus
+}
+
 
 user_operations
 restaurant_operations
 meal_operations
+menu_operations
