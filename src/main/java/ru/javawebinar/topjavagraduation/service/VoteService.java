@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -59,6 +60,10 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return repository.findByDate(date);
     }
 
+    public Optional<Vote> findByUserAndDate(int userId, LocalDate date) {
+        return repository.findByUserAndDate(userId, date);
+    }
+
     public Restaurant getElected() {
         if (getCurrentDateTime().getHour() < END_VOTE_HOURS) {
             throw new IllegalOperationException("Voting is in progress. Call this method after " + END_VOTE_HOURS + " hours");
@@ -75,6 +80,14 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return restaurantRepository.get(restaurantId);
     }
 
+    public void delete(int id, int userId) {
+        Vote entity = get(id, userId);
+        validateOperation(entity, CrudOperation.DELETE);
+        if (!repository.delete(id)) {
+            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
+        }
+    }
+
     @Override
     protected void validateOperation(Vote vote, CrudOperation operation) {
         super.validateOperation(vote, operation);
@@ -87,14 +100,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
         if (beforeToday(vote.getDate())) {
             throw new IllegalOperationException("Can't operate with date in the past");
-        }
-    }
-
-    public void delete(int id, int userId) {
-        Vote entity = get(id, userId);
-        validateOperation(entity, CrudOperation.DELETE);
-        if (!repository.delete(id)) {
-            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
         }
     }
 

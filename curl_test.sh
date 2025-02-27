@@ -149,7 +149,40 @@ menu_operations() {
 }
 
 
+vote_operations() {
+    echo -e "\nOperations with votess\n"
+
+    echo -e "\n"
+    today=$(date '+%Y-%m-%d')
+    echo "Add vote"
+    curl -s -i -X POST \
+      -d '{"restaurantId":1, "userId": 1}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/votes
+
+    echo -e "\n"
+    echo "Get single vote"
+    curl -s http://localhost:8080/topjava-graduation/rest/votes/1
+
+    echo -e "\n"
+    echo "Get votes for date"
+    curl -s "http://localhost:8080/topjava-graduation/rest/votes/find?date=${today}"
+
+    echo -e "\n"
+    echo "Get all votes"
+    curl -s http://localhost:8080/topjava-graduation/rest/votes
+
+}
+
+get_elected() {
+    echo -e "\n"
+    echo "Get elected restaurant"
+    curl -s http://localhost:8080/topjava-graduation/rest/votes/elected
+}
+
 user_operations
 restaurant_operations
 meal_operations
 menu_operations
+vote_operations
+get_elected
