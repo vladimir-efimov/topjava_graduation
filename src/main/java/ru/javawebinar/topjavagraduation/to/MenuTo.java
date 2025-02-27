@@ -6,16 +6,16 @@ import java.util.List;
 public class MenuTo {
     private Integer id;
     private LocalDate date;
-    private int restaurant_id;
+    private int restaurantId;
     private List<Integer> meals;
 
     public MenuTo() {
     }
 
-    public MenuTo(Integer id, LocalDate date, int restaurant_id, List<Integer> meals) {
+    public MenuTo(Integer id, LocalDate date, int restaurantId, List<Integer> meals) {
         this.id = id;
         this.date = date;
-        this.restaurant_id = restaurant_id;
+        this.restaurantId = restaurantId;
         this.meals = meals;
     }
 
@@ -35,12 +35,12 @@ public class MenuTo {
         this.date = date;
     }
 
-    public int getRestaurant_id() {
-        return restaurant_id;
+    public int getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant_id(int restaurant_id) {
-        this.restaurant_id = restaurant_id;
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public List<Integer> getMeals() {

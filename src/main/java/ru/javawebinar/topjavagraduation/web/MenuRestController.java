@@ -34,7 +34,7 @@ public class MenuRestController extends AbstractBaseEntityRestController<Menu, M
     @Override
     public Menu convertTo(MenuTo menuTo) {
         var restaurant = new Restaurant();
-        restaurant.setId(menuTo.getRestaurant_id());
+        restaurant.setId(menuTo.getRestaurantId());
         Set<Meal> meals = new HashSet<>();
         if( menuTo.getMeals() != null) {
             menuTo.getMeals().forEach(id -> meals.add(mealRepository.get(id)));

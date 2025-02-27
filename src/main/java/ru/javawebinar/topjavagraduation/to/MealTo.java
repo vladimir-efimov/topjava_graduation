@@ -6,17 +6,17 @@ public class MealTo {
     private String name;
     private boolean enabled;
     private float price;
-    private int restaurant_id;
+    private int restaurantId;
 
     public MealTo() {
     }
 
-    public MealTo(Integer id, String name, boolean enabled, float price, int restaurant_id) {
+    public MealTo(Integer id, String name, boolean enabled, float price, int restaurantId) {
         this.id = id;
         this.name = name;
         this.enabled = enabled;
         this.price = price;
-        this.restaurant_id = restaurant_id;
+        this.restaurantId = restaurantId;
     }
 
     public Integer getId() {
@@ -43,12 +43,12 @@ public class MealTo {
         this.price = price;
     }
 
-    public int getRestaurant_id() {
-        return restaurant_id;
+    public int getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant_id(int restaurant_id) {
-        this.restaurant_id = restaurant_id;
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public boolean isEnabled() {

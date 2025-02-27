@@ -105,7 +105,7 @@ meal_operations() {
     echo "Add meal"
     for i in 1 2; do
         curl -s -i -X POST \
-         -d "{\"name\":\"meal${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurant_id\":1}" \
+         -d "{\"name\":\"meal${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurantId\":1}" \
          -H 'Content-Type:application/json;charset=UTF-8' \
          http://localhost:8080/topjava-graduation/rest/meals
     done
@@ -123,7 +123,7 @@ menu_operations() {
     today=$(date '+%Y-%m-%d')
     echo "Add menu for ${today}"
     curl -s -i -X POST \
-      -d "{\"restaurant_id\":1, \"date\":\"${today}\", \"meals\": [1, 2]}" \
+      -d "{\"restaurantId\":1, \"date\":\"${today}\", \"meals\": [1, 2]}" \
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/menus
 
@@ -133,7 +133,7 @@ menu_operations() {
 
     echo -e "\n"
     echo "Get menus for restaurant"
-    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=1"
+    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=1"
 
     echo -e "\n"
     echo "Get menus for date"
@@ -141,7 +141,7 @@ menu_operations() {
 
     echo -e "\n"
     echo "Get menus for restaurant and date"
-    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=1&date=${today}"
+    curl -s "http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=1&date=${today}"
 
     echo -e "\n"
     echo "Get all menus"
