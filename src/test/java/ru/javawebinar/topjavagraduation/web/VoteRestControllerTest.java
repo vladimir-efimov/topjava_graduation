@@ -14,6 +14,7 @@ import ru.javawebinar.topjavagraduation.to.VoteTo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.web.VoteRestController.REST_URL;
 
@@ -42,4 +43,19 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         assertEquals(voteTo.getRestaurantId(), vote.getRestaurant().getId());
         assertEquals(voteTo.getUserId(), vote.getUser().getId());
     }
+
+    @Test
+    void getNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(VoteRestController.REST_URL + "/0"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void deleteNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/0"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
 }

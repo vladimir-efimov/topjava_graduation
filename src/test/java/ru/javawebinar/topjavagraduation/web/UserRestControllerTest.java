@@ -45,8 +45,6 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    @Disabled // todo: double check behavior in case of incorrect request
-    // Should controller process NotFoundException?
     void getNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/0"))
                 .andDo(print())
