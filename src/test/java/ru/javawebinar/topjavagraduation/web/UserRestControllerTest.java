@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.web;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -70,5 +69,15 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                         .content(MAPPER.writeValueAsString(user)))
                 .andExpect(status().isNoContent());
         testDataProvider.getMatcher().assertMatch(user, service.get(user.getId()));
+    }
+
+    @Test
+    void tryUpdateSystemUser() throws Exception {
+        User systemUser = service.get(1);
+        systemUser.setEmail("updated_email@restaurants.ru");
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + systemUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(systemUser)))
+                .andExpect(status().isUnprocessableEntity());
     }
 }

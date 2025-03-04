@@ -181,6 +181,7 @@ get_elected() {
 }
 
 user_operations
+user_illegal_operations
 restaurant_operations
 meal_operations
 menu_operations
