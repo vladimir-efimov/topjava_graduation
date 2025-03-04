@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.web;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -80,4 +81,33 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                         .content(MAPPER.writeValueAsString(systemUser)))
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    @Disabled // todo: handle IllegalArgumentException and enable test
+    void tryCreateWithNotNullId() throws Exception {
+        User user = (User)newUser.clone();
+        user.setId(999);
+        user.setEmail(user.getEmail());
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(user)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+
+    @Test
+    @Disabled // todo: handle DataIntegrityViolationException and enable test
+    void tryCreateWithDuplicatedEmail() throws Exception {
+        User systemUser = service.get(1);
+        User user = (User)newUser.clone();
+        //user.setId(null);
+        user.setEmail(systemUser.getEmail());
+        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(user)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
 }
