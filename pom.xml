@@ -22,6 +22,9 @@
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
         <!-- JSON -->
         <jackson.version>2.18.1</jackson.version>
+        <!-- Validation -->
+        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
+        <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
         <!-- Tests -->
         <junit.jupiter.version>5.11.3</junit.jupiter.version>
         <assertj.version>3.26.3</assertj.version>
@@ -95,8 +98,19 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- Validation -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <version>${glassfish.expressly.version}</version>
+        </dependency>
         <!-- Tests -->
-       <dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>

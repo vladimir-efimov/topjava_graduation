@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.web;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,13 @@ public abstract class AbstractBaseEntityRestController<E extends AbstractBaseEnt
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody TO to, @PathVariable int id) {
+    public void update(@Valid @RequestBody TO to, @PathVariable int id) {
         E entity = convertTo(to);
         service.update(entity);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<E> createWithLocation(@RequestBody TO to) {
+    public ResponseEntity<E> createWithLocation(@Valid @RequestBody TO to) {
         E entity = convertTo(to);
         E created = service.create(entity);
 

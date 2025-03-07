@@ -41,6 +41,7 @@ user_operations() {
 
 
 user_illegal_operations() {
+    echo -e "\n"
     echo -e "\nIllegal operations with users\n"
 
     echo "Try get user with illegal id"
@@ -53,10 +54,34 @@ user_illegal_operations() {
     echo -e "\n"
     echo "Try find by not-existed name"
     curl -s http://localhost:8080/topjava-graduation/rest/users/filter?name=does_not_exists
+
+    echo -e "\n"
+    echo "Try find by not-existed property"
+    curl -s http://localhost:8080/topjava-graduation/rest/users/filter?some_property=does_not_exists
+
+    echo -e "\n"
+    echo "Typo in URL"
+    curl -s http://localhost:8080/topjava-graduation/rest/user/1
+
+    echo -e "\n"
+    echo "Add user - send corrupted JSON"
+    curl -s -i -X POST \
+      -d '{"name":"New User","email" = "new_user@mail.ru","password":"test-password"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/users
+
+    echo -e "\n"
+    echo "Try add user with missed name"
+    curl -s -i -X POST \
+      -d '{"email" : "new_user2@mail.ru","password":"test-password"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/users
+
 }
 
 
 restaurant_operations() {
+    echo -e "\n"
     echo -e "\nOperations with restaurants\n"
 
     echo -e "\n"
@@ -99,6 +124,7 @@ restaurant_operations() {
 
 
 meal_operations() {
+    echo -e "\n"
     echo -e "\nOperations with meals\n"
 
     echo -e "\n"
@@ -117,6 +143,7 @@ meal_operations() {
 
 
 menu_operations() {
+    echo -e "\n"
     echo -e "\nOperations with menus\n"
 
     echo -e "\n"
@@ -150,7 +177,8 @@ menu_operations() {
 
 
 vote_operations() {
-    echo -e "\nOperations with votess\n"
+    echo -e "\n"
+    echo -e "\nOperations with votes\n"
 
     echo -e "\n"
     today=$(date '+%Y-%m-%d')

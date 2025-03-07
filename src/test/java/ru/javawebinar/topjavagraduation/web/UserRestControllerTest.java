@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.web;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,7 +8,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
+import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
+import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -105,5 +107,18 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                         .content(MAPPER.writeValueAsString(user)))
                 .andDo(print())
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    void tryCreateWithNullName() throws Exception {
+        User user = (User) newUser.clone();
+        user.setName(null);
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(user)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+        ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
+        assertEquals(ErrorType.VALIDATION_ERROR, error.getErrorType());
     }
 }

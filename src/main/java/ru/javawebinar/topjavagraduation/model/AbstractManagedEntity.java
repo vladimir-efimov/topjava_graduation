@@ -2,6 +2,8 @@ package ru.javawebinar.topjavagraduation.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
+
 
 @MappedSuperclass
 public class AbstractManagedEntity extends AbstractBaseEntity {
@@ -9,6 +11,7 @@ public class AbstractManagedEntity extends AbstractBaseEntity {
     @Column(name = "enabled", nullable = false)
     protected boolean enabled = true;
 
+    @NotBlank
     @Column(name = "name", nullable = false, length = 64)
     protected String name;
 
