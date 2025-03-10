@@ -102,11 +102,15 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         User systemUser = service.get(1);
         User user = (User) newUser.clone();
         user.setEmail(systemUser.getEmail());
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(user)))
                 .andDo(print())
                 .andExpect(status().isConflict());
+        ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
+        assertEquals(ErrorType.DATA_CONFLICT_ERROR, error.getErrorType());
+        assertEquals(1, error.getDetails().length);
+        assertEquals("Email is already used for another user", error.getDetails()[0]);
     }
 
     @Test

@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import java.util.EnumSet;
 import java.util.Set;
 
+
 @Entity
-@Table(name="users")
+@Table(name="users",
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "uk_email_idx")})
 public class User extends AbstractManagedEntity {
 
-    @Column(name = "email", nullable = false, unique = true, length = 64)
+    @Column(name = "email", nullable = false, length = 64)
     private String email;
 
     @Enumerated(EnumType.STRING)

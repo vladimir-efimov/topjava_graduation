@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import ru.javawebinar.topjavagraduation.validation.DataConflictMessageSource;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
@@ -40,8 +41,7 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorInfo> conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        //todo: recognize if conflict or other repository - related problem occured
-        return getErrorInfo(ErrorType.DATA_CONFLICT_ERROR, e);
+        return getErrorInfo(ErrorType.DATA_CONFLICT_ERROR, e, DataConflictMessageSource.getMessage(e));
     }
 
     @ExceptionHandler(Exception.class)
@@ -49,8 +49,8 @@ public class ExceptionInfoHandler {
         return getErrorInfo(ErrorType.INTERNAL_SERVER_ERROR, e);
     }
 
-    private ResponseEntity<ErrorInfo> getErrorInfo(ErrorType errorType, Exception e) {
+    private ResponseEntity<ErrorInfo> getErrorInfo(ErrorType errorType, Exception e, String ...details) {
         return ResponseEntity.status(errorType.getStatus())
-                .body(new ErrorInfo(errorType, e.getMessage()));
+                .body(new ErrorInfo(errorType, e.getMessage(), details));
     }
 }
