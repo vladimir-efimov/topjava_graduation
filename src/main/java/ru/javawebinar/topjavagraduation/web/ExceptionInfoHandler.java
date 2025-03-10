@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.BindException;
 import ru.javawebinar.topjavagraduation.validation.DataConflictMessageSource;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
@@ -24,9 +24,13 @@ public class ExceptionInfoHandler {
         return getErrorInfo(ErrorType.DATA_NOT_FOUND, e);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorInfo> bindingError(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.VALIDATION_ERROR, e);
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorInfo> bindingError(HttpServletRequest req, BindException e) {
+        String[] details = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> "'" + fieldError.getField() + "' " + fieldError.getDefaultMessage())
+                .toArray(String[]::new);
+
+        return getErrorInfo(ErrorType.VALIDATION_ERROR, e, details);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

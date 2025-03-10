@@ -124,5 +124,7 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isUnprocessableEntity());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
         assertEquals(ErrorType.VALIDATION_ERROR, error.getErrorType());
+        assertEquals(1, error.getDetails().length);
+        assertEquals("'name' must not be blank", error.getDetails()[0]);
     }
 }
