@@ -1,6 +1,7 @@
 user_operations() {
-    echo -e "\nOperations with users\n"
+    echo -e "\nOperations with users"
 
+    echo -e "\n"
     echo "Get all users"
     curl -s http://localhost:8080/topjava-graduation/rest/users
 
@@ -42,8 +43,9 @@ user_operations() {
 
 user_illegal_operations() {
     echo -e "\n"
-    echo -e "\nIllegal operations with users\n"
+    echo -e "\nIllegal operations with users"
 
+    echo -e "\n"
     echo "Try get user with illegal id"
     curl -s http://localhost:8080/topjava-graduation/rest/users/0
 
@@ -77,12 +79,25 @@ user_illegal_operations() {
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/users
 
+    echo -e "\n"
+    echo "Try add user with incorrect email"
+    curl -s -i -X POST \
+      -d '{"name" : "New User" ,"email" : "new_usermail.ru","password":"test-password"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/users
+
+    echo -e "\n"
+    echo "Try add user with incorrect password"
+    curl -s -i -X POST \
+      -d '{"name" : "New User" ,"email" : "new_user@mail.ru","password":"test"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/users
 }
 
 
 restaurant_operations() {
     echo -e "\n"
-    echo -e "\nOperations with restaurants\n"
+    echo -e "\nOperations with restaurants"
 
     echo -e "\n"
     echo "Add restaurant"
@@ -125,7 +140,7 @@ restaurant_operations() {
 
 meal_operations() {
     echo -e "\n"
-    echo -e "\nOperations with meals\n"
+    echo -e "\nOperations with meals"
 
     echo -e "\n"
     echo "Add meal"
@@ -144,7 +159,7 @@ meal_operations() {
 
 menu_operations() {
     echo -e "\n"
-    echo -e "\nOperations with menus\n"
+    echo -e "\nOperations with menus"
 
     echo -e "\n"
     today=$(date '+%Y-%m-%d')

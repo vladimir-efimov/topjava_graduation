@@ -1,6 +1,9 @@
 package ru.javawebinar.topjavagraduation.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -12,6 +15,8 @@ import java.util.Set;
 public class User extends AbstractManagedEntity {
 
     @Column(name = "email", nullable = false, length = 64)
+    @Email
+    @Size(max = 64)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -22,6 +27,8 @@ public class User extends AbstractManagedEntity {
     private Set<Role> roles;
 
     @Column(name = "password", nullable = false)
+    @NotBlank
+    @Size(min = 5, max = 64)
     private String password;
 
     public User() {
