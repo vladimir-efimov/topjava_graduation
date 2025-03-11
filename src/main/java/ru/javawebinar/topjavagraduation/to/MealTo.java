@@ -1,17 +1,30 @@
 package ru.javawebinar.topjavagraduation.to;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Range;
+
+
 public class MealTo {
 
     private Integer id;
+
+    @NotBlank
+    @Size(max = 64)
     private String name;
-    private boolean enabled;
-    private float price;
-    private int restaurantId;
+    @NotNull
+    private Boolean enabled;
+    @NotNull
+    @Range(min = 0, max = 100000)
+    private Float price;
+    @NotNull
+    private Integer restaurantId;
 
     public MealTo() {
     }
 
-    public MealTo(Integer id, String name, boolean enabled, float price, int restaurantId) {
+    public MealTo(Integer id, String name, Boolean enabled, Float price, Integer restaurantId) {
         this.id = id;
         this.name = name;
         this.enabled = enabled;
@@ -35,27 +48,27 @@ public class MealTo {
         this.name = name;
     }
 
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public int getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
-    public boolean isEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

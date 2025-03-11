@@ -1,18 +1,23 @@
 package ru.javawebinar.topjavagraduation.to;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class MenuTo {
     private Integer id;
+    @NotNull
     private LocalDate date;
-    private int restaurantId;
+    @NotNull
+    private Integer restaurantId;
+    @NotNull
     private List<Integer> meals;
 
     public MenuTo() {
     }
 
-    public MenuTo(Integer id, LocalDate date, int restaurantId, List<Integer> meals) {
+    public MenuTo(Integer id, LocalDate date, Integer restaurantId, List<Integer> meals) {
         this.id = id;
         this.date = date;
         this.restaurantId = restaurantId;
@@ -35,11 +40,11 @@ public class MenuTo {
         this.date = date;
     }
 
-    public int getRestaurantId() {
+    public Integer getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(int restaurantId) {
+    public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
     }
 

@@ -137,6 +137,32 @@ restaurant_operations() {
     curl -s http://localhost:8080/topjava-graduation/rest/restaurants/filter?name=cafe2
 }
 
+restaurant_illegal_operations() {
+    echo -e "\n"
+    echo -e "\nIllegal operations with restaurants"
+
+    echo -e "\n"
+    echo "Add restaurant with duplicate name and address"
+    curl -s -i -X POST \
+      -d '{"name":"cafe2","address":"street2"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/restaurants
+
+    echo -e "\n"
+    echo "Add restaurant without name"
+    curl -s -i -X POST \
+      -d '{"address":"street1"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/restaurants
+
+    echo -e "\n"
+    echo "Add restaurant without address"
+    curl -s -i -X POST \
+      -d '{"name":"cafe1"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/restaurants
+}
+
 
 meal_operations() {
     echo -e "\n"
@@ -154,6 +180,34 @@ meal_operations() {
     echo -e "\n"
     echo "Get all meals"
     curl -s http://localhost:8080/topjava-graduation/rest/meals
+}
+
+
+meal_illegal_operations() {
+    echo -e "\n"
+    echo -e "\nIllegal operations with meals"
+
+    echo -e "\n"
+    echo "Add meal without name"
+    curl -s -i -X POST \
+     -d '{"price":100.0, "enabled": "true", "restaurantId":1}' \
+     -H 'Content-Type:application/json;charset=UTF-8' \
+     http://localhost:8080/topjava-graduation/rest/meals
+
+    echo -e "\n"
+    echo "Add meal without price"
+    curl -s -i -X POST \
+     -d '{"name": "new_meal", "enabled": "true", "restaurantId":1}' \
+     -H 'Content-Type:application/json;charset=UTF-8' \
+     http://localhost:8080/topjava-graduation/rest/meals
+
+    echo -e "\n"
+    echo "Add meal without restaurant Id and price"
+    curl -s -i -X POST \
+     -d '{"name": "new_meal", "enabled": "true"}' \
+     -H 'Content-Type:application/json;charset=UTF-8' \
+     http://localhost:8080/topjava-graduation/rest/meals
+
 }
 
 
@@ -191,6 +245,55 @@ menu_operations() {
 }
 
 
+menu_illegal_operations() {
+    echo -e "\n"
+    echo -e "\nOperations with menus"
+
+    echo -e "\n"
+    echo "Request not existed menu"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/11
+
+    echo -e "\n"
+    today=$(date '+%Y-%m-%d')
+    echo "Try adding duplicated menu"
+    curl -s -i -X POST \
+      -d "{\"restaurantId\":1, \"date\":\"${today}\", \"meals\": [1, 2]}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    echo "Try adding menu for old date"
+    olddate="1900-01-01"
+    curl -s -i -X POST \
+      -d "{\"restaurantId\":1, \"date\":\"${olddate}\", \"meals\": [1, 2]}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    today=$(date '+%Y-%m-%d')
+    echo "Try adding menu without restaurant"
+    curl -s -i -X POST \
+      -d "{\"date\":\"${today}\", \"meals\": [1, 2]}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    echo "Try adding menu without meals"
+    curl -s -i -X POST \
+      -d "{\"restaurantId\":1, \"date\":\"${today}\"}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    echo "Try adding menu with date in incorrect format"
+    bad_formatted_date="1900/01/01"
+    curl -s -i -X POST \
+      -d "{\"restaurantId\":1, \"date\":\"${bad_formatted_date}\", \"meals\": [1, 2]}" \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/menus
+}
+
+
 vote_operations() {
     echo -e "\n"
     echo -e "\nOperations with votes\n"
@@ -217,6 +320,28 @@ vote_operations() {
 
 }
 
+
+vote_illegal_operations() {
+    echo -e "\n"
+    echo -e "\nIllegal operations with votes\n"
+
+    echo -e "\n"
+    echo "Try adding vote without restaurant"
+    curl -s -i -X POST \
+      -d '{"userId": 1}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/votes
+
+    echo -e "\n"
+    echo "Try adding vote without restaurant"
+    curl -s -i -X POST \
+      -d '{"restaurantId": 1}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/votes
+
+}
+
+
 get_elected() {
     echo -e "\n"
     echo "Get elected restaurant"
@@ -226,7 +351,11 @@ get_elected() {
 user_operations
 user_illegal_operations
 restaurant_operations
+restaurant_illegal_operations
 meal_operations
+meal_illegal_operations
 menu_operations
+menu_illegal_operations
 vote_operations
+vote_illegal_operations
 get_elected

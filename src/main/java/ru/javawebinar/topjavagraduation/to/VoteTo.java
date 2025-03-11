@@ -1,31 +1,35 @@
 package ru.javawebinar.topjavagraduation.to;
 
+import jakarta.validation.constraints.NotNull;
+
 
 public class VoteTo {
-    private int userId;
-    private int restaurantId;
+    @NotNull
+    private Integer userId;
+    @NotNull
+    private Integer restaurantId;
 
     public VoteTo() {
     }
 
-    public VoteTo(int userId, int restaurantId) {
+    public VoteTo(Integer userId, Integer restaurantId) {
         this.userId = userId;
         this.restaurantId = restaurantId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getRestaurantId() {
+    public Integer getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(int restaurantId) {
+    public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
     }
 }

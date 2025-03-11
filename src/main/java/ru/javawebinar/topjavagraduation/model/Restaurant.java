@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="restaurant", uniqueConstraints = {
@@ -12,6 +14,8 @@ import jakarta.persistence.UniqueConstraint;
 public class Restaurant extends AbstractManagedEntity {
 
     @Column(name = "address", nullable = false, length = 128)
+    @NotBlank
+    @Size(max = 128)
     private String address;
 
     public Restaurant() {
