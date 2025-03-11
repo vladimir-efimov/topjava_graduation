@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="users",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "uk_email_idx")})
+       uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "user_email_idx")})
 public class User extends AbstractManagedEntity {
 
     @Column(name = "email", nullable = false, length = 64)
