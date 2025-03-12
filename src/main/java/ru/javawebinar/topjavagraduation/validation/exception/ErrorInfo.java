@@ -1,25 +1,25 @@
 package ru.javawebinar.topjavagraduation.validation.exception;
 
 public class ErrorInfo {
-    private ErrorType errorType;
+    private String errorName;
     private String message;
     private String[] details;
 
     public ErrorInfo() {
     }
 
-    public ErrorInfo(ErrorType errorType, String message, String... details) {
-        this.errorType = errorType;
-        this.message = message;
+    public ErrorInfo(ErrorType errorCode, String... details) {
+        this.errorName = errorCode.getName();
+        this.message = errorCode.getMessage();
         this.details = details;
     }
 
-    public ErrorType getErrorType() {
-        return errorType;
+    public String getErrorName() {
+        return errorName;
     }
 
-    public void setErrorType(ErrorType errorType) {
-        this.errorType = errorType;
+    public void setErrorName(String errorName) {
+        this.errorName = errorName;
     }
 
     public String getMessage() {

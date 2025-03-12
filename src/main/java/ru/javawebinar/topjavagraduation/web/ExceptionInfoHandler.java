@@ -21,7 +21,7 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorInfo> notFoundError(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.DATA_NOT_FOUND, e);
+        return getErrorInfo(ErrorType.DATA_NOT_FOUND, e, e.getMessage());
     }
 
     @ExceptionHandler(BindException.class)
@@ -35,12 +35,12 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorInfo> illegalArgumentError(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.VALIDATION_ERROR, e);
+        return getErrorInfo(ErrorType.VALIDATION_ERROR, e, e.getMessage());
     }
 
     @ExceptionHandler(IllegalOperationException.class)
     public ResponseEntity<ErrorInfo> illegalOperationError(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.ILLEGAL_OPERATION, e);
+        return getErrorInfo(ErrorType.ILLEGAL_OPERATION, e, e.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -50,11 +50,11 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> internalError(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.INTERNAL_SERVER_ERROR, e);
+        return getErrorInfo(ErrorType.INTERNAL_SERVER_ERROR, e, e.getMessage());
     }
 
     private ResponseEntity<ErrorInfo> getErrorInfo(ErrorType errorType, Exception e, String ...details) {
         return ResponseEntity.status(errorType.getStatus())
-                .body(new ErrorInfo(errorType, e.getMessage(), details));
+                .body(new ErrorInfo(errorType, details));
     }
 }

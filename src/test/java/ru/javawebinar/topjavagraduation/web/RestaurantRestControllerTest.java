@@ -47,7 +47,7 @@ public class RestaurantRestControllerTest extends AbstractRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isConflict());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
-        assertEquals(ErrorType.DATA_CONFLICT_ERROR, error.getErrorType());
+        assertEquals(ErrorType.DATA_CONFLICT_ERROR.getName(), error.getErrorName());
         assertEquals(1, error.getDetails().length);
         assertEquals("Restaurant with the same name and address already exists", error.getDetails()[0]);
     }

@@ -108,7 +108,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isConflict());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
-        assertEquals(ErrorType.DATA_CONFLICT_ERROR, error.getErrorType());
+        assertEquals(ErrorType.DATA_CONFLICT_ERROR.getName(), error.getErrorName());
+        assertEquals(ErrorType.DATA_CONFLICT_ERROR.getMessage(), error.getMessage());
         assertEquals(1, error.getDetails().length);
         assertEquals("Email is already used for another user", error.getDetails()[0]);
     }
@@ -123,7 +124,7 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
-        assertEquals(ErrorType.VALIDATION_ERROR, error.getErrorType());
+        assertEquals(ErrorType.VALIDATION_ERROR.getName(), error.getErrorName());
         assertEquals(1, error.getDetails().length);
         assertEquals("'name' must not be blank", error.getDetails()[0]);
     }
