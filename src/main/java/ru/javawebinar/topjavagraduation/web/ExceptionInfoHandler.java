@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.validation.BindException;
 import ru.javawebinar.topjavagraduation.validation.DataConflictMessageSource;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
@@ -22,6 +23,11 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorInfo> notFoundError(HttpServletRequest req, Exception e) {
         return getErrorInfo(ErrorType.DATA_NOT_FOUND, e, e.getMessage());
+    }
+
+    @ExceptionHandler(ServletRequestBindingException.class)
+    public ResponseEntity<ErrorInfo> requestError(HttpServletRequest req, Exception e) {
+        return getErrorInfo(ErrorType.WRONG_REQUEST, e, e.getMessage());
     }
 
     @ExceptionHandler(BindException.class)

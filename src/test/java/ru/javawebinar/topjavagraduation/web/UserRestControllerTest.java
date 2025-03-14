@@ -29,12 +29,12 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1"))
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                 .andExpect(USER_MATCHER.contentJson(user1)
-        ;
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        User receivedUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
+        testDataProvider.getMatcher().assertMatch(service.get(1), receivedUser);
     }
 
     @Test
@@ -127,5 +127,13 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         assertEquals(ErrorType.VALIDATION_ERROR.getName(), error.getErrorName());
         assertEquals(1, error.getDetails().length);
         assertEquals("'name' must not be blank", error.getDetails()[0]);
+    }
+
+    @Test
+    void tryFindWithInvalidParameter() throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/find")
+                        .param("invalid_parameter", "value"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
