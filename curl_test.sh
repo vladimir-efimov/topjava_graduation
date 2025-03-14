@@ -208,6 +208,13 @@ meal_illegal_operations() {
      -H 'Content-Type:application/json;charset=UTF-8' \
      http://localhost:8080/topjava-graduation/rest/meals
 
+    echo -e "\n"
+    echo "Add meal with bad price"
+    curl -s -i -X POST \
+     -d '{"name": "new_meal", "enabled": "true", "restaurantId":1, "price":"100.0 - 5% discount"}' \
+     -H 'Content-Type:application/json;charset=UTF-8' \
+     http://localhost:8080/topjava-graduation/rest/meals
+
 }
 
 
@@ -291,6 +298,14 @@ menu_illegal_operations() {
       -d "{\"restaurantId\":1, \"date\":\"${bad_formatted_date}\", \"meals\": [1, 2]}" \
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/menus
+
+    echo -e "\n"
+    echo "Try find menu using incorrect parameters"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=x
+
+    echo -e "\n"
+    echo "Try find menu using incorrect parameters"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_name=cafe1
 }
 
 

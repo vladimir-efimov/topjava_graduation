@@ -5,11 +5,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.validation.BindException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.javawebinar.topjavagraduation.validation.DataConflictMessageSource;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
@@ -39,7 +41,7 @@ public class ExceptionInfoHandler {
         return getErrorInfo(ErrorType.VALIDATION_ERROR, e, details);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorInfo> illegalArgumentError(HttpServletRequest req, Exception e) {
         return getErrorInfo(ErrorType.VALIDATION_ERROR, e, e.getMessage());
     }
