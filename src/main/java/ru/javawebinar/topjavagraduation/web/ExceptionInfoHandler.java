@@ -53,7 +53,7 @@ public class ExceptionInfoHandler {
         return getErrorInfo(ErrorType.INTERNAL_SERVER_ERROR, e, e.getMessage());
     }
 
-    private ResponseEntity<ErrorInfo> getErrorInfo(ErrorType errorType, Exception e, String ...details) {
+    static ResponseEntity<ErrorInfo> getErrorInfo(ErrorType errorType, Exception e, String ...details) {
         return ResponseEntity.status(errorType.getStatus())
                 .body(new ErrorInfo(errorType, details));
     }
