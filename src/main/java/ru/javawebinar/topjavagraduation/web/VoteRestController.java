@@ -11,6 +11,7 @@ import ru.javawebinar.topjavagraduation.service.VoteService;
 import ru.javawebinar.topjavagraduation.to.VoteTo;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,4 +63,8 @@ public class VoteRestController extends AbstractBaseEntityRestController<Vote, V
         service.delete(id, vote.getUser().getId());
     }
 
+    @GetMapping("/end_voting_time")
+    public LocalTime getEndVotingTime() {
+        return service.getEndVotingTime();
+    }
 }
