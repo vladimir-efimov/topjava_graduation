@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.web;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,16 +9,21 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
 import ru.javawebinar.topjavagraduation.service.UserService;
+import ru.javawebinar.topjavagraduation.service.VoteService;
 import ru.javawebinar.topjavagraduation.to.VoteTo;
+
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.VoteRestController.REST_URL;
 
 
 public class VoteRestControllerTest extends AbstractRestControllerTest {
+
+    @Autowired
+    VoteService service;
 
     @Autowired
     RestaurantService restaurantService;
@@ -28,13 +32,13 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     UserService userService;
 
     @Test
-    @Disabled // todo: need invent how to configure vote service to allow voting in time when test is being executed
     void createWithLocation() throws Exception {
+        service.setEndVotingTime(LocalTime.MAX);
         var restaurant = restaurantService.create(new Restaurant("Popular Restaurant", "Restaurant street"));
         var user = userService.get(1);
         var voteTo = new VoteTo(user.getId(), restaurant.getId());
         System.out.println(MAPPER.writeValueAsString(voteTo));
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(voteTo)))
                 .andExpect(status().isCreated());
