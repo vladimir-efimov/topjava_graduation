@@ -42,8 +42,8 @@ user_operations() {
 
 
 user_illegal_operations() {
-    echo -e "\n"
-    echo -e "\nIllegal operations with users"
+    echo -e "\n\n"
+    echo -e "Illegal operations with users"
 
     echo -e "\n"
     echo "Try get user with illegal id"
@@ -96,8 +96,8 @@ user_illegal_operations() {
 
 
 restaurant_operations() {
-    echo -e "\n"
-    echo -e "\nOperations with restaurants"
+    echo -e "\n\n"
+    echo -e "Operations with restaurants"
 
     echo -e "\n"
     echo "Add restaurant"
@@ -138,8 +138,8 @@ restaurant_operations() {
 }
 
 restaurant_illegal_operations() {
-    echo -e "\n"
-    echo -e "\nIllegal operations with restaurants"
+    echo -e "\n\n"
+    echo -e "Illegal operations with restaurants"
 
     echo -e "\n"
     echo "Add restaurant with duplicate name and address"
@@ -165,8 +165,8 @@ restaurant_illegal_operations() {
 
 
 meal_operations() {
-    echo -e "\n"
-    echo -e "\nOperations with meals"
+    echo -e "\n\n"
+    echo -e "Operations with meals"
 
     echo -e "\n"
     echo "Add meal"
@@ -184,8 +184,8 @@ meal_operations() {
 
 
 meal_illegal_operations() {
-    echo -e "\n"
-    echo -e "\nIllegal operations with meals"
+    echo -e "\n\n"
+    echo -e "Illegal operations with meals"
 
     echo -e "\n"
     echo "Add meal without name"
@@ -219,8 +219,8 @@ meal_illegal_operations() {
 
 
 menu_operations() {
-    echo -e "\n"
-    echo -e "\nOperations with menus"
+    echo -e "\n\n"
+    echo -e "Operations with menus"
 
     echo -e "\n"
     today=$(date '+%Y-%m-%d')
@@ -253,8 +253,8 @@ menu_operations() {
 
 
 menu_illegal_operations() {
-    echo -e "\n"
-    echo -e "\nOperations with menus"
+    echo -e "\n\n"
+    echo -e "Illegal operations with menus"
 
     echo -e "\n"
     echo "Request not existed menu"
@@ -310,11 +310,23 @@ menu_illegal_operations() {
 
 
 vote_operations() {
-    echo -e "\n"
-    echo -e "\nOperations with votes\n"
+    echo -e "\n\n"
+    echo -e "Operations with votes"
 
     echo -e "\n"
-    today=$(date '+%Y-%m-%d')
+    echo "Get end voting time"
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time
+
+    echo -e "\n"
+    echo "Set end voting time"
+    curl -s -i -X PUT \
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23:59:59"
+
+    echo -e "\n"
+    echo "Get end voting time"
+    curl -s http://localhost:8080/topjava-graduation/rest/votes/end_voting_time
+
+    echo -e "\n"
     echo "Add vote"
     curl -s -i -X POST \
       -d '{"restaurantId":1, "userId": 1}' \
@@ -327,6 +339,7 @@ vote_operations() {
 
     echo -e "\n"
     echo "Get votes for date"
+    today=$(date '+%Y-%m-%d')
     curl -s "http://localhost:8080/topjava-graduation/rest/votes/find?date=${today}"
 
     echo -e "\n"
@@ -337,8 +350,13 @@ vote_operations() {
 
 
 vote_illegal_operations() {
+    echo -e "\n\n"
+    echo -e "Illegal operations with votes"
+
     echo -e "\n"
-    echo -e "\nIllegal operations with votes\n"
+    echo "Try set incorrect end voting time"
+    curl -s -i -X PUT \
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23-59"
 
     echo -e "\n"
     echo "Try adding vote without restaurant"
@@ -353,11 +371,15 @@ vote_illegal_operations() {
       -d '{"restaurantId": 1}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/votes
-
 }
 
 
 get_elected() {
+    echo -e "\n"
+    echo "Set end voting time to past"
+    curl -s -i -X PUT \
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')"
+
     echo -e "\n"
     echo "Get elected restaurant"
     curl -s http://localhost:8080/topjava-graduation/rest/votes/elected
