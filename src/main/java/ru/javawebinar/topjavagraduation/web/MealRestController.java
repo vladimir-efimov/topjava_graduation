@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javawebinar.topjavagraduation.model.Meal;
+import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.service.MealService;
 import ru.javawebinar.topjavagraduation.to.MealTo;
-import ru.javawebinar.topjavagraduation.utils.Convertor;
 
 import java.util.List;
 
@@ -30,6 +30,8 @@ public class MealRestController extends AbstractManagedEntityRestController<Meal
 
     @Override
     public Meal convertTo(MealTo mealTo) {
-        return Convertor.convertMealTo(mealTo);
+        var restaurant = new Restaurant();
+        restaurant.setId(mealTo.getRestaurantId());
+        return new Meal(mealTo.getId(), mealTo.getEnabled(), mealTo.getName(), mealTo.getPrice(), restaurant);
     }
 }
