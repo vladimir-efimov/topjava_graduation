@@ -2,12 +2,14 @@ package ru.javawebinar.topjavagraduation.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.javawebinar.topjavagraduation.model.Restaurant;
@@ -21,15 +23,22 @@ import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperation
 @Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
-    private final static int END_VOTE_HOURS = 11;
+    private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11,30);
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
+    private LocalTime endVotingTime;
     private LocalDateTime testingPurposeDate = null;
 
+    @Autowired
     public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository) {
+        this(repository, restaurantRepository, DEFAULT_END_VOTE_TIME);
+    }
+
+    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, LocalTime endVotingTime) {
         super(repository);
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
+        this.endVotingTime = endVotingTime;
     }
 
     public Vote get(int id, int userId) {
@@ -65,8 +74,8 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     public Restaurant getElected() {
-        if (getCurrentDateTime().getHour() < END_VOTE_HOURS) {
-            throw new IllegalOperationException("Voting is in progress. Call this method after " + END_VOTE_HOURS + " hours");
+        if (getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
+            throw new IllegalOperationException("Voting is in progress. Call getElected() after " + endVotingTime);
         }
         List<Vote> votes = findByDate(getCurrentDateTime().toLocalDate());
         if (votes.isEmpty()) {
@@ -88,6 +97,14 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
     }
 
+    public LocalTime getEndVotingTime() {
+        return endVotingTime;
+    }
+
+    public void setEndVotingTime(LocalTime endVotingTime) {
+        this.endVotingTime = endVotingTime;
+    }
+
     @Override
     protected void validateOperation(Vote vote, CrudOperation operation) {
         super.validateOperation(vote, operation);
@@ -95,8 +112,8 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
             get(vote.getId(), vote.getUser().getId()); // assert is own
         }
-        if (getCurrentDateTime().getHour() >= END_VOTE_HOURS) {
-            throw new IllegalOperationException("Operations with vote are not allowed after " + END_VOTE_HOURS + " hours");
+        if (!getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
+            throw new IllegalOperationException("Operations with vote are not allowed after " + endVotingTime);
         }
         if (beforeToday(vote.getDate())) {
             throw new IllegalOperationException("Can't operate with date in the past");
@@ -105,10 +122,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     void setDateTime(LocalDateTime date) {
         testingPurposeDate = date;
-    }
-
-    static int getEndVoteHours() {
-        return END_VOTE_HOURS;
     }
 
     private LocalDateTime getCurrentDateTime() {
