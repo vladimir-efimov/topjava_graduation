@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.data.TestData.newUser;
-import static ru.javawebinar.topjavagraduation.web.UserRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.UserRestController.REST_URL;
 
 
 public class UserRestControllerTest extends AbstractRestControllerTest {
@@ -131,7 +131,7 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void tryFindWithInvalidParameter() throws Exception {
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/find")
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/find")
                         .param("invalid_parameter", "value"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());

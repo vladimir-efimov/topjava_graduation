@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.controllers;
 
 import java.time.LocalTime;
 import org.springframework.http.MediaType;

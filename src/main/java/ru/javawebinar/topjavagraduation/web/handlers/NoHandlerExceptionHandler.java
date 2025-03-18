@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 
-import static ru.javawebinar.topjavagraduation.web.ExceptionInfoHandler.getErrorInfo;
+import static ru.javawebinar.topjavagraduation.web.handlers.ExceptionInfoHandler.getErrorInfo;
 
 
 @ControllerAdvice

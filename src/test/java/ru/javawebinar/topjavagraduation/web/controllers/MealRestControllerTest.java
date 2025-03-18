@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,8 @@ import ru.javawebinar.topjavagraduation.to.MealTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.MealRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.MealRestController.REST_URL;
+
 
 public class MealRestControllerTest extends AbstractRestControllerTest {
 

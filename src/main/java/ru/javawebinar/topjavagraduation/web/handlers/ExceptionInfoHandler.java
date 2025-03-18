@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;

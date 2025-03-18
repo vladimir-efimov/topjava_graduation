@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.web;
+package ru.javawebinar.topjavagraduation.web.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
