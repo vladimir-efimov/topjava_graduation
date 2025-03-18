@@ -25,6 +25,9 @@
         <!-- Validation -->
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
+        <!-- Logging -->
+        <slf4j.version>1.7.36</slf4j.version>
+        <logback.version>1.2.13</logback.version>
         <!-- Tests -->
         <junit.jupiter.version>5.11.3</junit.jupiter.version>
         <assertj.version>3.26.3</assertj.version>
@@ -108,6 +111,18 @@
             <groupId>org.glassfish.expressly</groupId>
             <artifactId>expressly</artifactId>
             <version>${glassfish.expressly.version}</version>
+        </dependency>
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+       <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- Tests -->
         <dependency>
