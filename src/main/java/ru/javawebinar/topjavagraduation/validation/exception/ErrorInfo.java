@@ -1,5 +1,7 @@
 package ru.javawebinar.topjavagraduation.validation.exception;
 
+import java.util.Arrays;
+
 public class ErrorInfo {
     private String errorName;
     private String message;
@@ -36,5 +38,19 @@ public class ErrorInfo {
 
     public void setDetails(String[] details) {
         this.details = details;
+    }
+
+    @Override
+    public String toString() {
+        var detailsStr = new StringBuilder();
+        Arrays.stream(details).forEach(s -> {
+            String separator = detailsStr.isEmpty() ? "" : "; ";
+            detailsStr.append(separator + s);
+        });
+        return "ErrorInfo {" +
+                "errorName=" + errorName +
+                ", message=" + message +
+                ", details=[" + detailsStr +
+                 "]}";
     }
 }

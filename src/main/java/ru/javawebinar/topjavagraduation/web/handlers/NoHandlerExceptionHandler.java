@@ -8,7 +8,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 
-import static ru.javawebinar.topjavagraduation.web.handlers.ExceptionInfoHandler.getErrorInfo;
+import static ru.javawebinar.topjavagraduation.web.handlers.ExceptionInfoHandler.logAndGetErrorInfo;
 
 
 @ControllerAdvice
@@ -16,7 +16,6 @@ public class NoHandlerExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorInfo> wrongRequest(HttpServletRequest req, Exception e) {
-        return getErrorInfo(ErrorType.WRONG_REQUEST, e, "Handler for provided address is not found");
+        return logAndGetErrorInfo(req, ErrorType.WRONG_REQUEST, "Handler for provided address is not found");
     }
-
 }
