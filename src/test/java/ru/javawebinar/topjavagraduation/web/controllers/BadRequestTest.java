@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.web.UserRestController.REST_URL;
 
-public class UnknownControllerTest extends AbstractRestControllerTest {
+public class BadRequestTest extends AbstractRestControllerTest {
 
     @Test
     void tryGet() throws Exception {
