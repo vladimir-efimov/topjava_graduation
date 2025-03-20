@@ -30,7 +30,7 @@
         <logback.version>1.2.13</logback.version>
         <!-- Security -->
         <!-- <spring.security.version>6.2.8</spring.security.version> -->
-        <spring.security.version>6.0.0</spring.security.version>
+        <spring.security.version>6.1.9</spring.security.version>
         <!-- Tests -->
         <junit.jupiter.version>5.11.3</junit.jupiter.version>
         <assertj.version>3.26.3</assertj.version>
