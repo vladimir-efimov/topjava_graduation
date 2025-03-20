@@ -10,6 +10,7 @@
         <param-value>
             classpath:spring/spring-app.xml
             classpath:spring/spring-db.xml
+            classpath:spring/spring-mvc.xml
         </param-value>
     </context-param>
 
