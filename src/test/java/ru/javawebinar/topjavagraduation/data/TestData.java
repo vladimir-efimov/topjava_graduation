@@ -13,8 +13,8 @@ import java.util.Set;
 public class TestData {
 
     public static final User[] users = {
-            new User(1, true, "Admin", "admin@restaurants.ru", Set.of(Role.ADMIN), ""),
-            new User(2, true, "SimpleUser", "user@restaurants.ru", Set.of(Role.USER), ""),
+            new User(1, true, "Admin", "admin@restaurants.ru", Set.of(Role.ADMIN), "admin"),
+            new User(2, true, "SimpleUser", "user@restaurants.ru", Set.of(Role.USER), "user1"),
             new User(3, true, "TestUser1", "user1@restaurants.ru", Set.of(Role.USER), ""),
             new User(4, true, "TestUser2", "user2@restaurants.ru", Set.of(Role.USER), ""),
             new User(5, true, "TestUser3", "user3@restaurants.ru", Set.of(Role.USER), "")
