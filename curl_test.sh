@@ -3,7 +3,7 @@ user_operations() {
 
     echo -e "\n"
     echo "Get all users"
-    curl -s http://localhost:8080/topjava-graduation/rest/users
+    curl -s http://localhost:8080/topjava-graduation/rest/users --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get first user"

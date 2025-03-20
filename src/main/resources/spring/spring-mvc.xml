@@ -16,10 +16,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-   <mvc:interceptors>
-       <bean class="ru.javawebinar.topjavagraduation.web.interceptors.LoggingHandlerInterceptor" />
-   </mvc:interceptors>
+    <mvc:interceptors>
+        <bean class="ru.javawebinar.topjavagraduation.web.interceptors.LoggingHandlerInterceptor" />
+    </mvc:interceptors>
 
-
-    <context:component-scan base-package="ru.javawebinar.topjavagraduation.web"/>
+    <context:component-scan base-package="ru.javawebinar.topjavagraduation.web.*"/>
 </beans>
