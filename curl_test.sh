@@ -318,12 +318,12 @@ vote_operations() {
 
     echo -e "\n"
     echo "Get end voting time"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Set end voting time"
     curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23:59:59" --user user@restaurants.ru:user1
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23:59:59" --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get end voting time"
@@ -357,9 +357,13 @@ vote_illegal_operations() {
     echo -e "Illegal operations with votes"
 
     echo -e "\n"
+    echo "Get end voting time - use admin controller by simple user"
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time --user user@restaurants.ru:user1
+
+    echo -e "\n"
     echo "Try set incorrect end voting time"
     curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23-59" --user user@restaurants.ru:user1
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23-59" --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Try adding vote without restaurant"
@@ -381,7 +385,7 @@ get_elected() {
     echo -e "\n"
     echo "Set end voting time to past"
     curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')" --user user@restaurants.ru:user1
+      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')" --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get elected restaurant"
