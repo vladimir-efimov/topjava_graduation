@@ -6,6 +6,8 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+    <import resource="spring-security.xml" />
+
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -16,10 +18,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-   <mvc:interceptors>
-       <bean class="ru.javawebinar.topjavagraduation.web.interceptors.LoggingHandlerInterceptor" />
-   </mvc:interceptors>
+    <mvc:interceptors>
+        <bean class="ru.javawebinar.topjavagraduation.web.interceptors.LoggingHandlerInterceptor" />
+    </mvc:interceptors>
 
-
-    <context:component-scan base-package="ru.javawebinar.topjavagraduation.web"/>
+    <context:component-scan base-package="ru.javawebinar.topjavagraduation.web.*"/>
 </beans>
