@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
@@ -29,7 +30,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void get() throws Exception {
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1"))
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
@@ -39,7 +41,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void getEnabled() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/enabled"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/enabled")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -48,16 +51,25 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/0"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/0")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    void getUnauthorized() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1"))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     void createWithLocation() throws Exception {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(newUser)))
+                        .content(MAPPER.writeValueAsString(newUser))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andExpect(status().isCreated());
         User receivedUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
         testDataProvider.getMatcher().assertMatch(newUser, receivedUser);
@@ -69,7 +81,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         user.setEmail("updated_email@restaurants.ru");
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(user)))
+                        .content(MAPPER.writeValueAsString(user))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andExpect(status().isNoContent());
         testDataProvider.getMatcher().assertMatch(user, service.get(user.getId()));
     }
@@ -80,7 +93,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         systemUser.setEmail("updated_email@restaurants.ru");
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + systemUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(systemUser)))
+                        .content(MAPPER.writeValueAsString(systemUser))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andExpect(status().isUnprocessableEntity());
     }
 
@@ -91,7 +105,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         user.setEmail(user.getEmail());
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(user)))
+                        .content(MAPPER.writeValueAsString(user))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -104,7 +119,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         user.setEmail(systemUser.getEmail());
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(user)))
+                        .content(MAPPER.writeValueAsString(user))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isConflict());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
@@ -120,7 +136,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
         user.setName(null);
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(user)))
+                        .content(MAPPER.writeValueAsString(user))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);
@@ -132,7 +149,8 @@ public class UserRestControllerTest extends AbstractRestControllerTest {
     @Test
     void tryFindWithInvalidParameter() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/find")
-                        .param("invalid_parameter", "value"))
+                        .param("invalid_parameter", "value")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

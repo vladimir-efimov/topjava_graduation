@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
@@ -30,7 +31,8 @@ public class RestaurantRestControllerTest extends AbstractRestControllerTest {
     void createWithLocation() throws Exception {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(newRestaurant)))
+                        .content(MAPPER.writeValueAsString(newRestaurant))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isCreated());
         Restaurant receivedRestaurant = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Restaurant.class);
@@ -44,7 +46,8 @@ public class RestaurantRestControllerTest extends AbstractRestControllerTest {
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(RestaurantRestController.REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(restaurant)))
+                        .content(MAPPER.writeValueAsString(restaurant))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isConflict());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);

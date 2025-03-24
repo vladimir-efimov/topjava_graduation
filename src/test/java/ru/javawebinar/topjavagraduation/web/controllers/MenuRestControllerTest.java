@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
@@ -39,7 +40,8 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
         System.out.println(MAPPER.writeValueAsString(menuTo));
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(menuTo)))
+                        .content(MAPPER.writeValueAsString(menuTo))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andExpect(status().isCreated());
         Menu menu = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Menu.class);
         assertEquals(menuTo.getDate(), menu.getDate());

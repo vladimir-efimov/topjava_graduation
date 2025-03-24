@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
@@ -40,7 +41,8 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         System.out.println(MAPPER.writeValueAsString(voteTo));
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(voteTo)))
+                        .content(MAPPER.writeValueAsString(voteTo))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andExpect(status().isCreated());
         Vote vote = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Vote.class);
         assertNotNull(vote.getId());
@@ -50,14 +52,16 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(VoteRestController.REST_URL + "/0"))
+        mockMvc.perform(MockMvcRequestBuilders.get(VoteRestController.REST_URL + "/0")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void deleteNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/0"))
+        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/0")
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
