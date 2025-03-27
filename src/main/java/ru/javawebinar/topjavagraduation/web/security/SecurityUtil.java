@@ -4,11 +4,12 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 
 public class SecurityUtil {
 
-    public static Optional<Integer> getAuthorizedUserId() {
+    public static Optional<Integer> safeGetAuthorizedUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth == null) {
             return Optional.empty();
@@ -19,4 +20,11 @@ public class SecurityUtil {
                 : Optional.empty();
     }
 
+    public static int getAuthorizedUserId() {
+        var optional = safeGetAuthorizedUserId();
+        if (optional.isEmpty()) {
+            throw new IllegalOperationException("Operation is forbidden for not authorized user");
+        }
+        return optional.get();
+    }
 }

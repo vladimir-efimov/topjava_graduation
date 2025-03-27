@@ -2,26 +2,27 @@ package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
+import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
 import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.service.VoteService;
-import ru.javawebinar.topjavagraduation.to.VoteTo;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 public class VoteRestControllerTest extends AbstractRestControllerTest {
+
+    private static boolean dbInit = false;
 
     @Autowired
     VoteService service;
@@ -32,36 +33,45 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     @Autowired
     UserService userService;
 
+
     @Test
-    void createWithLocation() throws Exception {
+    void vote() throws Exception {
+        int restaurantId = restaurantService.create(new Restaurant("Cafe1", "Vote street")).getId();
         service.setEndVotingTime(LocalTime.MAX);
-        var restaurant = restaurantService.create(new Restaurant("Popular Restaurant", "Restaurant street"));
-        var user = userService.get(1);
-        var voteTo = new VoteTo(user.getId(), restaurant.getId());
-        System.out.println(MAPPER.writeValueAsString(voteTo));
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(voteTo))
-                        .with(userHttpBasic(TestData.simpleUser)))
-                .andExpect(status().isCreated());
-        Vote vote = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Vote.class);
-        assertNotNull(vote.getId());
-        assertEquals(voteTo.getRestaurantId(), vote.getRestaurant().getId());
-        assertEquals(voteTo.getUserId(), vote.getUser().getId());
-    }
-
-    @Test
-    void getNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(VoteRestController.REST_URL + "/0")
-                        .with(userHttpBasic(TestData.simpleUser)))
+        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
+        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/vote")
+                        .param("restaurant_id", Integer.toString(restaurantId))
+                        .with(userHttpBasic(user)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isNoContent());
+        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        assertTrue(result.isPresent());
+        assertEquals(restaurantId, result.get().getRestaurant().getId());
     }
 
     @Test
-    void deleteNotFound() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/0")
-                        .with(userHttpBasic(TestData.simpleUser)))
+    void revoke() throws Exception {
+        int restaurantId = restaurantService.create(new Restaurant("Cafe2", "Vote street")).getId();
+        service.setEndVotingTime(LocalTime.MAX);
+        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
+        service.vote(user.getId(), restaurantId);
+        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/revoke")
+                        .with(userHttpBasic(user)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void tryRevoke() throws Exception {
+        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
+        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        if (result.isPresent()) {
+            service.revoke(user.getId());
+        }
+        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/revoke")
+                        .with(userHttpBasic(user)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }

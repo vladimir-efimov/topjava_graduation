@@ -247,7 +247,7 @@ menu_operations() {
 
     echo -e "\n"
     echo "Get menus for restaurant and date"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=1&date="${today}" --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?"restaurantId=1&date=${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all menus"
@@ -331,14 +331,12 @@ vote_operations() {
 
     echo -e "\n"
     echo "Add vote"
-    curl -s -i -X POST \
-      -d '{"restaurantId":1, "userId": 1}' \
-      -H 'Content-Type:application/json;charset=UTF-8' \
-      http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
+    curl -s -X PUT \
+      http://localhost:8080/topjava-graduation/rest/votes/vote?restaurant_id=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
-    echo "Get single vote"
-    curl -s http://localhost:8080/topjava-graduation/rest/votes/1 --user user@restaurants.ru:user1
+    echo "Get todays vote"
+    curl -s http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get votes for date"
@@ -347,7 +345,7 @@ vote_operations() {
 
     echo -e "\n"
     echo "Get all votes"
-    curl -s http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes --user admin@restaurants.ru:admin
 
 }
 
@@ -366,18 +364,9 @@ vote_illegal_operations() {
       http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23-59" --user admin@restaurants.ru:admin
 
     echo -e "\n"
-    echo "Try adding vote without restaurant"
-    curl -s -i -X POST \
-      -d '{"userId": 1}' \
-      -H 'Content-Type:application/json;charset=UTF-8' \
-      http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
-
-    echo -e "\n"
-    echo "Try adding vote without restaurant"
-    curl -s -i -X POST \
-      -d '{"restaurantId": 1}' \
-      -H 'Content-Type:application/json;charset=UTF-8' \
-      http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
+    echo "Try vote without providing restaurant"
+    curl -s -X PUT \
+      http://localhost:8080/topjava-graduation/rest/votes/vote --user user@restaurants.ru:user1
 }
 
 

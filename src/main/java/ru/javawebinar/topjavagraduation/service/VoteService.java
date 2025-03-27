@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
+import ru.javawebinar.topjavagraduation.repository.UserRepository;
 import ru.javawebinar.topjavagraduation.repository.VoteRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
@@ -26,18 +27,21 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11,00);
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
     private LocalTime endVotingTime;
     private LocalDateTime testingPurposeDate = null;
 
     @Autowired
-    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository) {
-        this(repository, restaurantRepository, DEFAULT_END_VOTE_TIME);
+    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this(repository, restaurantRepository, userRepository, DEFAULT_END_VOTE_TIME);
     }
 
-    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, LocalTime endVotingTime) {
+    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository,
+                       LocalTime endVotingTime) {
         super(repository);
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
         this.endVotingTime = endVotingTime;
     }
 
@@ -103,6 +107,31 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public void setEndVotingTime(LocalTime endVotingTime) {
         this.endVotingTime = endVotingTime;
+    }
+
+    public void vote(int userId, int restaurantId) {
+        Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
+        Restaurant restaurant = restaurantRepository.get(restaurantId);
+        if(restaurant == null) {
+            var restaurants = restaurantRepository.getAll(); // todo: remove after debug
+            throw new NotFoundException("Restaurant with id = " + restaurantId + " is not found");
+        }
+        if(result.isPresent()) {
+            Vote vote = result.get();
+            vote.setRestaurant(restaurant);
+            update(vote);
+        } else {
+            create(new Vote(userRepository.get(userId), restaurant));
+        }
+    }
+
+    public void revoke(int userId) {
+        Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
+        if (result.isPresent()) {
+            delete(result.get().getId(), userId);
+        } else {
+            throw new NotFoundException("No votes found to revoke");
+        }
     }
 
     @Override

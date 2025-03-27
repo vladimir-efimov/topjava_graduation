@@ -1,8 +1,15 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import ru.javawebinar.topjavagraduation.model.Restaurant;
+import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
 
 
@@ -14,6 +21,31 @@ public class AdminVoteRestController {
 
     public AdminVoteRestController(VoteService service) {
         this.service = service;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Vote> getAll() {
+        return service.getAll();
+    }
+
+    @GetMapping("/find")
+    public List<Vote> find(@Nullable @RequestParam("user_id") Integer userId,
+                           @Nullable @RequestParam("date") LocalDate date) {
+        if(userId != null) {
+            if (date != null) {
+                Optional<Vote> result = service.findByUserAndDate(userId, date);
+                return result.isPresent() ? List.of(result.get()) : List.of();
+            } else {
+                return service.findByUser(userId);
+            }
+        } else {
+            return date != null ? service.findByDate(date) : service.getAll();
+        }
+    }
+
+    @GetMapping("/elected")
+    public Restaurant getElected() {
+        return service.getElected();
     }
 
     @GetMapping("/end_voting_time")
