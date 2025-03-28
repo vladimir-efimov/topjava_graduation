@@ -18,15 +18,15 @@ import java.time.LocalDate;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = MenuRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuRestController extends AbstractBaseEntityRestController<Menu, MenuTo> {
+@RequestMapping(value = AdminMenuRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminMenuRestController extends AbstractAdminBaseEntityRestController<Menu, MenuTo> {
 
-    public static final String REST_URL = "/rest/menus";
+    public static final String REST_URL = "/rest/admin/menus";
     private final MenuService service;
     @Autowired
     private MealRepository mealRepository;
 
-    public MenuRestController(MenuService service) {
+    public AdminMenuRestController(MenuService service) {
         super(service, REST_URL);
         this.service = service;
     }

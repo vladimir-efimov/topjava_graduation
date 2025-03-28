@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.data.TestData.newRestaurant;
-import static ru.javawebinar.topjavagraduation.web.controllers.RestaurantRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.AdminRestaurantRestController.REST_URL;
 
 
-public class RestaurantRestControllerTest extends AbstractRestControllerTest {
+public class AdminRestaurantRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
     private TestDataProvider<Restaurant> testDataProvider;
@@ -32,7 +32,7 @@ public class RestaurantRestControllerTest extends AbstractRestControllerTest {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(newRestaurant))
-                        .with(userHttpBasic(TestData.simpleUser)))
+                        .with(userHttpBasic(TestData.adminUser)))
                 .andDo(print())
                 .andExpect(status().isCreated());
         Restaurant receivedRestaurant = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Restaurant.class);
@@ -44,10 +44,10 @@ public class RestaurantRestControllerTest extends AbstractRestControllerTest {
         var restaurant = new Restaurant("cafe_dupl", "address_dupl");
         service.create((Restaurant) restaurant.clone());
 
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(RestaurantRestController.REST_URL)
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(AdminRestaurantRestController.REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(restaurant))
-                        .with(userHttpBasic(TestData.simpleUser)))
+                        .with(userHttpBasic(TestData.adminUser)))
                 .andDo(print())
                 .andExpect(status().isConflict());
         ErrorInfo error = MAPPER.readValue(result.andReturn().getResponse().getContentAsString(), ErrorInfo.class);

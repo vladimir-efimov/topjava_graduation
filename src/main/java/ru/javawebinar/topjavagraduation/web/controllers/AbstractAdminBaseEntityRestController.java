@@ -13,12 +13,12 @@ import java.net.URI;
 import java.util.List;
 
 
-public abstract class AbstractBaseEntityRestController<E extends AbstractBaseEntity, TO> {
+public abstract class AbstractAdminBaseEntityRestController<E extends AbstractBaseEntity, TO> {
 
     protected final AbstractBaseEntityService<E> service;
     private final String restUrl;
 
-    protected AbstractBaseEntityRestController(AbstractBaseEntityService<E> service, String restUrl) {
+    protected AbstractAdminBaseEntityRestController(AbstractBaseEntityService<E> service, String restUrl) {
         this.service = service;
         this.restUrl = restUrl;
     }

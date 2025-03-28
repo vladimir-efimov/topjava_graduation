@@ -19,10 +19,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.controllers.MenuRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.AdminMenuRestController.REST_URL;
 
 
-public class MenuRestControllerTest extends AbstractRestControllerTest {
+public class AdminMenuRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
     RestaurantService restaurantService;
@@ -41,7 +41,7 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(menuTo))
-                        .with(userHttpBasic(TestData.simpleUser)))
+                        .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isCreated());
         Menu menu = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Menu.class);
         assertEquals(menuTo.getDate(), menu.getDate());

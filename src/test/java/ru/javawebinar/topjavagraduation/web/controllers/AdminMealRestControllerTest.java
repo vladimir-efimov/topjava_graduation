@@ -14,9 +14,10 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.controllers.MealRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.AdminMealRestController.REST_URL;
 
-public class MealRestControllerTest extends AbstractRestControllerTest {
+
+public class AdminMealRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
     RestaurantService restaurantService;
@@ -28,7 +29,7 @@ public class MealRestControllerTest extends AbstractRestControllerTest {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(mealto))
-                        .with(userHttpBasic(TestData.simpleUser))) //todo: later ensure that only admin can access this functionality
+                        .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isCreated());
         Meal meal = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Meal.class);
         assertEquals(mealto.getName(), meal.getName());

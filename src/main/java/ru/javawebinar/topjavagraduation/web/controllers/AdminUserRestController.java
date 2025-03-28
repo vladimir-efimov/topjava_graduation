@@ -10,12 +10,12 @@ import ru.javawebinar.topjavagraduation.service.UserService;
 
 
 @RestController
-@RequestMapping(value = UserRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserRestController extends AbstractManagedEntityRestController<User, User> {
-    public static final String REST_URL = "/rest/users";
+@RequestMapping(value = AdminUserRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminUserRestController extends AbstractAdminManagedEntityRestController<User, User> {
+    public static final String REST_URL = "/rest/admin/users";
     private final UserService service;
 
-    public UserRestController(UserService service) {
+    public AdminUserRestController(UserService service) {
         super(service, REST_URL);
         this.service = service;
     }

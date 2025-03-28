@@ -13,12 +13,12 @@ import ru.javawebinar.topjavagraduation.to.MealTo;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = MealRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class MealRestController extends AbstractManagedEntityRestController<Meal, MealTo> {
-    public static final String REST_URL = "/rest/meals";
+@RequestMapping(value = AdminMealRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminMealRestController extends AbstractAdminManagedEntityRestController<Meal, MealTo> {
+    public static final String REST_URL = "/rest/admin/meals";
     private final MealService service;
 
-    public MealRestController(MealService service) {
+    public AdminMealRestController(MealService service) {
         super(service, REST_URL);
         this.service = service;
     }

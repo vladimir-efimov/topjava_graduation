@@ -8,7 +8,7 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.controllers.UserRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.VoteRestController.REST_URL;
 
 
 public class BadRequestTest extends AbstractRestControllerTest {
