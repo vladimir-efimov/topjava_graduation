@@ -7,12 +7,13 @@ import ru.javawebinar.topjavagraduation.service.AbstractManagedEntityService;
 
 import java.util.List;
 
-public abstract class AbstractAdminManagedEntityRestController<E extends AbstractManagedEntity, TO> extends AbstractAdminBaseEntityRestController<E, TO> {
+
+public abstract class AbstractManagedEntityRestController<E extends AbstractManagedEntity> extends AbstractBaseEntityRestController<E> {
 
     protected final AbstractManagedEntityService<E> service;
 
-    public AbstractAdminManagedEntityRestController(AbstractManagedEntityService<E> service, String restUrl) {
-        super(service, restUrl);
+    public AbstractManagedEntityRestController(AbstractManagedEntityService<E> service) {
+        super(service);
         this.service = service;
     }
 

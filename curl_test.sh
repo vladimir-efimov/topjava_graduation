@@ -112,7 +112,7 @@ restaurant_operations() {
 
     echo -e "\n"
     echo "Get added restaurant"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/restaurants/1 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants/1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Add restaurant"
@@ -130,15 +130,15 @@ restaurant_operations() {
 
     echo -e "\n"
     echo "Get updated restaurant"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/restaurants/1 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants/1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all restaurants"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/restaurants --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Find by name"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/restaurants/filter?name=cafe2 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants/filter?name=cafe2 --user user@restaurants.ru:user1
 }
 
 restaurant_illegal_operations() {
@@ -183,7 +183,7 @@ meal_operations() {
 
     echo -e "\n"
     echo "Get all meals"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/meals --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/meals --user user@restaurants.ru:user1
 }
 
 
@@ -235,23 +235,23 @@ menu_operations() {
 
     echo -e "\n"
     echo "Get single menu"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/1 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for restaurant"
-    curl -s "http://localhost:8080/topjava-graduation/rest/admin/menus/find?restaurantId=1"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for date"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/find?date="${today}" --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?date="${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for restaurant and date"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/find?"restaurantId=1&date=${today}" --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?"restaurantId=1&date=${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all menus"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus --user user@restaurants.ru:user1
 }
 
 
@@ -261,7 +261,7 @@ menu_illegal_operations() {
 
     echo -e "\n"
     echo "Request not existed menu"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/11 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/11 --user admin@restaurants.ru:admin
 
     echo -e "\n"
     today=$(date '+%Y-%m-%d')
@@ -304,11 +304,11 @@ menu_illegal_operations() {
 
     echo -e "\n"
     echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/find?restaurant_id=x --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=x --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/menus/find?restaurant_name=cafe1 --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_name=cafe1 --user user@restaurants.ru:user1
 }
 
 
@@ -372,7 +372,7 @@ vote_illegal_operations() {
 
 get_elected() {
     echo -e "\n"
-    echo "Set end voting time to past"
+    echo "Set end voting time to past to ensure next request passes"
     curl -s -i -X PUT \
       http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')" --user admin@restaurants.ru:admin
 

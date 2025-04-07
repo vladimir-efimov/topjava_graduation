@@ -10,27 +10,16 @@ import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.service.AbstractBaseEntityService;
 
 import java.net.URI;
-import java.util.List;
 
 
-public abstract class AbstractAdminBaseEntityRestController<E extends AbstractBaseEntity, TO> {
+public abstract class AbstractAdminRestController<E extends AbstractBaseEntity, TO> {
 
     protected final AbstractBaseEntityService<E> service;
     private final String restUrl;
 
-    protected AbstractAdminBaseEntityRestController(AbstractBaseEntityService<E> service, String restUrl) {
+    protected AbstractAdminRestController(AbstractBaseEntityService<E> service, String restUrl) {
         this.service = service;
         this.restUrl = restUrl;
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<E> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public E get(@PathVariable int id) {
-        return service.get(id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
