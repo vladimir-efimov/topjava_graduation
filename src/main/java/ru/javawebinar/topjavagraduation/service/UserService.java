@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+
 @Service
 public class UserService extends AbstractManagedEntityService<User> {
 
@@ -19,6 +20,7 @@ public class UserService extends AbstractManagedEntityService<User> {
         new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
         new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
     };
+    private static final User erasedUser = new User(null, false, "_erased", "_erased", Set.of(), "_erased");
     private final Set<Integer> systemUserIds = new HashSet<>();
 
     public UserService(UserRepository repository) {
@@ -28,6 +30,14 @@ public class UserService extends AbstractManagedEntityService<User> {
 
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    public void erase(int userId) {
+        try {
+            User user = (User) erasedUser.clone();
+            user.setId(userId);
+            repository.save(user);
+        } catch (CloneNotSupportedException ex) {}
     }
 
     static User[] getSystemUsers() {

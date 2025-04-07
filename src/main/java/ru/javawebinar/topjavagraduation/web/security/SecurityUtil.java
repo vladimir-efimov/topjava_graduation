@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 
@@ -26,5 +27,11 @@ public class SecurityUtil {
             throw new IllegalOperationException("Operation is forbidden for not authorized user");
         }
         return optional.get();
+    }
+
+    public static void assertIdIsConsistent(AbstractBaseEntity entity, int id) {
+        if (entity.getId() != id) {
+            throw new IllegalArgumentException("Id is inconsistent");
+        }
     }
 }

@@ -1,15 +1,16 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import java.net.URI;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.service.AbstractBaseEntityService;
-
-import java.net.URI;
+import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.assertIdIsConsistent;
 
 
 public abstract class AbstractAdminRestController<E extends AbstractBaseEntity, TO> {
@@ -26,6 +27,7 @@ public abstract class AbstractAdminRestController<E extends AbstractBaseEntity, 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody TO to, @PathVariable int id) {
         E entity = convertTo(to);
+        assertIdIsConsistent(entity, id);
         service.update(entity);
     }
 

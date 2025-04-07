@@ -77,18 +77,6 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    @Disabled //todo: move test to profile controller
-    void loginWithNewUser() throws Exception {
-        User newUser = (User) TestData.newUser.clone();
-        newUser.setEmail("loginWithNewUser@restaurants.ru");
-        service.create(newUser);
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/1")
-                        .with(userHttpBasic(newUser)))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void update() throws Exception {
         User user = service.create((User) newUser.clone());
         user.setEmail("updated_email@restaurants.ru");
