@@ -20,7 +20,13 @@ public class UserService extends AbstractManagedEntityService<User> {
         new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
         new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
     };
-    private static final User erasedUser = new User(null, false, "_erased", "_erased", Set.of(), "_erased");
+    /**
+     * User can request to delete its data, but service has rights to keep anonimized voting data
+     * (and use it for analytical reports for example)
+     * Let's for simplicity count that restaurants.ru belongs to service and mails like xxx_erased@restaurants.ru are
+     * not possible
+     */
+    private static final User erasedUser = new User(null, false, "_erased", "_erased@restaurants.ru", Set.of(), "_erased");
     private final Set<Integer> systemUserIds = new HashSet<>();
 
     public UserService(UserRepository repository) {
