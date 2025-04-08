@@ -11,8 +11,7 @@ import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.to.Profile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.web.controllers.ProfileRestController.REST_URL;
@@ -64,5 +63,18 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
                         .with(userHttpBasic(newUser)))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void delete() throws Exception {
+        User newUser = (User) TestData.newUser.clone();
+        newUser.setEmail("delete@restaurants.ru");
+        service.create(newUser);
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL)
+                        .with(userHttpBasic(newUser)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        User erasedUser = service.get(newUser.getId());
+        assertFalse(erasedUser.isEnabled());
     }
 }
