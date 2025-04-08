@@ -2,8 +2,9 @@ package ru.javawebinar.topjavagraduation.web.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.core.Ordered;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -64,7 +65,9 @@ public class ExceptionInfoHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> internalError(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, ErrorType.INTERNAL_SERVER_ERROR, e.getMessage());
+        var response = logAndGetErrorInfo(req, ErrorType.INTERNAL_SERVER_ERROR, e.getMessage());
+        logStackTrace(e);
+        return response;
     }
 
     static ResponseEntity<ErrorInfo> logAndGetErrorInfo(HttpServletRequest req, ErrorType errorType, String ...details) {
@@ -73,4 +76,13 @@ public class ExceptionInfoHandler {
                 " caused error: " + errorInfo);
         return ResponseEntity.status(errorType.getStatus()).body(errorInfo);
     }
+
+    static void logStackTrace(Exception e) {
+        Throwable t = NestedExceptionUtils.getRootCause(e);
+        if (t == null) {
+            t = e;
+        }
+        log.error("INTERNAL SERVER ERROR details: \n", t);
+    }
+
 }
