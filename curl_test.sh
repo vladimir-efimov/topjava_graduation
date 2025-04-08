@@ -20,7 +20,7 @@ user_operations() {
     echo -e "\n"
     echo "Add user"
     curl -s -i -X POST \
-      -d '{"name":"New User","email":"new_user@mail.ru","password":"test-password"}' \
+      -d '{"name":"New User","email":"new_user@mail.ru","roles":["USER"],"password":"test-password"}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
       http://localhost:8080/topjava-graduation/rest/admin/users --user admin@restaurants.ru:admin
 
@@ -31,7 +31,7 @@ user_operations() {
     echo -e "\n"
     echo "Update user"
     curl -s -i -X PUT \
-      -d '{"id":3, "name":"New User","email":"New_User@mail.ru","password":"test-passwd"}' \
+      -d '{"id":3, "name":"New User","email":"New_User@mail.ru","password":"test-passwd", "enabled":"false"}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
        http://localhost:8080/topjava-graduation/rest/admin/users/3 --user admin@restaurants.ru:admin
 
@@ -98,6 +98,47 @@ user_illegal_operations() {
       http://localhost:8080/topjava-graduation/rest/admin/users --user admin@restaurants.ru:admin
 }
 
+
+profile_operations() {
+    echo -e "\n\n"
+    echo -e "Operations with profile"
+
+    echo -e "\n"
+    echo "Register user"
+    curl -s -i -X POST \
+      -d '{"name":"Registered _user","email":"reg@restaurants.ru","password":"test-password"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/profile
+
+    echo -e "\n"
+    echo "Update profile"
+    curl -s -i -X PUT \
+      -d '{"name":"Registered User","email":"reg@restaurants.ru","password":"test-password"}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+      http://localhost:8080/topjava-graduation/rest/profile --user "reg@restaurants.ru:test-password"
+
+    echo -e "\n"
+    echo "Get profile"
+    curl -s http://localhost:8080/topjava-graduation/rest/profile --user "reg@restaurants.ru:test-password"
+
+    echo -e "\n"
+    echo "Delete profile"
+    curl -s -X DELETE http://localhost:8080/topjava-graduation/rest/profile --user "reg@restaurants.ru:test-password"
+
+    echo -e "\n"
+    echo "Get all users"
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users --user admin@restaurants.ru:admin
+}
+
+
+profile_illegal_operations() {
+    echo -e "\n\n"
+    echo -e "Illegal operations with profile"
+
+    echo -e "\n"
+    echo "Try get profile for disabled user"
+    curl -s http://localhost:8080/topjava-graduation/rest/profile --user "New_User@mail.r:test-passwd"
+}
 
 restaurant_operations() {
     echo -e "\n\n"
@@ -376,13 +417,17 @@ get_elected() {
     curl -s -i -X PUT \
       http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')" --user admin@restaurants.ru:admin
 
+    sleep 1
     echo -e "\n"
     echo "Get elected restaurant"
     curl -s http://localhost:8080/topjava-graduation/rest/votes/elected --user user@restaurants.ru:user1
 }
 
+
 user_operations
 user_illegal_operations
+profile_operations
+profile_illegal_operations
 restaurant_operations
 restaurant_illegal_operations
 meal_operations
