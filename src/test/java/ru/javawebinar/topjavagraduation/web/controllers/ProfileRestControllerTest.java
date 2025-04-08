@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +9,9 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
+import ru.javawebinar.topjavagraduation.to.Profile;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,16 +28,17 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void register() throws Exception {
-        User newUser = (User) TestData.newUser.clone();
-        newUser.setEmail("register@restaurants.ru");
+        Profile profile = new Profile(TestData.newUser.getName(),
+                "register@restaurants.ru", TestData.newUser.getPassword());
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(newUser)))
+                        .content(MAPPER.writeValueAsString(profile)))
                 .andDo(print())
                 .andExpect(status().isCreated());
         User registeredUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
         assertNotNull(registeredUser.getId());
-        testDataProvider.getMatcher().assertMatch(newUser, registeredUser);
+        assertEquals(profile.getName(), registeredUser.getName());
+        assertEquals(profile.getEmail(), registeredUser.getEmail());
     }
 
     @Test

@@ -6,12 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
+import ru.javawebinar.topjavagraduation.to.Profile;
 
 import java.net.URI;
+import java.util.Set;
 
-import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.assertIdIsConsistent;
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
 
 
@@ -38,13 +40,16 @@ public class ProfileRestController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user) {
-        assertIdIsConsistent(user, getAuthorizedUserId());
+    public void update(@RequestBody Profile profile) {
+        User user = service.get(getAuthorizedUserId());
+        updateByTo(user, profile);
         service.update(user);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
+    public ResponseEntity<User> register(@Valid @RequestBody Profile profile) {
+        User user = new User();
+        updateByTo(user, profile);
         User created = service.create(user);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -52,5 +57,14 @@ public class ProfileRestController {
                 .buildAndExpand(created.getId()).toUri();
 
         return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
+    private static void updateByTo(User user, Profile profile) {
+        user.setName(profile.getName());
+        user.setEmail(profile.getEmail());
+        user.setPassword(profile.getPassword());
+        if(user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setRoles(Set.of(Role.USER));
+        }
     }
 }

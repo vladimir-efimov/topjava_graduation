@@ -36,6 +36,7 @@ public class UserService extends AbstractManagedEntityService<User> {
         try {
             User user = (User) erasedUser.clone();
             user.setId(userId);
+            user.setEmail(user.getId() + user.getEmail());
             repository.save(user);
         } catch (CloneNotSupportedException ex) {}
     }
