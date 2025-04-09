@@ -30,7 +30,7 @@ public class SecurityUtil {
     }
 
     public static void assertIdIsConsistent(AbstractBaseEntity entity, int id) {
-        if (entity.getId() != id) {
+        if (entity.getId() == null || entity.getId() != id) {
             throw new IllegalArgumentException("Id is inconsistent");
         }
     }
