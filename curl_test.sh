@@ -178,6 +178,10 @@ restaurant_operations() {
     curl -s http://localhost:8080/topjava-graduation/rest/restaurants --user user@restaurants.ru:user1
 
     echo -e "\n"
+    echo "Get enabled restaurants"
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants/enabled --user user@restaurants.ru:user1
+
+    echo -e "\n"
     echo "Find by name"
     curl -s http://localhost:8080/topjava-graduation/rest/restaurants/filter?name=cafe2 --user user@restaurants.ru:user1
 }
@@ -217,10 +221,19 @@ meal_operations() {
     echo "Add meal"
     for i in 1 2; do
         curl -s -i -X POST \
-         -d "{\"name\":\"meal${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurantId\":1}" \
-         -H 'Content-Type:application/json;charset=UTF-8' \
-         http://localhost:8080/topjava-graduation/rest/admin/meals --user admin@restaurants.ru:admin
+          -d "{\"name\":\"meal${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurantId\":1}" \
+          -H 'Content-Type:application/json;charset=UTF-8' \
+          http://localhost:8080/topjava-graduation/rest/admin/meals --user admin@restaurants.ru:admin
+        echo ""
     done
+
+    echo -e "\n"
+    echo "Get enabled meals"
+    curl -s http://localhost:8080/topjava-graduation/rest/meals/enabled --user user@restaurants.ru:user1
+
+    echo -e "\n"
+    echo "Get meals for restaurant with id=1"
+    curl -s http://localhost:8080/topjava-graduation/rest/meals/restaurant-meals?restaurant_id=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all meals"

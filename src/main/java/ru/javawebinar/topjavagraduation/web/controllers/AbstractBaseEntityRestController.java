@@ -8,7 +8,7 @@ import ru.javawebinar.topjavagraduation.service.AbstractBaseEntityService;
 
 import java.util.List;
 
-public class AbstractBaseEntityRestController<E extends AbstractBaseEntity> {
+public abstract class AbstractBaseEntityRestController<E extends AbstractBaseEntity, TO> {
     protected final AbstractBaseEntityService<E> service;
 
     public AbstractBaseEntityRestController(AbstractBaseEntityService<E> service) {
@@ -16,12 +16,18 @@ public class AbstractBaseEntityRestController<E extends AbstractBaseEntity> {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<E> getAll() {
-        return service.getAll();
+    public List<TO> getAll() {
+        return convertEntities(service.getAll());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public E get(@PathVariable int id) {
         return service.get(id);
     }
+
+    protected List<TO> convertEntities(List<E> entities) {
+        return entities.stream().map(this::convertEntity).toList();
+    }
+
+    protected abstract TO convertEntity(E entity);
 }

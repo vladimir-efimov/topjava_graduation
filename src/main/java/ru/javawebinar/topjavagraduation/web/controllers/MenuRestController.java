@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.service.MenuService;
+import ru.javawebinar.topjavagraduation.to.MenuTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = MenuRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuRestController extends AbstractBaseEntityRestController<Menu> {
+public class MenuRestController extends AbstractBaseEntityRestController<Menu, MenuTo> {
 
     public static final String REST_URL = "/rest/menus";
     private final MenuService service;
@@ -39,5 +41,11 @@ public class MenuRestController extends AbstractBaseEntityRestController<Menu> {
         } else {
             return date != null ? service.findByDate(date) : service.getAll();
         }
+    }
+
+    @Override
+    protected MenuTo convertEntity(Menu menu) {
+        return new MenuTo(menu.getId(), menu.getDate(), menu.getRestaurant().getId(),
+                menu.getMeals().stream().map(AbstractBaseEntity::getId).toList());
     }
 }
