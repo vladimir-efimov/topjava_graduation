@@ -20,6 +20,8 @@ import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
+import java.util.Optional;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 
@@ -78,10 +80,7 @@ public class ExceptionInfoHandler {
     }
 
     static void logStackTrace(Exception e) {
-        Throwable t = NestedExceptionUtils.getRootCause(e);
-        if (t == null) {
-            t = e;
-        }
+        Throwable t = Optional.ofNullable(NestedExceptionUtils.getRootCause(e)).orElse(e);
         log.error("INTERNAL SERVER ERROR details: \n", t);
     }
 
