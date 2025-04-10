@@ -15,3 +15,13 @@ If user votes again the same day:
 - If it is after 11:00 then it is too late, vote can't be changed
 
 Restaurants may provide a new menu each day updated by administrators.
+
+## REST API
+
+Unfortunately Swagger doesn't work with Jakarta. So currently REST API can be picked up from curl_test.sh.
+
+## Notes on business logic
+
+Application preserves history. The only object which can be deleted is vote during voting time.
+User can delete himself but his data actually are erased, anonimized history of voting is available for analysis.
+Meals and restaurants can be disabled by administrator.
