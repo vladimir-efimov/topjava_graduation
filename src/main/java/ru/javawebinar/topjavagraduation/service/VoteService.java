@@ -113,7 +113,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
         Restaurant restaurant = restaurantRepository.get(restaurantId);
         if(restaurant == null) {
-            var restaurants = restaurantRepository.getAll(); // todo: remove after debug
             throw new NotFoundException("Restaurant with id = " + restaurantId + " is not found");
         }
         if(result.isPresent()) {

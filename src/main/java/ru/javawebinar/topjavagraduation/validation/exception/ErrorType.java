@@ -9,7 +9,6 @@ public enum ErrorType {
     ILLEGAL_OPERATION("ILLEGAL_OPERATION", "Illegal operation", HttpStatus.UNPROCESSABLE_ENTITY),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     VALIDATION_ERROR("VALIDATION_ERROR", "Validation error", HttpStatus.UNPROCESSABLE_ENTITY),
-    //todo: check what with it WRONG_REQUEST (NoHandlerFoundException.class)
     WRONG_REQUEST("WRONG_REQUEST", "Bad request", HttpStatus.BAD_REQUEST);
 
     private final String name;
