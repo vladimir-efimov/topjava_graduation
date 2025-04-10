@@ -12,6 +12,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface IJpaMenuRepository extends IJpaBaseEntityRepository<Menu> {
 
+    @Override
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
+    Optional<Menu> findById(@Param("id") Integer id);
+
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals WHERE m.restaurant.id=:id")
     List<Menu> findByRestaurant(@Param("id") int id);
 
