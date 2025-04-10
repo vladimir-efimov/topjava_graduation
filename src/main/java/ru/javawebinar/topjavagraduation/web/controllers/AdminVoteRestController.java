@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
+import ru.javawebinar.topjavagraduation.to.VoteTo;
 
 
 @RestController
@@ -24,8 +25,8 @@ public class AdminVoteRestController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Vote> getAll() {
-        return service.getAll();
+    public List<VoteTo> getAll() {
+        return service.getAll().stream().map(this::convertEntity).toList();
     }
 
     @GetMapping("/find")
@@ -56,5 +57,9 @@ public class AdminVoteRestController {
     @PutMapping("/end_voting_time")
     public void setEndVotingTime(@RequestParam("time") LocalTime endVotingTime) {
         service.setEndVotingTime(endVotingTime);
+    }
+
+    private VoteTo convertEntity(Vote vote) {
+        return new VoteTo(vote.getDate(), vote.getUser().getId(), vote.getRestaurant().getId());
     }
 }
