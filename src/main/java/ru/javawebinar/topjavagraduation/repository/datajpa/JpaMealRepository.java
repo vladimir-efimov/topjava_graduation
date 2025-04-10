@@ -23,6 +23,13 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
     }
 
     @Override
+    public Meal get(int id) {
+        Meal meal = super.get(id);
+        dereferenceRestaurant(meal);
+        return meal;
+    }
+
+    @Override
     public List<Meal> findByRestaurant(int id) {
         return repository.findByRestaurant(id);
     }
@@ -32,6 +39,12 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
     public Meal save(Meal meal) {
         Meal mealCopy = new Meal(meal.getId(), meal.isEnabled(), meal.getName(),meal.getPrice(),
                 em.getReference(Restaurant.class, meal.getRestaurant().getId()));
-        return repository.save(mealCopy);
+        Meal savedMeal = repository.save(mealCopy);
+        dereferenceRestaurant(savedMeal);
+        return savedMeal;
+    }
+
+    private void dereferenceRestaurant(Meal meal) {
+        meal.setRestaurant(em.find(Restaurant.class, meal.getRestaurant().getId()));
     }
 }
