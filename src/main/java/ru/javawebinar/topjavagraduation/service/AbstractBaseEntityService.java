@@ -45,7 +45,7 @@ public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
     protected void validateOperation(T entity, CrudOperation operation) {
         if (entity.getId() == null) {
             if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
-                throw new IllegalArgumentException("Id should not be null for " + operation +" operation");
+                throw new IllegalArgumentException("Id should not be null for " + operation + " operation");
             }
         } else {
             if (operation == CrudOperation.CREATE) {

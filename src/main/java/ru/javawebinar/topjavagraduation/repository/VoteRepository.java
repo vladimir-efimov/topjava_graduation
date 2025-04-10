@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface VoteRepository extends BaseEntityRepository<Vote> {
     List<Vote> findByUser(int id);
+
     List<Vote> findByDate(LocalDate date);
+
     Optional<Vote> findByUserAndDate(int id, LocalDate date);
 }

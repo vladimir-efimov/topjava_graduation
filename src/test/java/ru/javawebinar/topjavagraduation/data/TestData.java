@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+
 @Configuration
 public class TestData {
 
@@ -79,7 +80,7 @@ public class TestData {
     public static final List<Menu> invalidMenus = List.of(
             new Menu(null, date, restaurants[2], Set.of(meals[5], meals[7])),
             new Menu(null, date, restaurants[2], Set.of(meals[0], meals[6]))
-            );
+    );
     public static final List<Menu> invalidUpdateMenus = List.of(
             new Menu(2, date, restaurants[2], Set.of(meals[6]))
     );

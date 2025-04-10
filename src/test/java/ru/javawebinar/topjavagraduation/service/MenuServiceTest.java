@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
 public class MenuServiceTest extends AbstractServiceTest<Menu> {
 
     public MenuServiceTest(@Autowired MenuService service, @Autowired TestDataProvider<Menu> dataProvider) {
@@ -22,7 +23,7 @@ public class MenuServiceTest extends AbstractServiceTest<Menu> {
     @Override
     void tryUpdateInvalid() {
         List<Menu> invalidEntities = dataProvider.getUpdatedInvalid();
-        invalidEntities.forEach( enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
+        invalidEntities.forEach(enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
     }
 
 }

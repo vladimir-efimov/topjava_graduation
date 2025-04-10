@@ -9,12 +9,13 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class UserServiceTest extends AbstractServiceTest<User> {
 
     private final UserService service;
     private static final int SYSTEM_USER_ID = 2;
 
-    public UserServiceTest(@Autowired  UserService service, @Autowired TestDataProvider<User> dataProvider) {
+    public UserServiceTest(@Autowired UserService service, @Autowired TestDataProvider<User> dataProvider) {
         super(service, dataProvider);
         this.service = service;
     }

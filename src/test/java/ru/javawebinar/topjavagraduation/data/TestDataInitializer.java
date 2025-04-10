@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.repository.*;
 
+
 @Component
 public class TestDataInitializer {
 

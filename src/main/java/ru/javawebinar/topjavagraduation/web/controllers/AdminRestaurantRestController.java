@@ -7,7 +7,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.service.AbstractManagedEntityService;
 
 @RestController
-@RequestMapping(value = AdminRestaurantRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantRestController extends AbstractAdminRestController<Restaurant, Restaurant> {
     public static final String REST_URL = "/rest/admin/restaurants";
 

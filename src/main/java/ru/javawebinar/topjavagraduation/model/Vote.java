@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="vote", uniqueConstraints = {
-        @UniqueConstraint(name="vote_unique_date_user_idx", columnNames = {"date", "user_id"})
+@Table(name = "vote", uniqueConstraints = {
+        @UniqueConstraint(name = "vote_unique_date_user_idx", columnNames = {"date", "user_id"})
 })
 public class Vote extends AbstractBaseEntity {
 
@@ -61,7 +61,7 @@ public class Vote extends AbstractBaseEntity {
 
     @Override
     public void assertValid() {
-        if(!restaurant.isEnabled()) {
+        if (!restaurant.isEnabled()) {
             throw new IllegalArgumentException("Vote refers to disabled restaurant");
         }
     }

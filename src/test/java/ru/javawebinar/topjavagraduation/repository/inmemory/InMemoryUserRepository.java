@@ -6,6 +6,7 @@ import ru.javawebinar.topjavagraduation.repository.UserRepository;
 
 import java.util.Optional;
 
+
 @Repository
 public class InMemoryUserRepository extends InMemoryManagedEntityRepository<User> implements UserRepository {
     public Optional<User> findByEmail(String email) {

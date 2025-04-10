@@ -7,7 +7,7 @@ import ru.javawebinar.topjavagraduation.repository.BaseEntityRepository;
 import java.util.List;
 
 public abstract class JpaBaseEntityRepository<T extends AbstractBaseEntity>
-        implements BaseEntityRepository <T> {
+        implements BaseEntityRepository<T> {
 
     protected final JpaRepository<T, Integer> repository;
 

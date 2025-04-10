@@ -10,7 +10,7 @@ import ru.javawebinar.topjavagraduation.to.MealTo;
 
 
 @RestController
-@RequestMapping(value = AdminMealRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminMealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMealRestController extends AbstractAdminRestController<Meal, MealTo> {
     public static final String REST_URL = "/rest/admin/meals";
     private final MealService service;

@@ -12,7 +12,7 @@ public class SecurityUtil {
 
     public static Optional<Integer> safeGetAuthorizedUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth == null) {
+        if (auth == null) {
             return Optional.empty();
         }
         Object principal = auth.getPrincipal();

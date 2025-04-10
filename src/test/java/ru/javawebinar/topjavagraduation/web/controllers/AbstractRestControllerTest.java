@@ -13,6 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.topjava.JacksonObjectMapper;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 
@@ -26,10 +27,12 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 public abstract class AbstractRestControllerTest {
 
     protected static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
+
     static {
         CHARACTER_ENCODING_FILTER.setEncoding("UTF-8");
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
+
     protected static final ObjectMapper MAPPER = JacksonObjectMapper.getMapper();
 
     protected MockMvc mockMvc;

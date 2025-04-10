@@ -3,12 +3,12 @@ package ru.javawebinar.topjavagraduation.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="meal", uniqueConstraints = {
-        @UniqueConstraint(name="meal_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
+@Table(name = "meal", uniqueConstraints = {
+        @UniqueConstraint(name = "meal_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
 })
 public class Meal extends AbstractManagedEntity {
 
-    @Column(name="price", nullable = false)
+    @Column(name = "price", nullable = false)
     private float price;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,7 +46,7 @@ public class Meal extends AbstractManagedEntity {
 
     @Override
     public void assertValid() {
-        if(!restaurant.isEnabled()) {
+        if (!restaurant.isEnabled()) {
             throw new IllegalArgumentException("Meal refers to disabled restaurant");
         }
     }

@@ -50,7 +50,7 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
         List<T> entities = service.getAll();
         List<T> expectedEntities = dataProvider.getAll();
         assertEquals(expectedEntities.size(), entities.size());
-        for(int i = 0; i < entities.size(); i++ ) {
+        for (int i = 0; i < entities.size(); i++) {
             matcher.assertMatch(expectedEntities.get(i), entities.get(i));
         }
     }
@@ -86,13 +86,13 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     @Test
     void tryCreateInvalid() {
         List<T> invalidEntities = dataProvider.getNewInvalid();
-        invalidEntities.forEach( enity -> assertThrows(IllegalArgumentException.class, () -> service.create(enity)));
+        invalidEntities.forEach(enity -> assertThrows(IllegalArgumentException.class, () -> service.create(enity)));
     }
 
     @Test
     void tryUpdateInvalid() {
         List<T> invalidEntities = dataProvider.getUpdatedInvalid();
-        invalidEntities.forEach( enity -> assertThrows(IllegalArgumentException.class, () -> service.update(enity)));
+        invalidEntities.forEach(enity -> assertThrows(IllegalArgumentException.class, () -> service.update(enity)));
     }
 
 }

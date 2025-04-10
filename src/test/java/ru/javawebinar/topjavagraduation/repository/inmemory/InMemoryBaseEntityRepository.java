@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.HashMap;
 
-public class InMemoryBaseEntityRepository <T extends AbstractBaseEntity> implements BaseEntityRepository<T> {
+
+public class InMemoryBaseEntityRepository<T extends AbstractBaseEntity> implements BaseEntityRepository<T> {
 
     protected final Map<Integer, T> entities = new HashMap<>();
 
@@ -19,7 +20,7 @@ public class InMemoryBaseEntityRepository <T extends AbstractBaseEntity> impleme
             T newEntity;
             try {
                 newEntity = (T) entity.clone();
-            } catch(CloneNotSupportedException ex) {
+            } catch (CloneNotSupportedException ex) {
                 newEntity = entity;
             }
             newEntity.setId(entities.size() + 1);

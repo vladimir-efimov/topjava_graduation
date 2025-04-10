@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.web.controllers.MealRestController.REST_URL;
 
+
 public class MealRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
@@ -25,7 +26,7 @@ public class MealRestControllerTest extends AbstractRestControllerTest {
     @Test
     void getEnabled() throws Exception {
         Restaurant restaurant = restaurantService.create((Restaurant) TestData.newRestaurant.clone());
-        Meal meal = (Meal)TestData.newMeal.clone();
+        Meal meal = (Meal) TestData.newMeal.clone();
         meal.setRestaurant(restaurant);
         service.create(meal);
 

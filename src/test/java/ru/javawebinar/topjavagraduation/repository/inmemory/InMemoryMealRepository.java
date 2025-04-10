@@ -6,6 +6,7 @@ import ru.javawebinar.topjavagraduation.repository.MealRepository;
 
 import java.util.List;
 
+
 @Repository
 public class InMemoryMealRepository extends InMemoryManagedEntityRepository<Meal> implements MealRepository {
 

@@ -5,6 +5,7 @@ import ru.javawebinar.topjavagraduation.repository.ManagedEntityRepository;
 
 import java.util.List;
 
+
 public class InMemoryManagedEntityRepository<T extends AbstractManagedEntity>
         extends InMemoryBaseEntityRepository<T> implements ManagedEntityRepository<T> {
 

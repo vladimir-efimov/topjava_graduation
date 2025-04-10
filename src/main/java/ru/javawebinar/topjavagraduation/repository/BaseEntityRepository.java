@@ -4,7 +4,7 @@ import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 
 import java.util.List;
 
-public interface BaseEntityRepository <T extends AbstractBaseEntity> {
+public interface BaseEntityRepository<T extends AbstractBaseEntity> {
 
     // returns null if entity is not saved or entity with id
     T save(T entity);

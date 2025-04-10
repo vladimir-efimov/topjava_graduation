@@ -6,6 +6,7 @@ import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 
 import java.util.Optional;
 
+
 @Repository
 public class InMemoryRestaurantRepository extends InMemoryManagedEntityRepository<Restaurant> implements RestaurantRepository {
 

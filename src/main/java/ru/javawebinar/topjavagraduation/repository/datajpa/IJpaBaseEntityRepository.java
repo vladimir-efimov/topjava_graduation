@@ -7,5 +7,5 @@ import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 
 @NoRepositoryBean
 public interface IJpaBaseEntityRepository<T extends AbstractBaseEntity>
-        extends JpaRepository <T, Integer>, JpaSpecificationExecutor<T> {
+        extends JpaRepository<T, Integer>, JpaSpecificationExecutor<T> {
 }

@@ -24,7 +24,7 @@ import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperation
 @Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
-    private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11,00);
+    private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11, 00);
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
@@ -112,10 +112,10 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     public void vote(int userId, int restaurantId) {
         Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
         Restaurant restaurant = restaurantRepository.get(restaurantId);
-        if(restaurant == null) {
+        if (restaurant == null) {
             throw new NotFoundException("Restaurant with id = " + restaurantId + " is not found");
         }
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             Vote vote = result.get();
             vote.setRestaurant(restaurant);
             update(vote);

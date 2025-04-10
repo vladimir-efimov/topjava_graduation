@@ -2,11 +2,9 @@ package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.service.VoteService;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 public class AdminVoteRestControllerTest extends AbstractRestControllerTest {
 
@@ -26,7 +25,7 @@ public class AdminVoteRestControllerTest extends AbstractRestControllerTest {
                         .with(userHttpBasic(TestData.adminUser)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString().replace("\"","");
+                .andReturn().getResponse().getContentAsString().replace("\"", "");
         DateTimeFormatter parser = DateTimeFormatter.ofPattern("H:mm:ss");
         assertEquals(service.getEndVotingTime(), LocalTime.parse(responseString, parser));
     }

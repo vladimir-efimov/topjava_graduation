@@ -51,6 +51,6 @@ public class ErrorInfo {
                 "errorName=" + errorName +
                 ", message=" + message +
                 ", details=[" + detailsStr +
-                 "]}";
+                "]}";
     }
 }

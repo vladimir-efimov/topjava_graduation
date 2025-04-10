@@ -17,7 +17,7 @@ import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuth
 
 
 @RestController
-@RequestMapping(value = VoteRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = VoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteRestController {
 
     public static final String REST_URL = "/rest/votes";

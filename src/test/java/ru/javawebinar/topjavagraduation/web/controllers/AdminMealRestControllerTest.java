@@ -25,7 +25,7 @@ public class AdminMealRestControllerTest extends AbstractRestControllerTest {
     @Test
     void createWithLocation() throws Exception {
         var restaurant = restaurantService.create(new Restaurant("NewRestaurant", "Restaurant street"));
-        var mealto = new MealTo(null,"meal1", true, 100.0f, restaurant.getId());
+        var mealto = new MealTo(null, "meal1", true, 100.0f, restaurant.getId());
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(mealto))

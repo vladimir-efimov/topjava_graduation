@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjavagraduation.web.controllers.MenuRestController.REST_URL;
 
+
 public class MenuRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
@@ -32,7 +33,7 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
     @Test
     void getAll() throws Exception {
         Restaurant restaurant = restaurantService.create((Restaurant) TestData.newRestaurant.clone());
-        Meal meal = (Meal)TestData.newMeal.clone();
+        Meal meal = (Meal) TestData.newMeal.clone();
         meal.setRestaurant(restaurant);
         Meal createdMeal = mealService.create(meal);
         menuService.create(new Menu(null, LocalDate.now(), restaurant, Set.of(createdMeal)));

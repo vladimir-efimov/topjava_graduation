@@ -17,8 +17,8 @@ public class UserService extends AbstractManagedEntityService<User> {
 
     private final UserRepository repository;
     private static final User[] systemUsers = {
-        new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
-        new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
+            new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
+            new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
     };
     /**
      * User can request to delete its data, but service has rights to keep anonimized voting data
@@ -44,7 +44,8 @@ public class UserService extends AbstractManagedEntityService<User> {
             user.setId(userId);
             user.setEmail(user.getId() + user.getEmail());
             repository.save(user);
-        } catch (CloneNotSupportedException ex) {}
+        } catch (CloneNotSupportedException ex) {
+        }
     }
 
     static User[] getSystemUsers() {
@@ -58,8 +59,8 @@ public class UserService extends AbstractManagedEntityService<User> {
     @Override
     protected void validateOperation(User user, CrudOperation operation) {
         super.validateOperation(user, operation);
-        if(operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
-            if(isSystemUser(user)) {
+        if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
+            if (isSystemUser(user)) {
                 throw new IllegalOperationException("Can't " + operation + " system user");
             }
         }
@@ -68,7 +69,7 @@ public class UserService extends AbstractManagedEntityService<User> {
     @PostConstruct
     void init() {
         systemUserIds.clear();
-        for(User user: systemUsers) {
+        for (User user : systemUsers) {
             Optional<User> result = findByEmail(user.getEmail());
             Integer id = result.isEmpty() ?
                     repository.save(new User(user.getName(), user.getEmail(), user.getRoles(), user.getPassword())).getId()

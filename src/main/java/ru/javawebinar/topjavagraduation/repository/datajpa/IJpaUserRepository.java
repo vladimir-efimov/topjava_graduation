@@ -6,7 +6,7 @@ import ru.javawebinar.topjavagraduation.model.User;
 
 import java.util.Optional;
 
-public interface IJpaUserRepository  extends IJpaBaseEntityRepository<User> {
+public interface IJpaUserRepository extends IJpaBaseEntityRepository<User> {
 
     @Query("SELECT u FROM User u WHERE u.email=:email")
     Optional<User> findByEmail(@Param("email") String email);

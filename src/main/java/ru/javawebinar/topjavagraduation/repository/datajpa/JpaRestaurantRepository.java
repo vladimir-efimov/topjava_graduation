@@ -7,7 +7,7 @@ import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import java.util.Optional;
 
 @Repository
-public class JpaRestaurantRepository extends JpaManagedEntityRepository<Restaurant> implements RestaurantRepository  {
+public class JpaRestaurantRepository extends JpaManagedEntityRepository<Restaurant> implements RestaurantRepository {
 
     private final IJpaRestaurantRepository repository;
 

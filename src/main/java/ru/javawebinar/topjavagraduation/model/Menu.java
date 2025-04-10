@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name="menu", uniqueConstraints = {
-        @UniqueConstraint(name="menu_unique_date_restaurant_idx", columnNames = {"date", "restaurant_id"})
+@Table(name = "menu", uniqueConstraints = {
+        @UniqueConstraint(name = "menu_unique_date_restaurant_idx", columnNames = {"date", "restaurant_id"})
 })
 public class Menu extends AbstractBaseEntity {
     @Column(name = "date", nullable = false)
@@ -23,7 +23,7 @@ public class Menu extends AbstractBaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "meal_id")})
     Set<Meal> meals;
 
-    public Menu () {
+    public Menu() {
     }
 
     public Menu(Integer id, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
@@ -59,14 +59,14 @@ public class Menu extends AbstractBaseEntity {
 
     @Override
     public void assertValid() {
-        if(!restaurant.isEnabled()) {
+        if (!restaurant.isEnabled()) {
             throw new IllegalArgumentException("Meal refers to disabled restaurant");
         }
-        for(Meal meal: meals) {
-            if(!meal.isEnabled()) {
+        for (Meal meal : meals) {
+            if (!meal.isEnabled()) {
                 throw new IllegalArgumentException("Menu contains disabled meal with id=" + meal.getId());
             }
-            if(!restaurant.getId().equals(meal.getRestaurant().getId())) {
+            if (!restaurant.getId().equals(meal.getRestaurant().getId())) {
                 throw new IllegalArgumentException("Menu contains meal with id=" + meal.getId() +
                         " which belongs to another restaurant");
             }

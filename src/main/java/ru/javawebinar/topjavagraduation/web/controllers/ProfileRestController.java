@@ -18,7 +18,7 @@ import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuth
 
 
 @RestController
-@RequestMapping(value = ProfileRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileRestController {
     static final String REST_URL = "/rest/profile";
     private final UserService service;
@@ -63,7 +63,7 @@ public class ProfileRestController {
         user.setName(profile.getName());
         user.setEmail(profile.getEmail());
         user.setPassword(profile.getPassword());
-        if(user.getRoles() == null || user.getRoles().isEmpty()) {
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
             user.setRoles(Set.of(Role.USER));
         }
     }

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping(value = MenuRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = MenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuRestController extends AbstractBaseEntityRestController<Menu, MenuTo> {
 
     public static final String REST_URL = "/rest/menus";
@@ -30,7 +30,7 @@ public class MenuRestController extends AbstractBaseEntityRestController<Menu, M
     @GetMapping("/find")
     public List<Menu> find(@Nullable @RequestParam("restaurantId") Integer id,
                            @Nullable @RequestParam("date") LocalDate date) {
-        if(id != null) {
+        if (id != null) {
             if (date != null) {
                 Optional<Menu> result = service.findByRestaurantAndDate(id, date);
                 return result.isPresent() ? List.of(result.get()) : List.of();

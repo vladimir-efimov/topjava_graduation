@@ -10,8 +10,8 @@ import java.util.Set;
 
 
 @Entity
-@Table(name="users",
-       uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "user_email_idx")})
+@Table(name = "users",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "user_email_idx")})
 public class User extends AbstractManagedEntity {
 
     @Column(name = "email", nullable = false, length = 64)
@@ -46,8 +46,9 @@ public class User extends AbstractManagedEntity {
     }
 
     public User(String name, String email, Role role, String password) {
-        this(name, email,Set.of(role), password);
+        this(name, email, Set.of(role), password);
     }
+
     public String getEmail() {
         return email;
     }

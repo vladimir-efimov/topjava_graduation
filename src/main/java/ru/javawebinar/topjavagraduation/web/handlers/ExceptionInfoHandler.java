@@ -72,9 +72,9 @@ public class ExceptionInfoHandler {
         return response;
     }
 
-    static ResponseEntity<ErrorInfo> logAndGetErrorInfo(HttpServletRequest req, ErrorType errorType, String ...details) {
+    static ResponseEntity<ErrorInfo> logAndGetErrorInfo(HttpServletRequest req, ErrorType errorType, String... details) {
         var errorInfo = new ErrorInfo(errorType, details);
-        log.debug("Request " + req.getRequestURL().toString() +" from " + req.getRemoteHost() +
+        log.debug("Request " + req.getRequestURL().toString() + " from " + req.getRemoteHost() +
                 " caused error: " + errorInfo);
         return ResponseEntity.status(errorType.getStatus()).body(errorInfo);
     }

@@ -36,14 +36,14 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
     @Override
     protected void validateOperation(Menu menu, CrudOperation operation) {
         super.validateOperation(menu, operation);
-        if(operation == CrudOperation.CREATE || operation == CrudOperation.UPDATE) {
+        if (operation == CrudOperation.CREATE || operation == CrudOperation.UPDATE) {
             if (beforeToday(menu.getDate())) {
                 throw new IllegalOperationException("Can't operate with menu for the past date");
             }
         }
-        if(operation == CrudOperation.UPDATE) {
+        if (operation == CrudOperation.UPDATE) {
             Menu savedMenu = get(menu.getId());
-            if(!savedMenu.getRestaurant().equals(menu.getRestaurant())) {
+            if (!savedMenu.getRestaurant().equals(menu.getRestaurant())) {
                 throw new IllegalOperationException("Can't substitute restaurant");
             }
         }
@@ -54,7 +54,7 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
     }
 
     private LocalDateTime getCurrentDateTime() {
-        if(testingPurposeDate == null) {
+        if (testingPurposeDate == null) {
             return LocalDateTime.now();
         }
         return testingPurposeDate;

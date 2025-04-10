@@ -1,6 +1,7 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
 import java.net.URI;
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.service.AbstractBaseEntityService;
+
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.assertIdIsConsistent;
 
 

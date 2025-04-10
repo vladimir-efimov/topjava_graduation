@@ -14,7 +14,7 @@ import ru.javawebinar.topjavagraduation.to.MenuTo;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = AdminMenuRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuRestController extends AbstractAdminRestController<Menu, MenuTo> {
 
     public static final String REST_URL = "/rest/admin/menus";
@@ -30,7 +30,7 @@ public class AdminMenuRestController extends AbstractAdminRestController<Menu, M
         var restaurant = new Restaurant();
         restaurant.setId(menuTo.getRestaurantId());
         Set<Meal> meals = new HashSet<>();
-        if( menuTo.getMeals() != null) {
+        if (menuTo.getMeals() != null) {
             menuTo.getMeals().forEach(id -> meals.add(mealRepository.get(id)));
         }
         return new Menu(menuTo.getId(), menuTo.getDate(), restaurant, meals);

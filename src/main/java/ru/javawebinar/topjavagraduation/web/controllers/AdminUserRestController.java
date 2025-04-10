@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = AdminUserRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminUserRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUserRestController extends AbstractAdminRestController<User, User> {
     public static final String REST_URL = "/rest/admin/users";
     private final UserService service;

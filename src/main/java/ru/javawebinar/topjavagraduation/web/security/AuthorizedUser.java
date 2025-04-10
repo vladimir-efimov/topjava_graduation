@@ -1,7 +1,9 @@
 package ru.javawebinar.topjavagraduation.web.security;
 
 import java.util.List;
+
 import ru.javawebinar.topjavagraduation.model.User;
+
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 

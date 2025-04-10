@@ -11,7 +11,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MealServiceTest extends AbstractServiceTest<Meal>{
+
+public class MealServiceTest extends AbstractServiceTest<Meal> {
 
     private final MealService service;
 
@@ -24,7 +25,7 @@ public class MealServiceTest extends AbstractServiceTest<Meal>{
     @Override
     void tryUpdateInvalid() {
         List<Meal> invalidEntities = dataProvider.getUpdatedInvalid();
-        invalidEntities.forEach( enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
+        invalidEntities.forEach(enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
     }
 
     @Test
@@ -34,7 +35,7 @@ public class MealServiceTest extends AbstractServiceTest<Meal>{
         List<Meal> expectedMeals = dataProvider.getAll().stream()
                 .filter(meal -> meal.getRestaurant().getId().equals(restaurantId)).toList();
         assertEquals(expectedMeals.size(), meals.size());
-        for(int i = 0; i < meals.size(); i++ ) {
+        for (int i = 0; i < meals.size(); i++) {
             matcher.assertMatch(expectedMeals.get(i), meals.get(i));
         }
     }

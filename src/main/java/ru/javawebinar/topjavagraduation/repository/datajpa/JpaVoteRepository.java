@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Repository
-public class JpaVoteRepository  extends JpaBaseEntityRepository<Vote> implements VoteRepository {
+public class JpaVoteRepository extends JpaBaseEntityRepository<Vote> implements VoteRepository {
 
     private final IJpaVoteRepository repository;
 

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.safeGetAuthorizedUserId;
 
+
 public class LoggingHandlerInterceptor implements HandlerInterceptor {
     private static final Logger log = getLogger(LoggingHandlerInterceptor.class);
 
@@ -24,11 +25,11 @@ public class LoggingHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) {
         int status = response.getStatus();
-        if ( status != HttpStatus.OK.value() && status != HttpStatus.NO_CONTENT.value()) {
+        if (status != HttpStatus.OK.value() && status != HttpStatus.NO_CONTENT.value()) {
             var optional = safeGetAuthorizedUserId();
             String userString = optional.isPresent() ? "user with id=" + optional.get() : "anonymous user";
             log.info("Request " + request.getRequestURL().toString() + " from " + request.getRemoteHost() +
-                     " by " + userString + " finished with status " + status);
+                    " by " + userString + " finished with status " + status);
         }
     }
 }

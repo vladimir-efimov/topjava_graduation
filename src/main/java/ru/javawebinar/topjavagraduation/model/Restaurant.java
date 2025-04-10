@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="restaurant", uniqueConstraints = {
-        @UniqueConstraint(name="restaurant_unique_name_address_idx", columnNames = {"name", "address"})
+@Table(name = "restaurant", uniqueConstraints = {
+        @UniqueConstraint(name = "restaurant_unique_name_address_idx", columnNames = {"name", "address"})
 })
 public class Restaurant extends AbstractManagedEntity {
 

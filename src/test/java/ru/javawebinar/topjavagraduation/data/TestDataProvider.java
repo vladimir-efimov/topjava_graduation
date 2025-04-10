@@ -5,6 +5,7 @@ import java.util.List;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
 
+
 public class TestDataProvider<T extends AbstractBaseEntity> {
 
     private final List<T> entities;

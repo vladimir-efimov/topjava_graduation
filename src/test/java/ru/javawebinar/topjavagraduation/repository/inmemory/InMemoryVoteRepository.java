@@ -22,7 +22,7 @@ public class InMemoryVoteRepository extends InMemoryBaseEntityRepository<Vote> i
     @Override
     public List<Vote> findByDate(LocalDate date) {
         return entities.values().stream()
-                .filter(e -> e.getDate()!= null && e.getDate().equals(date))
+                .filter(e -> e.getDate() != null && e.getDate().equals(date))
                 .toList();
     }
 

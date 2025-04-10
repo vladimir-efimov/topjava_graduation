@@ -37,7 +37,7 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
     @Override
     @Transactional
     public Meal save(Meal meal) {
-        Meal mealCopy = new Meal(meal.getId(), meal.isEnabled(), meal.getName(),meal.getPrice(),
+        Meal mealCopy = new Meal(meal.getId(), meal.isEnabled(), meal.getName(), meal.getPrice(),
                 em.getReference(Restaurant.class, meal.getRestaurant().getId()));
         Meal savedMeal = repository.save(mealCopy);
         dereferenceRestaurant(savedMeal);

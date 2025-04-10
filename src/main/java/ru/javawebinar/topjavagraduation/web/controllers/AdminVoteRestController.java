@@ -15,7 +15,7 @@ import ru.javawebinar.topjavagraduation.to.VoteTo;
 
 
 @RestController
-@RequestMapping(value = AdminVoteRestController.REST_URL , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminVoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminVoteRestController {
     public static final String REST_URL = "/rest/admin/votes";
     private final VoteService service;
@@ -32,7 +32,7 @@ public class AdminVoteRestController {
     @GetMapping("/find")
     public List<Vote> find(@Nullable @RequestParam("user_id") Integer userId,
                            @Nullable @RequestParam("date") LocalDate date) {
-        if(userId != null) {
+        if (userId != null) {
             if (date != null) {
                 Optional<Vote> result = service.findByUserAndDate(userId, date);
                 return result.isPresent() ? List.of(result.get()) : List.of();
