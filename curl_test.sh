@@ -228,6 +228,17 @@ meal_operations() {
     done
 
     echo -e "\n"
+    echo "Update meal"
+    curl -s -i -X PUT \
+      -d '{"id":1, "name":"meal1", "price":111.5, "enabled": "true", "restaurantId":1}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+       http://localhost:8080/topjava-graduation/rest/admin/meals/1 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
+    echo "Get first meal"
+    curl -s http://localhost:8080/topjava-graduation/rest/meals/1 --user user@restaurants.ru:user1
+
+    echo -e "\n"
     echo "Get enabled meals"
     curl -s http://localhost:8080/topjava-graduation/rest/meals/enabled --user user@restaurants.ru:user1
 
@@ -272,6 +283,13 @@ meal_illegal_operations() {
      -d '{"name": "new_meal", "enabled": "true", "restaurantId":1, "price":"100.0 - 5% discount"}' \
      -H 'Content-Type:application/json;charset=UTF-8' \
      http://localhost:8080/topjava-graduation/rest/admin/meals --user admin@restaurants.ru:admin
+
+    echo -e "\n"
+    echo "Update meal but loose id"
+    curl -s -i -X PUT \
+      -d '{"name":"meal1", "price":666.0, "enabled": "true", "restaurantId":1}' \
+      -H 'Content-Type:application/json;charset=UTF-8' \
+       http://localhost:8080/topjava-graduation/rest/admin/meals/1 --user admin@restaurants.ru:admin
 }
 
 
@@ -450,3 +468,4 @@ menu_illegal_operations
 vote_operations
 vote_illegal_operations
 get_elected
+echo ""
