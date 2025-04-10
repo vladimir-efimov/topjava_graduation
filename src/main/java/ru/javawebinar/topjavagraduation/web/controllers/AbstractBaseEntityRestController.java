@@ -1,7 +1,6 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
@@ -17,7 +16,6 @@ public abstract class AbstractBaseEntityRestController<E extends AbstractBaseEnt
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional
     public List<TO> getAll() {
         return convertEntities(service.getAll());
     }
