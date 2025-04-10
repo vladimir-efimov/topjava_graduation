@@ -28,7 +28,7 @@ public class MenuRestController extends AbstractBaseEntityRestController<Menu, M
     }
 
     @GetMapping("/find")
-    public List<Menu> find(@Nullable @RequestParam("restaurant_id") Integer id,
+    public List<Menu> find(@Nullable @RequestParam("restaurantId") Integer id,
                            @Nullable @RequestParam("date") LocalDate date) {
         if(id != null) {
             if (date != null) {
