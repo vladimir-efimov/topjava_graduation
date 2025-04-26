@@ -390,15 +390,6 @@ vote_operations() {
 
     echo -e "\n"
     echo "Get end voting time"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time --user admin@restaurants.ru:admin
-
-    echo -e "\n"
-    echo "Set end voting time"
-    curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23:59:59" --user admin@restaurants.ru:admin
-
-    echo -e "\n"
-    echo "Get end voting time"
     curl -s http://localhost:8080/topjava-graduation/rest/votes/end_voting_time --user user@restaurants.ru:user1
 
     echo -e "\n"
@@ -414,11 +405,6 @@ vote_operations() {
     echo "Get votes for date"
     today=$(date '+%Y-%m-%d')
     curl -s "http://localhost:8080/topjava-graduation/rest/votes/find?date=${today}" --user user@restaurants.ru:user1
-
-    echo -e "\n"
-    echo "Get all votes"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes --user admin@restaurants.ru:admin
-
 }
 
 
@@ -427,32 +413,11 @@ vote_illegal_operations() {
     echo -e "Illegal operations with votes"
 
     echo -e "\n"
-    echo "Get end voting time - use admin controller by simple user"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time --user user@restaurants.ru:user1
-
-    echo -e "\n"
-    echo "Try set incorrect end voting time"
-    curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="23-59" --user admin@restaurants.ru:admin
-
-    echo -e "\n"
     echo "Try vote without providing restaurant"
     curl -s -X PUT \
       http://localhost:8080/topjava-graduation/rest/votes/vote --user user@restaurants.ru:user1
 }
 
-
-get_elected() {
-    echo -e "\n"
-    echo "Set end voting time to past to ensure next request passes"
-    curl -s -i -X PUT \
-      http://localhost:8080/topjava-graduation/rest/admin/votes/end_voting_time?time="$(date '+%H:%m')" --user admin@restaurants.ru:admin
-
-    sleep 1
-    echo -e "\n"
-    echo "Get elected restaurant"
-    curl -s http://localhost:8080/topjava-graduation/rest/votes/elected --user user@restaurants.ru:user1
-}
 
 
 user_operations
@@ -467,5 +432,4 @@ menu_operations
 menu_illegal_operations
 vote_operations
 vote_illegal_operations
-get_elected
 echo ""
