@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
-import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
@@ -66,18 +65,5 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
             assertEquals(foundVotes.get(i), votes.get(i));
         }
         assertTrue(service.findByDate(LocalDate.EPOCH).isEmpty());
-    }
-
-    @Test
-    void tryGetElectedWhileVotingIsInProgress() {
-        assertThrows(IllegalOperationException.class, service::getElected);
-    }
-
-    @Test
-    void getElected() {
-        LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() + 1);
-        service.setDateTime(dateTime);
-        Restaurant restaurant = service.getElected();
-        assertEquals(TestData.popularRestaurant, restaurant);
     }
 }

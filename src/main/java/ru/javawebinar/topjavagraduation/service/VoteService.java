@@ -3,11 +3,8 @@ package ru.javawebinar.topjavagraduation.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,22 +72,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public Optional<Vote> findByUserAndDate(int userId, LocalDate date) {
         return repository.findByUserAndDate(userId, date);
-    }
-
-    public Restaurant getElected() {
-        if (getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
-            throw new IllegalOperationException("Voting is in progress. Call getElected() after " + endVotingTime);
-        }
-        List<Vote> votes = findByDate(getCurrentDateTime().toLocalDate());
-        if (votes.isEmpty()) {
-            throw new NotFoundException("No votes found for today");
-        }
-        var groupedVotes = votes.stream()
-                .collect(Collectors.groupingBy(v -> v.getRestaurant().getId(), Collectors.counting()))
-                .entrySet();
-        int restaurantId = groupedVotes.stream()
-                .max(Comparator.comparingLong(Map.Entry::getValue)).get().getKey();
-        return restaurantRepository.get(restaurantId);
     }
 
     public void delete(int id, int userId) {

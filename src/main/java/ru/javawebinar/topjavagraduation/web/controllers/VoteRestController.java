@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
-import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
 
@@ -47,11 +46,6 @@ public class VoteRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void vote(@RequestParam("restaurant_id") int restaurantId) {
         service.vote(getAuthorizedUserId(), restaurantId);
-    }
-
-    @GetMapping("/elected")
-    public Restaurant getElected() {
-        return service.getElected();
     }
 
     @PutMapping(value = "/revoke")
