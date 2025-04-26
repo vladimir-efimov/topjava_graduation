@@ -119,10 +119,10 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         super.validateOperation(vote, operation);
 
         if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
-            get(vote.getId(), vote.getUser().getId()); // assert is own
+            get(vote.getId(), vote.getUser().getId()); // assert vote is own
         }
-        if (!getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
-            throw new IllegalOperationException("Operations with vote are not allowed after " + endVotingTime);
+        if (operation == CrudOperation.UPDATE && !getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
+            throw new IllegalOperationException("Updating vote is not allowed after " + endVotingTime);
         }
         if (beforeToday(vote.getDate())) {
             throw new IllegalOperationException("Can't operate with date in the past");

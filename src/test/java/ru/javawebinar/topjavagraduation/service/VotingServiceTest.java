@@ -44,11 +44,23 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
     }
 
     @Test
-    void tryVoteAfterVotingIsCompleted() {
+    void updateVote() {
         Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
-        LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() + 1);
-        service.setDateTime(dateTime);
-        assertThrows(IllegalOperationException.class, () -> service.create(vote));
+        LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() - 1);
+        service.setDateTime(dateTime); // update vote is not allowed now
+        Vote registeredVote = service.create(vote);
+        registeredVote.setRestaurant(TestData.restaurants[2]);
+        service.update(registeredVote);
+    }
+
+    @Test
+    void tryUpdateVote() {
+        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
+        Vote registeredVote = service.create(vote);
+        LocalDateTime tooLateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() + 1);
+        service.setDateTime(tooLateTime); // update vote is not allowed now
+        registeredVote.setRestaurant(TestData.restaurants[2]);
+        assertThrows(IllegalOperationException.class, () -> service.update(registeredVote));
     }
 
     @Test
