@@ -8,6 +8,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
+import ru.javawebinar.topjavagraduation.service.TestClockHolder;
 import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.service.VoteService;
 
@@ -33,11 +34,12 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TestClockHolder clockHolder;
 
     @Test
     void vote() throws Exception {
         int restaurantId = restaurantService.create(new Restaurant("Cafe1", "Vote street")).getId();
-        service.setEndVotingTime(LocalTime.MAX);
         User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
         mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/vote")
                         .param("restaurant_id", Integer.toString(restaurantId))
@@ -52,7 +54,7 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     @Test
     void revoke() throws Exception {
         int restaurantId = restaurantService.create(new Restaurant("Cafe2", "Vote street")).getId();
-        service.setEndVotingTime(LocalTime.MAX);
+        clockHolder.setDateTime(LocalDate.now().atStartOfDay());
         User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
         service.vote(user.getId(), restaurantId);
         mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/revoke")

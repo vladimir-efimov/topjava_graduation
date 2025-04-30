@@ -25,20 +25,22 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private LocalTime endVotingTime;
-    private LocalDateTime testingPurposeDate = null;
+    private final LocalTime endVotingTime;
+    private final ClockHolder clockHolder;
 
     @Autowired
-    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this(repository, restaurantRepository, userRepository, DEFAULT_END_VOTE_TIME);
+    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository,
+                       ClockHolder clockHolder) {
+        this(repository, restaurantRepository, userRepository, clockHolder, DEFAULT_END_VOTE_TIME);
     }
 
     public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository,
-                       LocalTime endVotingTime) {
+                       ClockHolder clockHolder, LocalTime endVotingTime) {
         super(repository);
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+        this.clockHolder = clockHolder;
         this.endVotingTime = endVotingTime;
     }
 
@@ -86,10 +88,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return endVotingTime;
     }
 
-    public void setEndVotingTime(LocalTime endVotingTime) {
-        this.endVotingTime = endVotingTime;
-    }
-
     public void vote(int userId, int restaurantId) {
         Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
         Restaurant restaurant = restaurantRepository.get(restaurantId);
@@ -129,15 +127,9 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
     }
 
-    void setDateTime(LocalDateTime date) {
-        testingPurposeDate = date;
-    }
 
     private LocalDateTime getCurrentDateTime() {
-        if (testingPurposeDate == null) {
-            return LocalDateTime.now();
-        }
-        return testingPurposeDate;
+            return LocalDateTime.now(clockHolder.getClock());
     }
 
     private boolean beforeToday(LocalDate date) {

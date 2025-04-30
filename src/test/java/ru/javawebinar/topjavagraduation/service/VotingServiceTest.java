@@ -18,11 +18,14 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 public class VotingServiceTest extends AbstractServiceTest<Vote> {
 
     private final VoteService service;
+    private final TestClockHolder clockHolder;
 
-    public VotingServiceTest(@Autowired VoteService service, @Autowired TestDataProvider<Vote> dataProvider) {
+    public VotingServiceTest(@Autowired VoteService service, @Autowired TestDataProvider<Vote> dataProvider,
+                             @Autowired TestClockHolder clockHolder) {
         super(service, dataProvider);
         this.service = service;
-        service.setDateTime(TestData.date.atStartOfDay());
+        this.clockHolder = clockHolder;
+        clockHolder.setDateTime(TestData.date.atStartOfDay());
     }
 
     @Test
@@ -47,7 +50,7 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
     void updateVote() {
         Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() - 1);
-        service.setDateTime(dateTime); // update vote is not allowed now
+        clockHolder.setDateTime(dateTime); // update vote is not allowed now
         Vote registeredVote = service.create(vote);
         registeredVote.setRestaurant(TestData.restaurants[2]);
         service.update(registeredVote);
@@ -58,7 +61,7 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
         Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         Vote registeredVote = service.create(vote);
         LocalDateTime tooLateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() + 1);
-        service.setDateTime(tooLateTime); // update vote is not allowed now
+        clockHolder.setDateTime(tooLateTime); // update vote is not allowed now
         registeredVote.setRestaurant(TestData.restaurants[2]);
         assertThrows(IllegalOperationException.class, () -> service.update(registeredVote));
     }
