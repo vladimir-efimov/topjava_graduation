@@ -32,7 +32,7 @@ public class VoteRestController {
     }
 
     @GetMapping("/find")
-    public List<Vote> find(@Nullable @RequestParam("date") LocalDate date) {
+    public List<Vote> find(@Nullable @RequestParam LocalDate date) {
         int userId = getAuthorizedUserId();
         if (date != null) {
             Optional<Vote> result = service.findByUserAndDate(userId, date);
@@ -44,7 +44,7 @@ public class VoteRestController {
 
     @PutMapping(value = "/vote")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void vote(@RequestParam("restaurant_id") int restaurantId) {
+    public void vote(@RequestParam int restaurantId) {
         service.vote(getAuthorizedUserId(), restaurantId);
     }
 
@@ -54,7 +54,7 @@ public class VoteRestController {
         service.revoke(getAuthorizedUserId());
     }
 
-    @GetMapping("/end_voting_time")
+    @GetMapping("/end-voting-time")
     public LocalTime getEndVotingTime() {
         return service.getEndVotingTime();
     }

@@ -21,7 +21,7 @@ import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperation
 @Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
-    private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11, 00);
+    private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11, 0);
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;

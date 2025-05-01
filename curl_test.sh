@@ -244,7 +244,7 @@ meal_operations() {
 
     echo -e "\n"
     echo "Get meals for restaurant with id=1"
-    curl -s http://localhost:8080/topjava-graduation/rest/meals/restaurant-meals?restaurant_id=1 --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/meals/restaurant-meals?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all meals"
@@ -376,11 +376,11 @@ menu_illegal_operations() {
 
     echo -e "\n"
     echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_id=x --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=x --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurant_name=cafe1 --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantName=cafe1 --user user@restaurants.ru:user1
 }
 
 
@@ -390,12 +390,12 @@ vote_operations() {
 
     echo -e "\n"
     echo "Get end voting time"
-    curl -s http://localhost:8080/topjava-graduation/rest/votes/end_voting_time --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/votes/end-voting-time --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Add vote"
     curl -s -X PUT \
-      http://localhost:8080/topjava-graduation/rest/votes/vote?restaurant_id=1 --user user@restaurants.ru:user1
+      http://localhost:8080/topjava-graduation/rest/votes/vote?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get todays vote"

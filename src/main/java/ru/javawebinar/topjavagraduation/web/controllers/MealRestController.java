@@ -24,7 +24,7 @@ public class MealRestController extends AbstractManagedEntityRestController<Meal
     }
 
     @GetMapping("/restaurant-meals")
-    public List<MealTo> findByRestaurant(@RequestParam("restaurant_id") int id) {
+    public List<MealTo> findByRestaurant(@RequestParam("restaurantId") int id) {
         return convertEntities(service.findByRestaurant(id));
     }
 

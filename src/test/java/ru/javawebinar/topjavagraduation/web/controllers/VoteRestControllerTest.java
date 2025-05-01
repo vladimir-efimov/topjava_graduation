@@ -13,7 +13,6 @@ import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.service.VoteService;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +41,7 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         int restaurantId = restaurantService.create(new Restaurant("Cafe1", "Vote street")).getId();
         User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
         mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/vote")
-                        .param("restaurant_id", Integer.toString(restaurantId))
+                        .param("restaurantId", Integer.toString(restaurantId))
                         .with(userHttpBasic(user)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
