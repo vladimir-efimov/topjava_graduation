@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
+import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,12 +27,7 @@ public class VoteRestController {
         this.service = service;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Vote> getTodays() {
-        return service.findByDate(LocalDate.now());
-    }
-
-    @GetMapping("/find")
+    @GetMapping
     public List<Vote> find(@Nullable @RequestParam LocalDate date) {
         int userId = getAuthorizedUserId();
         if (date != null) {
@@ -40,6 +36,12 @@ public class VoteRestController {
         } else {
             return service.findByUser(userId);
         }
+    }
+
+    @GetMapping("/todays")
+    public Vote getTodaysVote() {
+        return service.findByUserAndDate(getAuthorizedUserId(), LocalDate.now())
+                .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
     }
 
     @PutMapping(value = "/vote")

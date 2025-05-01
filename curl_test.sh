@@ -398,13 +398,13 @@ vote_operations() {
       http://localhost:8080/topjava-graduation/rest/votes/vote?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
-    echo "Get todays vote"
+    echo "Get users votes"
     curl -s http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get votes for date"
     today=$(date '+%Y-%m-%d')
-    curl -s "http://localhost:8080/topjava-graduation/rest/votes/find?date=${today}" --user user@restaurants.ru:user1
+    curl -s "http://localhost:8080/topjava-graduation/rest/votes?date=${today}" --user user@restaurants.ru:user1
 }
 
 
