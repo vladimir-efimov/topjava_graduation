@@ -1,11 +1,13 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import org.springframework.lang.Nullable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,22 +21,26 @@ public class AdminUserRestController extends AbstractAdminRestController<User, U
         this.service = service;
     }
 
-    @GetMapping("/find")
-    public User findByEmail(@RequestParam String email) {
-        return service.findByEmail(email).orElse(null);
-    }
-
-    @Override
-    public User convertTo(User user) {
-        return user;
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getAll() {
+    @GetMapping
+    public List<User> find(@Nullable @RequestParam String name, @Nullable @RequestParam String email) {
+        if (email != null) {
+            Optional<User> result = service.findByEmail(email);
+            if(result.isEmpty()) {
+                return List.of();
+            }
+            User user = result.get();
+            if (name != null && !user.getName().equals(name)) {
+                return List.of();
+            }
+            return List.of(user);
+        }
+        if (name != null) {
+            return service.findByName(name);
+        }
         return service.getAll();
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public User get(@PathVariable int id) {
         return service.get(id);
     }
@@ -44,8 +50,8 @@ public class AdminUserRestController extends AbstractAdminRestController<User, U
         return service.getEnabled();
     }
 
-    @GetMapping("/filter")
-    public List<User> findByName(@RequestParam String name) {
-        return service.findByName(name);
+    @Override
+    public User convertTo(User user) {
+        return user;
     }
 }

@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -145,14 +144,5 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
         assertEquals(ErrorType.VALIDATION_ERROR.getName(), error.getErrorName());
         assertEquals(1, error.getDetails().length);
         assertEquals("'name' must not be blank", error.getDetails()[0]);
-    }
-
-    @Test
-    void tryFindWithInvalidParameter() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/find")
-                        .param("invalid_parameter", "value")
-                        .with(userHttpBasic(TestData.adminUser)))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
     }
 }

@@ -11,11 +11,11 @@ user_operations() {
 
     echo -e "\n"
     echo "Find by e-mail"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/users/find?email=admin@restaurants.ru --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users?email=admin@restaurants.ru --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Find by name"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/users/filter?name=Admin --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users?name=Admin --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Add user"
@@ -55,15 +55,15 @@ user_illegal_operations() {
 
     echo -e "\n"
     echo "Try find by not existed e-mail"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/users/find?email=does_not_exists --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users?email=does_not_exists --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Try find by not-existed name"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/users/filter?name=does_not_exists --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users?name=does_not_exists --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Try find by not-existed property"
-    curl -s http://localhost:8080/topjava-graduation/rest/admin/users/filter?some_property=does_not_exists --user admin@restaurants.ru:admin
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/users?some_property=does_not_exists --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Typo in URL"
