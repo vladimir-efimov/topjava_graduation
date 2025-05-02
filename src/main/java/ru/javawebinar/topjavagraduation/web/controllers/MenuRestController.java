@@ -2,13 +2,9 @@ package ru.javawebinar.topjavagraduation.web.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.service.MenuService;
-import ru.javawebinar.topjavagraduation.to.MenuTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,17 +13,21 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = MenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuRestController extends AbstractBaseEntityRestController<Menu, MenuTo> {
+public class MenuRestController {
 
     public static final String REST_URL = "/rest/menus";
     private final MenuService service;
 
     public MenuRestController(MenuService service) {
-        super(service);
         this.service = service;
     }
 
-    @GetMapping("/find")
+    @GetMapping(value = "/{id}")
+    public Menu get(@PathVariable int id) {
+        return service.get(id);
+    }
+
+    @GetMapping
     public List<Menu> find(@Nullable @RequestParam("restaurantId") Integer id,
                            @Nullable @RequestParam("date") LocalDate date) {
         if (id != null) {
@@ -40,12 +40,5 @@ public class MenuRestController extends AbstractBaseEntityRestController<Menu, M
         } else {
             return date != null ? service.findByDate(date) : service.getAll();
         }
-    }
-
-    @Override
-    protected MenuTo convertEntity(Menu menu) {
-        return new MenuTo(menu.getId(), menu.getDate(), menu.getRestaurant().getId(),
-                null // pass null to avoid LazyInitializationException
-        );
     }
 }

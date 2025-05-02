@@ -311,15 +311,15 @@ menu_operations() {
 
     echo -e "\n"
     echo "Get menus for restaurant"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=1 --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for date"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?date="${today}" --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus?date="${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for restaurant and date"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?"restaurantId=1&date=${today}" --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/menus?"restaurantId=1&date=${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get all menus"
@@ -375,12 +375,12 @@ menu_illegal_operations() {
       http://localhost:8080/topjava-graduation/rest/admin/menus --user admin@restaurants.ru:admin
 
     echo -e "\n"
-    echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantId=x --user user@restaurants.ru:user1
+    echo "Try find menu using incorrect parameter value"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus?restaurantId=x --user user@restaurants.ru:user1
 
     echo -e "\n"
-    echo "Try find menu using incorrect parameters"
-    curl -s http://localhost:8080/topjava-graduation/rest/menus/find?restaurantName=cafe1 --user user@restaurants.ru:user1
+    echo "Try find menu using incorrect parameter name"
+    curl -s http://localhost:8080/topjava-graduation/rest/menus?restaurantName=cafe1 --user user@restaurants.ru:user1
 }
 
 
