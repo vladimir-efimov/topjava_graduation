@@ -1,13 +1,16 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,11 +24,8 @@ import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuth
 public class VoteRestController {
 
     public static final String REST_URL = "/rest/votes";
-    private final VoteService service;
-
-    public VoteRestController(VoteService service) {
-        this.service = service;
-    }
+    @Autowired
+    private VoteService service;
 
     @GetMapping
     public List<Vote> find(@Nullable @RequestParam LocalDate date) {
@@ -38,19 +38,27 @@ public class VoteRestController {
         }
     }
 
-    @GetMapping("/todays")
-    public Vote getTodaysVote() {
-        return service.findByUserAndDate(getAuthorizedUserId(), LocalDate.now())
-                .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
-    }
-
-    @PutMapping(value = "/vote")
+    @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void vote(@RequestParam int restaurantId) {
-        service.vote(getAuthorizedUserId(), restaurantId);
+    public ResponseEntity<Vote> createWithLocation(@RequestParam int restaurantId) {
+        Vote vote = service.create(getAuthorizedUserId(), restaurantId);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/todays-vote}").build().toUri();
+        return ResponseEntity.created(uriOfNewResource).body(vote);
     }
 
-    @PutMapping(value = "/revoke")
+    @GetMapping("/todays-vote")
+    public Vote getTodaysVote() {
+        return service.getTodaysVote();
+    }
+
+    @PutMapping(value = "/todays-vote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestParam int restaurantId) {
+        service.update(getAuthorizedUserId(), restaurantId);
+    }
+
+    @DeleteMapping(value = "/todays-vote")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void revoke() {
         service.revoke(getAuthorizedUserId());

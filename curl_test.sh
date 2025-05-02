@@ -394,8 +394,8 @@ vote_operations() {
 
     echo -e "\n"
     echo "Add vote"
-    curl -s -X PUT \
-      http://localhost:8080/topjava-graduation/rest/votes/vote?restaurantId=1 --user user@restaurants.ru:user1
+    curl -s -X POST \
+      http://localhost:8080/topjava-graduation/rest/votes?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get users votes"
@@ -414,8 +414,8 @@ vote_illegal_operations() {
 
     echo -e "\n"
     echo "Try vote without providing restaurant"
-    curl -s -X PUT \
-      http://localhost:8080/topjava-graduation/rest/votes/vote --user user@restaurants.ru:user1
+    curl -s -X POST \
+      http://localhost:8080/topjava-graduation/rest/votes --user user@restaurants.ru:user1
 }
 
 

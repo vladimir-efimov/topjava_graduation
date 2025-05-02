@@ -22,8 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VoteRestControllerTest extends AbstractRestControllerTest {
 
-    private static boolean dbInit = false;
-
     @Autowired
     VoteService service;
 
@@ -40,11 +38,11 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     void vote() throws Exception {
         int restaurantId = restaurantService.create(new Restaurant("Cafe1", "Vote street")).getId();
         User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
-        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/vote")
+        mockMvc.perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
                         .param("restaurantId", Integer.toString(restaurantId))
                         .with(userHttpBasic(user)))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isCreated());
         Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
         assertTrue(result.isPresent());
         assertEquals(restaurantId, result.get().getRestaurant().getId());
@@ -55,8 +53,8 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         int restaurantId = restaurantService.create(new Restaurant("Cafe2", "Vote street")).getId();
         clockHolder.setDateTime(LocalDate.now().atStartOfDay());
         User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
-        service.vote(user.getId(), restaurantId);
-        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/revoke")
+        service.create(user.getId(), restaurantId);
+        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/todays-vote")
                         .with(userHttpBasic(user)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -71,7 +69,7 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         if (result.isPresent()) {
             service.revoke(user.getId());
         }
-        mockMvc.perform(MockMvcRequestBuilders.put(VoteRestController.REST_URL + "/revoke")
+        mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/todays-vote")
                         .with(userHttpBasic(user)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

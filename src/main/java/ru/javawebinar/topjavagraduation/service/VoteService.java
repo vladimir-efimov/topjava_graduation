@@ -18,6 +18,8 @@ import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationExc
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
+import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
+
 @Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
@@ -58,10 +60,23 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return super.create(modifiedVote);
     }
 
+    public Vote create(int userId, int restaurantId) {
+        Restaurant restaurant = getRestaurant(restaurantId);
+        return create(new Vote(userRepository.get(userId), restaurant));
+    }
+
     @Override
     public void update(Vote vote) {
         Vote modifiedVote = new Vote(vote.getId(), getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
         super.update(modifiedVote);
+    }
+
+    public void update(int userId, int restaurantId) {
+        Vote vote = findByUserAndDate(userId, getCurrentDateTime().toLocalDate())
+                .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
+        Restaurant restaurant = getRestaurant(restaurantId);
+        vote.setRestaurant(restaurant);
+        update(vote);
     }
 
     public List<Vote> findByUser(int userId) {
@@ -76,6 +91,11 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return repository.findByUserAndDate(userId, date);
     }
 
+    public Vote getTodaysVote() {
+        return findByUserAndDate(getAuthorizedUserId(), getCurrentDateTime().toLocalDate())
+                .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
+    }
+
     public void delete(int id, int userId) {
         Vote entity = get(id, userId);
         validateOperation(entity, CrudOperation.DELETE);
@@ -86,21 +106,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public LocalTime getEndVotingTime() {
         return endVotingTime;
-    }
-
-    public void vote(int userId, int restaurantId) {
-        Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
-        Restaurant restaurant = restaurantRepository.get(restaurantId);
-        if (restaurant == null) {
-            throw new NotFoundException("Restaurant with id = " + restaurantId + " is not found");
-        }
-        if (result.isPresent()) {
-            Vote vote = result.get();
-            vote.setRestaurant(restaurant);
-            update(vote);
-        } else {
-            create(new Vote(userRepository.get(userId), restaurant));
-        }
     }
 
     public void revoke(int userId) {
@@ -134,5 +139,13 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     private boolean beforeToday(LocalDate date) {
         return date.isBefore(getCurrentDateTime().toLocalDate());
+    }
+
+    private Restaurant getRestaurant(int id) {
+        Restaurant restaurant = restaurantRepository.get(id);
+        if (restaurant == null) {
+            throw new NotFoundException("Restaurant with id = " + id + " is not found");
+        }
+        return restaurant;
     }
 }
