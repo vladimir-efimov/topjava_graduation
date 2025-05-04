@@ -1,23 +1,37 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.service.AbstractManagedEntityService;
+import ru.javawebinar.topjavagraduation.service.RestaurantService;
+
+import java.util.List;
 
 
 @RestController
 @RequestMapping(value = RestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestaurantRestController extends AbstractManagedEntityRestController<Restaurant, Restaurant> {
+public class RestaurantRestController {
     public static final String REST_URL = "/rest/restaurants";
+    @Autowired
+    RestaurantService service;
 
-    public RestaurantRestController(AbstractManagedEntityService<Restaurant> service) {
-        super(service);
+    @GetMapping(value = "/{id}")
+    public Restaurant get(@PathVariable int id) {
+        return service.get(id);
     }
 
-    @Override
-    public Restaurant convertEntity(Restaurant restaurant) {
-        return restaurant;
+    @GetMapping("/enabled")
+    public List<Restaurant> getEnabled() {
+        return service.getEnabled();
+    }
+
+    @GetMapping
+    public List<Restaurant> find(@Nullable @RequestParam String name) {
+        if (name != null) {
+            return service.findByName(name);
+        }
+        return service.getAll();
     }
 }
