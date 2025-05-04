@@ -88,6 +88,20 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    void updateWithNullId() throws Exception {
+        User user = (User) newUser.clone();
+        Integer userId = service.create(user).getId();
+        User modifiedUser = new User(user.getName(),"updated_email2@restaurants.ru", user.getRoles(), user.getPassword());
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(modifiedUser))
+                        .with(userHttpBasic(TestData.adminUser)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        testDataProvider.getMatcher().assertMatch(modifiedUser, service.get(userId));
+    }
+
+    @Test
     void tryUpdateSystemUser() throws Exception {
         User systemUser = (User) TestData.adminUser.clone();
         systemUser.setEmail("updated_email@restaurants.ru");

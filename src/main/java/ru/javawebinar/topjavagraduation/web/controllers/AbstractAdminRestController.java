@@ -12,8 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.service.AbstractBaseEntityService;
 
-import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.assertIdIsConsistent;
-
 
 public abstract class AbstractAdminRestController<E extends AbstractBaseEntity, TO> {
 
@@ -29,7 +27,11 @@ public abstract class AbstractAdminRestController<E extends AbstractBaseEntity, 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody TO to, @PathVariable int id) {
         E entity = convertTo(to);
-        assertIdIsConsistent(entity, id);
+        if (entity.getId() == null) {
+            entity.setId(id);
+        } else if (!entity.getId().equals(id)) {
+                throw new IllegalArgumentException("Id is inconsistent");
+        }
         service.update(entity);
     }
 
