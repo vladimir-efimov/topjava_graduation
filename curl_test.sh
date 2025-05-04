@@ -236,19 +236,19 @@ meal_operations() {
 
     echo -e "\n"
     echo "Get first meal"
-    curl -s http://localhost:8080/topjava-graduation/rest/meals/1 --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/meals/1 --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get enabled meals"
-    curl -s http://localhost:8080/topjava-graduation/rest/meals/enabled --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/meals/enabled --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get meals for restaurant with id=1"
-    curl -s http://localhost:8080/topjava-graduation/rest/meals/restaurant-meals?restaurantId=1 --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/meals?restaurantId=1 --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get all meals"
-    curl -s http://localhost:8080/topjava-graduation/rest/meals --user user@restaurants.ru:user1
+    curl -s http://localhost:8080/topjava-graduation/rest/admin/meals --user admin@restaurants.ru:admin
 }
 
 
