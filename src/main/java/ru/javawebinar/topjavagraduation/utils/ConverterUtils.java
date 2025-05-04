@@ -5,7 +5,7 @@ import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.to.MealTo;
 
 
-public class ConvertorUtils {
+public class ConverterUtils {
 
     public static Meal convertMealTo(MealTo mealTo) {
         var restaurant = new Restaurant();
