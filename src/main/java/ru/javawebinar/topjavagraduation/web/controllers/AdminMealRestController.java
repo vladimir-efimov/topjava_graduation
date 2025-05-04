@@ -28,7 +28,7 @@ public class AdminMealRestController extends AbstractAdminRestController<Meal, M
     }
 
     @GetMapping
-    public List<MealTo> find(@Nullable @RequestParam("restaurantId") Integer id) {
+    public List<MealTo> filter(@Nullable @RequestParam("restaurantId") Integer id) {
         List<Meal> meals = id != null ? service.findByRestaurant(id) : service.getAll();
         return meals.stream().map(this::convertEntity).toList();
     }

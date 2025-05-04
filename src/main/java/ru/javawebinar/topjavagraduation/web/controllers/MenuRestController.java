@@ -28,7 +28,7 @@ public class MenuRestController {
     }
 
     @GetMapping
-    public List<Menu> find(@Nullable @RequestParam("restaurantId") Integer id,
+    public List<Menu> filter(@Nullable @RequestParam("restaurantId") Integer id,
                            @Nullable @RequestParam("date") LocalDate date) {
         if (id != null) {
             if (date != null) {

@@ -28,7 +28,7 @@ public class RestaurantRestController {
     }
 
     @GetMapping
-    public List<Restaurant> find(@Nullable @RequestParam String name) {
+    public List<Restaurant> filter(@Nullable @RequestParam String name) {
         if (name != null) {
             return service.findByName(name);
         }

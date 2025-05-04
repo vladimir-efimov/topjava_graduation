@@ -28,7 +28,7 @@ public class VoteRestController {
     private VoteService service;
 
     @GetMapping
-    public List<Vote> find(@Nullable @RequestParam LocalDate date) {
+    public List<Vote> filter(@Nullable @RequestParam LocalDate date) {
         int userId = getAuthorizedUserId();
         if (date != null) {
             Optional<Vote> result = service.findByUserAndDate(userId, date);

@@ -22,7 +22,7 @@ public class AdminUserRestController extends AbstractAdminRestController<User, U
     }
 
     @GetMapping
-    public List<User> find(@Nullable @RequestParam String name, @Nullable @RequestParam String email) {
+    public List<User> filter(@Nullable @RequestParam String name, @Nullable @RequestParam String email) {
         if (email != null) {
             Optional<User> result = service.findByEmail(email);
             if(result.isEmpty()) {
