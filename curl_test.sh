@@ -184,6 +184,10 @@ restaurant_operations() {
     echo -e "\n"
     echo "Find by name"
     curl -s http://localhost:8080/topjava-graduation/rest/restaurants?name=cafe2 --user user@restaurants.ru:user1
+
+    echo -e "\n"
+    echo "Find by address"
+    curl -s http://localhost:8080/topjava-graduation/rest/restaurants?address=street2 --user user@restaurants.ru:user1
 }
 
 restaurant_illegal_operations() {

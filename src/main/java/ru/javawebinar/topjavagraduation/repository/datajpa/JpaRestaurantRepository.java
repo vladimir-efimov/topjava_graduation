@@ -4,7 +4,9 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 
+import java.util.List;
 import java.util.Optional;
+
 
 @Repository
 public class JpaRestaurantRepository extends JpaManagedEntityRepository<Restaurant> implements RestaurantRepository {
@@ -20,4 +22,10 @@ public class JpaRestaurantRepository extends JpaManagedEntityRepository<Restaura
     public Optional<Restaurant> findByNameAndAddress(String name, String address) {
         return repository.findByNameAndAddress(name, address);
     }
+
+    @Override
+    public List<Restaurant> findByAddress(String address) {
+        return repository.findByAddress(address);
+    }
+
 }

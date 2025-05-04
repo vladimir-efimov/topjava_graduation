@@ -4,8 +4,8 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 
+import java.util.List;
 import java.util.Optional;
-
 
 @Repository
 public class InMemoryRestaurantRepository extends InMemoryManagedEntityRepository<Restaurant> implements RestaurantRepository {
@@ -15,4 +15,10 @@ public class InMemoryRestaurantRepository extends InMemoryManagedEntityRepositor
                 .filter(e -> e.getName().equals(name) && e.getAddress().equals(address))
                 .findFirst();
     }
+
+    public List<Restaurant> findByAddress(String address) {
+        return entities.values().stream()
+                .filter(e -> e.getAddress().equals(address)).toList();
+    }
+
 }

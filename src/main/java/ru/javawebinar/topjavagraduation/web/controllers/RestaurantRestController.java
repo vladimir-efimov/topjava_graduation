@@ -28,9 +28,16 @@ public class RestaurantRestController {
     }
 
     @GetMapping
-    public List<Restaurant> filter(@Nullable @RequestParam String name) {
+    public List<Restaurant> filter(@Nullable @RequestParam String name, @Nullable @RequestParam String address) {
         if (name != null) {
+            if (address != null) {
+                var result = service.findByNameAndAddress(name, address);
+                return result.isEmpty() ? List.of() : List.of(result.get());
+            }
             return service.findByName(name);
+        }
+        if (address != null) {
+            return service.findByAddress(address);
         }
         return service.getAll();
     }
