@@ -1,26 +1,30 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Meal;
-import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.service.MealService;
 import ru.javawebinar.topjavagraduation.to.MealTo;
+import ru.javawebinar.topjavagraduation.utils.ConvertorUtils;
 
 import java.util.List;
+
+import static ru.javawebinar.topjavagraduation.utils.ConvertorUtils.convertMealTo;
+import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.buildResponseEntity;
+import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.checkIdOnUpdate;
 
 
 @RestController
 @RequestMapping(value = AdminMealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminMealRestController extends AbstractAdminRestController<Meal, MealTo> {
+public class AdminMealRestController {
     public static final String REST_URL = "/rest/admin/meals";
-    private final MealService service;
-
-    public AdminMealRestController(MealService service) {
-        super(service, REST_URL);
-        this.service = service;
-    }
+    @Autowired
+    private MealService service;
 
     @GetMapping(value = "/{id}")
     public Meal get(@PathVariable int id) {
@@ -30,23 +34,27 @@ public class AdminMealRestController extends AbstractAdminRestController<Meal, M
     @GetMapping
     public List<MealTo> filter(@Nullable @RequestParam("restaurantId") Integer id) {
         List<Meal> meals = id != null ? service.findByRestaurant(id) : service.getAll();
-        return meals.stream().map(this::convertEntity).toList();
+        return meals.stream().map(ConvertorUtils::convertMeal).toList();
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@Valid @RequestBody MealTo to, @PathVariable int id) {
+        Meal meal = convertMealTo(to);
+        checkIdOnUpdate(meal, id);
+        service.update(meal);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Meal> createWithLocation(@Valid @RequestBody MealTo to) {
+        Meal meal = convertMealTo(to);
+        Meal created = service.create(meal);
+        return buildResponseEntity(created, REST_URL);
     }
 
     @GetMapping("/enabled")
     public List<MealTo> getEnabled() {
-        return service.getEnabled().stream().map(this::convertEntity).toList();
-    }
-
-    @Override
-    public Meal convertTo(MealTo mealTo) {
-        var restaurant = new Restaurant();
-        restaurant.setId(mealTo.getRestaurantId());
-        return new Meal(mealTo.getId(), mealTo.getEnabled(), mealTo.getName(), mealTo.getPrice(), restaurant);
-    }
-
-    private MealTo convertEntity(Meal meal) {
-        return new MealTo(meal.getId(), meal.getName(), meal.isEnabled(), meal.getPrice(), meal.getRestaurant().getId());
+        return service.getEnabled().stream().map(ConvertorUtils::convertMeal).toList();
     }
 
 }

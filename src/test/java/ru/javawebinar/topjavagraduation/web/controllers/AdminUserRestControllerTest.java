@@ -13,6 +13,7 @@ import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
 import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,6 +74,7 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isCreated());
         User receivedUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
         testDataProvider.getMatcher().assertMatch(newUser, receivedUser);
+        assertNotNull(receivedUser.getId());
     }
 
     @Test
