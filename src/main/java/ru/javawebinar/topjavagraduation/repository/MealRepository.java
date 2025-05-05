@@ -7,4 +7,5 @@ import java.util.List;
 public interface MealRepository extends ManagedEntityRepository<Meal> {
 
     List<Meal> findByRestaurant(int id);
+    List<Meal> findByIds(List<Integer> ids);
 }

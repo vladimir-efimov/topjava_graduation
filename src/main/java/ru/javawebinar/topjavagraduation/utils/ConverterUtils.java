@@ -26,12 +26,7 @@ public class ConverterUtils {
     public static Menu convertMenuTo(MenuTo menuTo, MealRepository mealRepository) {
         var restaurant = new Restaurant();
         restaurant.setId(menuTo.getRestaurantId());
-        Set<Meal> meals = new HashSet<>();
-        if (menuTo.getMeals() != null) {
-            //todo: fix it to avoid N SQL queries
-             menuTo.getMeals().forEach(id -> meals.add(mealRepository.get(id)));
-        }
+        Set<Meal> meals = new HashSet<>(mealRepository.findByIds(menuTo.getMeals()));
         return new Menu(menuTo.getId(), menuTo.getDate(), restaurant, meals);
     }
-
 }

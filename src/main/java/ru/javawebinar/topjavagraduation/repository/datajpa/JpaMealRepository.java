@@ -10,6 +10,7 @@ import ru.javawebinar.topjavagraduation.repository.MealRepository;
 
 import java.util.List;
 
+
 @Repository
 public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implements MealRepository {
 
@@ -27,6 +28,10 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
         Meal meal = super.get(id);
         dereferenceRestaurant(meal);
         return meal;
+    }
+
+    public List<Meal> findByIds(List<Integer> ids) {
+        return repository.findAllById(ids);
     }
 
     @Override

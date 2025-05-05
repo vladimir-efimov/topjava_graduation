@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.repository.MealRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,5 +23,12 @@ public class InMemoryMealRepository extends InMemoryManagedEntityRepository<Meal
         return entities.values().stream()
                 .filter(e -> e.getRestaurant() != null && e.getRestaurant().getId().equals(id))
                 .toList();
+    }
+
+    @Override
+    public List<Meal> findByIds(List<Integer> ids) {
+        List<Meal> meals = new ArrayList<>();
+        ids.forEach(id -> meals.add(entities.get(id)));
+        return meals;
     }
 }
