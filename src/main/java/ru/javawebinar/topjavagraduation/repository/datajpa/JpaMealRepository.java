@@ -1,6 +1,7 @@
 package ru.javawebinar.topjavagraduation.repository.datajpa;
 
 import jakarta.persistence.EntityManager;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
     @Override
     public Meal get(int id) {
         Meal meal = super.get(id);
-        dereferenceRestaurant(meal);
+        Hibernate.initialize(meal.getRestaurant());
         return meal;
     }
 
@@ -45,11 +46,7 @@ public class JpaMealRepository extends JpaManagedEntityRepository<Meal> implemen
         Meal mealCopy = new Meal(meal.getId(), meal.isEnabled(), meal.getName(), meal.getPrice(),
                 em.getReference(Restaurant.class, meal.getRestaurant().getId()));
         Meal savedMeal = repository.save(mealCopy);
-        dereferenceRestaurant(savedMeal);
+        Hibernate.initialize(savedMeal.getRestaurant());
         return savedMeal;
-    }
-
-    private void dereferenceRestaurant(Meal meal) {
-        meal.setRestaurant(em.find(Restaurant.class, meal.getRestaurant().getId()));
     }
 }
