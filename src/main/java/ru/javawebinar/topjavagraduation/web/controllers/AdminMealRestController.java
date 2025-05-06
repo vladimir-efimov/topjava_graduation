@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Meal;
+import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.service.MealService;
 import ru.javawebinar.topjavagraduation.to.MealTo;
 import ru.javawebinar.topjavagraduation.utils.ConverterUtils;
@@ -25,6 +26,8 @@ public class AdminMealRestController {
     public static final String REST_URL = "/rest/admin/meals";
     @Autowired
     private MealService service;
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @GetMapping(value = "/{id}")
     public Meal get(@PathVariable int id) {
@@ -40,14 +43,14 @@ public class AdminMealRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody MealTo to, @PathVariable int id) {
-        Meal meal = convertMealTo(to);
+        Meal meal = convertMealTo(to, restaurantRepository);
         checkIdOnUpdate(meal, id);
         service.update(meal);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@Valid @RequestBody MealTo to) {
-        Meal meal = convertMealTo(to);
+        Meal meal = convertMealTo(to, restaurantRepository);
         Meal created = service.create(meal);
         return buildResponseEntity(created, REST_URL);
     }

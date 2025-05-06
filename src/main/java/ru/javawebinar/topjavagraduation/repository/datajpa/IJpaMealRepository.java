@@ -10,6 +10,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface IJpaMealRepository extends IJpaBaseEntityRepository<Meal> {
 
+    @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
+    Meal getWithRestaurant(@Param("id") int id);
+
     @Query("SELECT m FROM Meal m WHERE m.restaurant.id=:id")
     List<Meal> findByRestaurant(@Param("id") int id);
 }

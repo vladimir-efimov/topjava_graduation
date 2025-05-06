@@ -4,6 +4,7 @@ import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.repository.MealRepository;
+import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
 import ru.javawebinar.topjavagraduation.to.MealTo;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 
@@ -13,9 +14,8 @@ import java.util.Set;
 
 public class ConverterUtils {
 
-    public static Meal convertMealTo(MealTo mealTo) {
-        var restaurant = new Restaurant();
-        restaurant.setId(mealTo.getRestaurantId());
+    public static Meal convertMealTo(MealTo mealTo, RestaurantRepository restaurantRepository) {
+        var restaurant = restaurantRepository.get(mealTo.getRestaurantId());
         return new Meal(mealTo.getId(), mealTo.getEnabled(), mealTo.getName(), mealTo.getPrice(), restaurant);
     }
 
