@@ -8,7 +8,7 @@ import ru.javawebinar.topjavagraduation.model.Meal;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface IJpaMealRepository extends IJpaBaseEntityRepository<Meal> {
+public interface IJpaMealRepository extends IJpaManagedEntityRepository<Meal> {
 
     @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
     Meal getWithRestaurant(@Param("id") int id);
