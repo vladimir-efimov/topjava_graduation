@@ -29,7 +29,6 @@ public class TestDataInitializer {
         try {
             for (T entity : entities) {
                 T copy = (T) entity.clone();
-                copy.setId(null);
                 repository.save(copy);
             }
         } catch (CloneNotSupportedException ex) {
@@ -38,11 +37,6 @@ public class TestDataInitializer {
     }
 
     public void init() {
-        voteRepository.clean();
-        userRepository.clean();
-        menuRepository.clean();
-        mealRepository.clean();
-        restaurantRepository.clean();
         initRepository(restaurantRepository, TestData.restaurants);
         initRepository(mealRepository, TestData.meals);
         initRepository(menuRepository, TestData.menus);

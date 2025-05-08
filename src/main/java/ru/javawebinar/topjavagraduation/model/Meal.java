@@ -57,6 +57,7 @@ public class Meal extends AbstractManagedEntity {
                 "id=" + id +
                 ", name=" + name +
                 ", price=" + price +
+                ", enabled=" + enabled +
                 ", restaurant=" + restaurant +
                 '}';
     }

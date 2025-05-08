@@ -2,6 +2,7 @@ package ru.javawebinar.topjavagraduation.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Meal;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
@@ -29,6 +30,7 @@ public class MealServiceTest extends AbstractServiceTest<Meal> {
     }
 
     @Test
+    @Transactional
     void findByRestaurant() {
         Integer restaurantId = dataProvider.getFirst().getRestaurant().getId();
         List<Meal> meals = service.findByRestaurant(restaurantId);

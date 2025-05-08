@@ -26,7 +26,11 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
     }
 
     public T getNew() {
-        return newEntity;
+        try {
+            return (T) newEntity.clone();
+        } catch(CloneNotSupportedException ex) {
+            throw new IllegalStateException("Failed to clone " + newEntity);
+        }
     }
 
     public T getFirst() {
