@@ -10,21 +10,21 @@ import ru.javawebinar.topjavagraduation.repository.*;
 public class TestDataInitializer {
 
     @Autowired
-    UserRepository userRepository;
+    JpaUserRepository userRepository;
 
     @Autowired
-    RestaurantRepository restaurantRepository;
+    JpaRestaurantRepository restaurantRepository;
 
     @Autowired
-    MealRepository mealRepository;
+    JpaMealRepository mealRepository;
 
     @Autowired
-    MenuRepository menuRepository;
+    JpaMenuRepository menuRepository;
 
     @Autowired
-    VoteRepository voteRepository;
+    JpaVoteRepository voteRepository;
 
-    private <T extends AbstractBaseEntity> void initRepository(BaseEntityRepository<T> repository,
+    private <T extends AbstractBaseEntity> void initRepository(JpaBaseEntityRepository<T> repository,
                                                                T[] entities) {
         try {
             for (T entity : entities) {

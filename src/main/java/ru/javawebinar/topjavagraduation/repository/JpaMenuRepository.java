@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.repository.datajpa;
+package ru.javawebinar.topjavagraduation.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface IJpaMenuRepository extends IJpaBaseEntityRepository<Menu> {
+public interface JpaMenuRepository extends JpaBaseEntityRepository<Menu> {
 
     @Override
     @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals LEFT JOIN FETCH m.restaurant WHERE m.id=:id")

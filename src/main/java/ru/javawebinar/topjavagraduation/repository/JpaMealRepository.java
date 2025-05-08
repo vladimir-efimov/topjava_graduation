@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.repository.datajpa;
+package ru.javawebinar.topjavagraduation.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,7 +8,7 @@ import ru.javawebinar.topjavagraduation.model.Meal;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface IJpaMealRepository extends IJpaManagedEntityRepository<Meal> {
+public interface JpaMealRepository extends JpaManagedEntityRepository<Meal> {
 
     @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
     Meal getWithRestaurant(@Param("id") int id);

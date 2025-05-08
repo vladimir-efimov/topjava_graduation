@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.repository.datajpa;
+package ru.javawebinar.topjavagraduation.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface IJpaVoteRepository extends IJpaBaseEntityRepository<Vote> {
+public interface JpaVoteRepository extends JpaBaseEntityRepository<Vote> {
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.user.id=:id")
     List<Vote> findByUser(@Param("id") int id);

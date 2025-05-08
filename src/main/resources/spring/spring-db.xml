@@ -8,8 +8,8 @@
        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <jpa:repositories base-package="ru.javawebinar.topjavagraduation.repository.datajpa" />
-    <context:component-scan base-package="ru.javawebinar.topjavagraduation.repository.datajpa"/>
+    <jpa:repositories base-package="ru.javawebinar.topjavagraduation.repository" />
+    <context:component-scan base-package="ru.javawebinar.topjavagraduation.repository"/>
     <tx:annotation-driven/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

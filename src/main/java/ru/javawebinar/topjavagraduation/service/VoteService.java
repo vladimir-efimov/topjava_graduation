@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.javawebinar.topjavagraduation.model.Restaurant;
+import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.model.Vote;
-import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
-import ru.javawebinar.topjavagraduation.repository.UserRepository;
-import ru.javawebinar.topjavagraduation.repository.VoteRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaVoteRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
-import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
 
@@ -24,19 +24,19 @@ import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuth
 public class VoteService extends AbstractBaseEntityService<Vote> {
 
     private final static LocalTime DEFAULT_END_VOTE_TIME = LocalTime.of(11, 0);
-    private final VoteRepository repository;
-    private final RestaurantRepository restaurantRepository;
-    private final UserRepository userRepository;
+    private final JpaVoteRepository repository;
+    private final JpaRestaurantRepository restaurantRepository;
+    private final JpaUserRepository userRepository;
     private final LocalTime endVotingTime;
     private final ClockHolder clockHolder;
 
     @Autowired
-    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository,
+    public VoteService(JpaVoteRepository repository, JpaRestaurantRepository restaurantRepository, JpaUserRepository userRepository,
                        ClockHolder clockHolder) {
         this(repository, restaurantRepository, userRepository, clockHolder, DEFAULT_END_VOTE_TIME);
     }
 
-    public VoteService(VoteRepository repository, RestaurantRepository restaurantRepository, UserRepository userRepository,
+    public VoteService(JpaVoteRepository repository, JpaRestaurantRepository restaurantRepository, JpaUserRepository userRepository,
                        ClockHolder clockHolder, LocalTime endVotingTime) {
         super(repository);
         this.repository = repository;
@@ -47,7 +47,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     public Vote get(int id, int userId) {
-        Vote vote = repository.get(id);
+        Vote vote = super.get(id);
         if (!vote.getUser().getId().equals(userId)) {
             throw new SecurityException("User with id=" + userId + ":attempt to access not owned vote");
         }
@@ -62,7 +62,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     public Vote create(int userId, int restaurantId) {
         Restaurant restaurant = getRestaurant(restaurantId);
-        return create(new Vote(userRepository.get(userId), restaurant));
+        return create(new Vote(getUser(userId), restaurant));
     }
 
     @Override
@@ -99,9 +99,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     public void delete(int id, int userId) {
         Vote entity = get(id, userId);
         validateOperation(entity, CrudOperation.DELETE);
-        if (!repository.delete(id)) {
-            throw new RepositoryOperationException("Can't delete " + entity.getClass().getSimpleName() + " with id " + id);
-        }
+        repository.delete(entity);
     }
 
     public LocalTime getEndVotingTime() {
@@ -132,7 +130,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         }
     }
 
-
     private LocalDateTime getCurrentDateTime() {
             return LocalDateTime.now(clockHolder.getClock());
     }
@@ -142,10 +139,12 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     private Restaurant getRestaurant(int id) {
-        Restaurant restaurant = restaurantRepository.get(id);
-        if (restaurant == null) {
-            throw new NotFoundException("Restaurant with id = " + id + " is not found");
-        }
-        return restaurant;
+        return restaurantRepository.findById(id)
+                   .orElseThrow(() -> new NotFoundException("Restaurant with id = " + id + " is not found"));
+    }
+
+    private User getUser(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User with id = " + id + " is not found"));
     }
 }

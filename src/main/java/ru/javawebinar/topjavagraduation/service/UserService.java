@@ -4,7 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
-import ru.javawebinar.topjavagraduation.repository.UserRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import java.util.Set;
 @Service
 public class UserService extends AbstractManagedEntityService<User> {
 
-    private final UserRepository repository;
+    private final JpaUserRepository repository;
     private static final User[] systemUsers = {
             new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
             new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
@@ -29,7 +29,7 @@ public class UserService extends AbstractManagedEntityService<User> {
     private static final User erasedUser = new User(null, false, "_erased", "_erased@restaurants.ru", Set.of(), "_erased");
     private final Set<Integer> systemUserIds = new HashSet<>();
 
-    public UserService(UserRepository repository) {
+    public UserService(JpaUserRepository repository) {
         super(repository);
         this.repository = repository;
     }

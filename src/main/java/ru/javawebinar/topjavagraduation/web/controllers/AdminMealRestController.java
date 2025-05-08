@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Meal;
-import ru.javawebinar.topjavagraduation.repository.RestaurantRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjavagraduation.service.MealService;
 import ru.javawebinar.topjavagraduation.to.MealTo;
 import ru.javawebinar.topjavagraduation.utils.ConverterUtils;
@@ -27,7 +27,7 @@ public class AdminMealRestController {
     @Autowired
     private MealService service;
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private JpaRestaurantRepository restaurantRepository;
 
     @GetMapping(value = "/{id}")
     public Meal get(@PathVariable int id) {

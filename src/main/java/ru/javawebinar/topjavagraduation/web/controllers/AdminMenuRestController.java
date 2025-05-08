@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Menu;
-import ru.javawebinar.topjavagraduation.repository.MealRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaMealRepository;
 import ru.javawebinar.topjavagraduation.service.MenuService;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 
@@ -22,7 +22,7 @@ public class AdminMenuRestController {
 
     public static final String REST_URL = "/rest/admin/menus";
     @Autowired
-    private MealRepository mealRepository;
+    private JpaMealRepository mealRepository;
     @Autowired
     private MenuService service;
 

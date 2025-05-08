@@ -1,45 +1,36 @@
 package ru.javawebinar.topjavagraduation.service;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
-import ru.javawebinar.topjavagraduation.repository.BaseEntityRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaBaseEntityRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
-import ru.javawebinar.topjavagraduation.validation.exception.RepositoryOperationException;
 
 import java.util.List;
 
-public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
-    private final BaseEntityRepository<T> repository;
 
-    protected AbstractBaseEntityService(BaseEntityRepository<T> repository) {
+public abstract class AbstractBaseEntityService<T extends AbstractBaseEntity> {
+    private final JpaBaseEntityRepository<T> repository;
+
+    protected AbstractBaseEntityService(JpaBaseEntityRepository<T> repository) {
         this.repository = repository;
     }
 
     public T create(T entity) {
         validateOperation(entity, CrudOperation.CREATE);
-        T savedEntity = repository.save(entity);
-        if (savedEntity == null) {
-            throw new RepositoryOperationException("Failed to create " + entity.getClass().getSimpleName());
-        }
-        return savedEntity;
+        return repository.save(entity);
     }
 
     public void update(T entity) {
         validateOperation(entity, CrudOperation.UPDATE);
-        if (repository.save(entity) == null) {
-            throw new RepositoryOperationException("Failed to update " + entity.getClass().getSimpleName());
-        }
+        repository.save(entity);
     }
 
     public T get(int id) {
-        T entity = repository.get(id);
-        if (entity == null) {
-            throw new NotFoundException("Entity with id " + id + " is not found");
-        }
-        return entity;
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Entity with id " + id + " is not found"));
     }
 
     public List<T> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
     protected void validateOperation(T entity, CrudOperation operation) {
