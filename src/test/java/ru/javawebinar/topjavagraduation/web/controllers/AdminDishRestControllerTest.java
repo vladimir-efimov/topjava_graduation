@@ -5,56 +5,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.javawebinar.topjavagraduation.model.Meal;
+import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.service.MealService;
+import ru.javawebinar.topjavagraduation.service.DishService;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
-import ru.javawebinar.topjavagraduation.to.MealTo;
+import ru.javawebinar.topjavagraduation.to.DishTo;
 import ru.javawebinar.topjavagraduation.data.TestData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.web.controllers.AdminMealRestController.REST_URL;
+import static ru.javawebinar.topjavagraduation.web.controllers.AdminDishRestController.REST_URL;
 
 
-public class AdminMealRestControllerTest extends AbstractRestControllerTest {
+public class AdminDishRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
     RestaurantService restaurantService;
     @Autowired
-    MealService mealService;
+    DishService dishService;
 
     @Test
     void createWithLocation() throws Exception {
         var restaurant = restaurantService.create(new Restaurant("NewRestaurant", "Restaurant street"));
-        var mealto = new MealTo(null, "meal1", true, 100.0f, restaurant.getId());
+        var dishto = new DishTo(null, "dish1", true, 100.0f, restaurant.getId());
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(mealto))
+                        .content(MAPPER.writeValueAsString(dishto))
                         .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isCreated());
-        Meal meal = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Meal.class);
-        assertEquals(mealto.getName(), meal.getName());
-        assertEquals(mealto.getPrice(), meal.getPrice());
-        assertNotNull(meal.getId());
+        Dish dish = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Dish.class);
+        assertEquals(dishto.getName(), dish.getName());
+        assertEquals(dishto.getPrice(), dish.getPrice());
+        assertNotNull(dish.getId());
     }
 
     @Test
     void update() throws Exception {
         var restaurant = restaurantService.create(new Restaurant("NewRestaurant", "Restaurant street"));
-        var meal = mealService.create(new Meal("meal1", 100.0f, restaurant));
-        Integer mealId = meal.getId();
-        var mealto = new MealTo(mealId, "meal1", true, 111.0f, restaurant.getId());
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + mealId)
+        var dish = dishService.create(new Dish("dish1", 100.0f, restaurant));
+        Integer dishId = dish.getId();
+        var dishto = new DishTo(dishId, "dish1", true, 111.0f, restaurant.getId());
+        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + dishId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(mealto))
+                        .content(MAPPER.writeValueAsString(dishto))
                         .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isNoContent());
-        Meal updated = mealService.get(mealId);
-        assertEquals(mealto.getName(), updated.getName());
-        assertEquals(mealto.getPrice(), updated.getPrice());
-        assertEquals(mealId, updated.getId());
+        Dish updated = dishService.get(dishId);
+        assertEquals(dishto.getName(), updated.getName());
+        assertEquals(dishto.getPrice(), updated.getPrice());
+        assertEquals(dishId, updated.getId());
     }
 
 }

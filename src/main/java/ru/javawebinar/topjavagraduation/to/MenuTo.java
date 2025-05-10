@@ -12,16 +12,16 @@ public class MenuTo {
     @NotNull
     private Integer restaurantId;
     @NotNull
-    private List<Integer> meals;
+    private List<Integer> dishes;
 
     public MenuTo() {
     }
 
-    public MenuTo(Integer id, LocalDate date, Integer restaurantId, List<Integer> meals) {
+    public MenuTo(Integer id, LocalDate date, Integer restaurantId, List<Integer> dishes) {
         this.id = id;
         this.date = date;
         this.restaurantId = restaurantId;
-        this.meals = meals;
+        this.dishes = dishes;
     }
 
     public Integer getId() {
@@ -48,11 +48,11 @@ public class MenuTo {
         this.restaurantId = restaurantId;
     }
 
-    public List<Integer> getMeals() {
-        return meals;
+    public List<Integer> getDishes() {
+        return dishes;
     }
 
-    public void setMeals(List<Integer> meals) {
-        this.meals = meals;
+    public void setDishes(List<Integer> dishes) {
+        this.dishes = dishes;
     }
 }

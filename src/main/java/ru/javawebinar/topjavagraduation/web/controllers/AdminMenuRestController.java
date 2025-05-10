@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Menu;
-import ru.javawebinar.topjavagraduation.repository.JpaMealRepository;
+import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
 import ru.javawebinar.topjavagraduation.service.MenuService;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 
@@ -22,21 +22,21 @@ public class AdminMenuRestController {
 
     public static final String REST_URL = "/rest/admin/menus";
     @Autowired
-    private JpaMealRepository mealRepository;
+    private JpaDishRepository dishRepository;
     @Autowired
     private MenuService service;
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody MenuTo to, @PathVariable int id) {
-        Menu menu = convertMenuTo(to, mealRepository);
+        Menu menu = convertMenuTo(to, dishRepository);
         checkIdOnUpdate(menu, id);
         service.update(menu);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo to) {
-        Menu menu = convertMenuTo(to, mealRepository);
+        Menu menu = convertMenuTo(to, dishRepository);
         Menu created = service.create(menu);
         return buildResponseEntity(created, REST_URL);
     }

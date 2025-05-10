@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 
 
-public class MealTo {
+public class DishTo {
 
     private Integer id;
 
@@ -21,10 +21,10 @@ public class MealTo {
     @NotNull
     private Integer restaurantId;
 
-    public MealTo() {
+    public DishTo() {
     }
 
-    public MealTo(Integer id, String name, Boolean enabled, Float price, Integer restaurantId) {
+    public DishTo(Integer id, String name, Boolean enabled, Float price, Integer restaurantId) {
         this.id = id;
         this.name = name;
         this.enabled = enabled;

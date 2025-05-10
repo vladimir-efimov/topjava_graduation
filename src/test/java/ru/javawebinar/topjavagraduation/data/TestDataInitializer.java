@@ -16,7 +16,7 @@ public class TestDataInitializer {
     JpaRestaurantRepository restaurantRepository;
 
     @Autowired
-    JpaMealRepository mealRepository;
+    JpaDishRepository dishRepository;
 
     @Autowired
     JpaMenuRepository menuRepository;
@@ -38,7 +38,7 @@ public class TestDataInitializer {
 
     public void init() {
         initRepository(restaurantRepository, TestData.restaurants);
-        initRepository(mealRepository, TestData.meals);
+        initRepository(dishRepository, TestData.dishes);
         initRepository(menuRepository, TestData.menus);
         initRepository(userRepository, TestData.users);
         initRepository(voteRepository, TestData.votes);

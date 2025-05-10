@@ -3,10 +3,10 @@ package ru.javawebinar.topjavagraduation.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "meal", uniqueConstraints = {
-        @UniqueConstraint(name = "meal_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
+@Table(name = "dish", uniqueConstraints = {
+        @UniqueConstraint(name = "dish_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
 })
-public class Meal extends AbstractManagedEntity {
+public class Dish extends AbstractManagedEntity {
 
     @Column(name = "price", nullable = false)
     private float price;
@@ -15,14 +15,14 @@ public class Meal extends AbstractManagedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    public Meal() {
+    public Dish() {
     }
 
-    public Meal(String name, float price, Restaurant restaurant) {
+    public Dish(String name, float price, Restaurant restaurant) {
         this(null, true, name, price, restaurant);
     }
 
-    public Meal(Integer id, boolean enabled, String name, float price, Restaurant restaurant) {
+    public Dish(Integer id, boolean enabled, String name, float price, Restaurant restaurant) {
         super(id, enabled, name);
         this.price = price;
         this.restaurant = restaurant;
@@ -47,13 +47,13 @@ public class Meal extends AbstractManagedEntity {
     @Override
     public void assertValid() {
         if (!restaurant.isEnabled()) {
-            throw new IllegalArgumentException("Meal refers to disabled restaurant");
+            throw new IllegalArgumentException("Dish refers to disabled restaurant");
         }
     }
 
     @Override
     public String toString() {
-        return "Meal{" +
+        return "Dish{" +
                 "id=" + id +
                 ", name=" + name +
                 ", price=" + price +

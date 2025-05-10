@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
-import ru.javawebinar.topjavagraduation.model.Meal;
+import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class MealServiceTest extends AbstractServiceTest<Meal> {
+public class DishServiceTest extends AbstractServiceTest<Dish> {
 
-    private final MealService service;
+    private final DishService service;
 
-    public MealServiceTest(@Autowired MealService service, @Autowired TestDataProvider<Meal> dataProvider) {
+    public DishServiceTest(@Autowired DishService service, @Autowired TestDataProvider<Dish> dataProvider) {
         super(service, dataProvider);
         this.service = service;
     }
@@ -25,7 +25,7 @@ public class MealServiceTest extends AbstractServiceTest<Meal> {
     @Test
     @Override
     void tryUpdateInvalid() {
-        List<Meal> invalidEntities = dataProvider.getUpdatedInvalid();
+        List<Dish> invalidEntities = dataProvider.getUpdatedInvalid();
         invalidEntities.forEach(enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
     }
 
@@ -33,12 +33,12 @@ public class MealServiceTest extends AbstractServiceTest<Meal> {
     @Transactional
     void findByRestaurant() {
         Integer restaurantId = dataProvider.getFirst().getRestaurant().getId();
-        List<Meal> meals = service.findByRestaurant(restaurantId);
-        List<Meal> expectedMeals = dataProvider.getAll().stream()
-                .filter(meal -> meal.getRestaurant().getId().equals(restaurantId)).toList();
-        assertEquals(expectedMeals.size(), meals.size());
-        for (int i = 0; i < meals.size(); i++) {
-            matcher.assertMatch(expectedMeals.get(i), meals.get(i));
+        List<Dish> dishes = service.findByRestaurant(restaurantId);
+        List<Dish> expectedDishes = dataProvider.getAll().stream()
+                .filter(dish -> dish.getRestaurant().getId().equals(restaurantId)).toList();
+        assertEquals(expectedDishes.size(), dishes.size());
+        for (int i = 0; i < dishes.size(); i++) {
+            matcher.assertMatch(expectedDishes.get(i), dishes.get(i));
         }
     }
 }

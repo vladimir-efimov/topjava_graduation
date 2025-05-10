@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestData;
-import ru.javawebinar.topjavagraduation.model.Meal;
+import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.service.MealService;
+import ru.javawebinar.topjavagraduation.service.DishService;
 import ru.javawebinar.topjavagraduation.service.MenuService;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
 
@@ -24,7 +24,7 @@ import static ru.javawebinar.topjavagraduation.web.controllers.MenuRestControlle
 public class MenuRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
-    MealService mealService;
+    DishService dishService;
     @Autowired
     RestaurantService restaurantService;
     @Autowired
@@ -33,10 +33,10 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
     @Test
     void getAll() throws Exception {
         Restaurant restaurant = restaurantService.create((Restaurant) TestData.newRestaurant.clone());
-        Meal meal = (Meal) TestData.newMeal.clone();
-        meal.setRestaurant(restaurant);
-        Meal createdMeal = mealService.create(meal);
-        menuService.create(new Menu(null, LocalDate.now(), restaurant, Set.of(createdMeal)));
+        Dish dish = (Dish) TestData.newDish.clone();
+        dish.setRestaurant(restaurant);
+        Dish createdDish = dishService.create(dish);
+        menuService.create(new Menu(null, LocalDate.now(), restaurant, Set.of(createdDish)));
 
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
                         .with(userHttpBasic(TestData.adminUser)))

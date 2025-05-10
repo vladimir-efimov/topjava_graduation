@@ -13,15 +13,15 @@ import java.util.Optional;
 public interface JpaMenuRepository extends JpaBaseEntityRepository<Menu> {
 
     @Override
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.id=:id")
     Optional<Menu> findById(@Param("id") Integer id);
 
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals WHERE m.restaurant.id=:id")
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes WHERE m.restaurant.id=:id")
     List<Menu> findByRestaurant(@Param("id") int id);
 
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals LEFT JOIN FETCH m.restaurant WHERE m.date=:date")
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes LEFT JOIN FETCH m.restaurant WHERE m.date=:date")
     List<Menu> findByDate(@Param("date") LocalDate date);
 
-    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.meals WHERE m.restaurant.id=:id AND m.date=:date")
+    @Query("SELECT m FROM Menu m LEFT JOIN FETCH m.dishes WHERE m.restaurant.id=:id AND m.date=:date")
     Optional<Menu> findByRestaurantAndDate(@Param("id") int id, @Param("date") LocalDate date);
 }

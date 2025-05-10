@@ -18,19 +18,19 @@ public class Menu extends AbstractBaseEntity {
     Restaurant restaurant;
 
     @ManyToMany
-    @JoinTable(name = "menu_meal",
+    @JoinTable(name = "menu_dish",
             joinColumns = {@JoinColumn(name = "menu_id")},
-            inverseJoinColumns = {@JoinColumn(name = "meal_id")})
-    Set<Meal> meals;
+            inverseJoinColumns = {@JoinColumn(name = "dish_id")})
+    Set<Dish> dishes;
 
     public Menu() {
     }
 
-    public Menu(Integer id, LocalDate date, Restaurant restaurant, Set<Meal> meals) {
+    public Menu(Integer id, LocalDate date, Restaurant restaurant, Set<Dish> dishes) {
         super(id);
         this.date = date;
         this.restaurant = restaurant;
-        this.meals = meals;
+        this.dishes = dishes;
     }
 
     public LocalDate getDate() {
@@ -41,8 +41,8 @@ public class Menu extends AbstractBaseEntity {
         return restaurant;
     }
 
-    public Set<Meal> getMeals() {
-        return meals;
+    public Set<Dish> getDishes() {
+        return dishes;
     }
 
     public void setDate(LocalDate date) {
@@ -53,21 +53,21 @@ public class Menu extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public void setMeals(Set<Meal> meals) {
-        this.meals = meals;
+    public void setDishes(Set<Dish> dishes) {
+        this.dishes = dishes;
     }
 
     @Override
     public void assertValid() {
         if (!restaurant.isEnabled()) {
-            throw new IllegalArgumentException("Meal refers to disabled restaurant");
+            throw new IllegalArgumentException("Menu refers to disabled restaurant");
         }
-        for (Meal meal : meals) {
-            if (!meal.isEnabled()) {
-                throw new IllegalArgumentException("Menu contains disabled meal with id=" + meal.getId());
+        for (Dish dish : dishes) {
+            if (!dish.isEnabled()) {
+                throw new IllegalArgumentException("Menu contains disabled dish with id=" + dish.getId());
             }
-            if (!restaurant.getId().equals(meal.getRestaurant().getId())) {
-                throw new IllegalArgumentException("Menu contains meal with id=" + meal.getId() +
+            if (!restaurant.getId().equals(dish.getRestaurant().getId())) {
+                throw new IllegalArgumentException("Menu contains dish with id=" + dish.getId() +
                         " which belongs to another restaurant");
             }
         }
@@ -78,7 +78,7 @@ public class Menu extends AbstractBaseEntity {
         return "Menu{" +
                 "date=" + date +
                 ", restaurant=" + (restaurant == null ? "null" : restaurant.getName()) +
-                ", meals=" + (meals == null ? "[]" : meals.toString()) +
+                ", dishes=" + (dishes == null ? "[]" : dishes.toString()) +
                 '}';
     }
 }

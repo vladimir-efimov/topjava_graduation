@@ -44,45 +44,45 @@ public class TestData {
     private static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "id");
 
-    public static final Meal disabledMeal =
-            new Meal(8, false, "disabled_meal", 500.0f, restaurants[2]);
-    public static final Meal[] meals = {
-            new Meal(1, true, "meal1", 300.0f, restaurants[0]),
-            new Meal(2, true, "meal2", 200.0f, restaurants[0]),
-            new Meal(3, true, "meal3", 200.0f, restaurants[0]),
-            new Meal(4, true, "meal4", 200.0f, restaurants[1]),
-            new Meal(5, true, "meal5", 300.0f, restaurants[1]),
-            new Meal(6, true, "meal6", 300.0f, restaurants[2]),
-            new Meal(7, true, "meal7", 300.0f, restaurants[2]),
-            disabledMeal
+    public static final Dish disabledDish =
+            new Dish(8, false, "disabled_dish", 500.0f, restaurants[2]);
+    public static final Dish[] dishes = {
+            new Dish(1, true, "dish1", 300.0f, restaurants[0]),
+            new Dish(2, true, "dish2", 200.0f, restaurants[0]),
+            new Dish(3, true, "dish3", 200.0f, restaurants[0]),
+            new Dish(4, true, "dish4", 200.0f, restaurants[1]),
+            new Dish(5, true, "dish5", 300.0f, restaurants[1]),
+            new Dish(6, true, "dish6", 300.0f, restaurants[2]),
+            new Dish(7, true, "dish7", 300.0f, restaurants[2]),
+            disabledDish
     };
-    public static final Meal newMeal = new Meal("newMeal", 115.0f, restaurants[0]);
-    public static final Meal updatedMeal = new Meal(2, true, "meal2", 250.0f, restaurants[0]);
-    public static final List<Meal> invalidMeals = List.of();
-    public static final List<Meal> invalidUpdateMeals = List.of(
+    public static final Dish newDish = new Dish("newDish", 115.0f, restaurants[0]);
+    public static final Dish updatedDish = new Dish(2, true, "dish2", 250.0f, restaurants[0]);
+    public static final List<Dish> invalidDishes = List.of();
+    public static final List<Dish> invalidUpdateDishes = List.of(
             // change of restaurant is not allowed
-            new Meal(2, true, "meal2", 250.0f, restaurants[1])
+            new Dish(2, true, "dish2", 250.0f, restaurants[1])
     );
-    private static final MatcherFactory.Matcher<Meal> MEAL_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "id");
+    private static final MatcherFactory.Matcher<Dish> DISH_MATCHER =
+            MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "id");
 
     public static final LocalDate yestarday = LocalDate.of(2024, 1, 12);
     public static final LocalDate date = LocalDate.of(2024, 1, 13);
     public static final Restaurant popularRestaurant = TestData.restaurants[2];
 
     public static final Menu[] menus = {
-            new Menu(1, yestarday, restaurants[0], Set.of(meals[0], meals[1])),
-            new Menu(2, date, restaurants[0], Set.of(meals[0], meals[1])),
-            new Menu(3, date, restaurants[1], Set.of(meals[3], meals[4])),
+            new Menu(1, yestarday, restaurants[0], Set.of(dishes[0], dishes[1])),
+            new Menu(2, date, restaurants[0], Set.of(dishes[0], dishes[1])),
+            new Menu(3, date, restaurants[1], Set.of(dishes[3], dishes[4])),
     };
-    public static final Menu newMenu = new Menu(null, date, restaurants[2], Set.of(meals[5], meals[6]));
-    public static final Menu updatedMenu = new Menu(2, date, restaurants[0], Set.of(meals[0], meals[1]));
+    public static final Menu newMenu = new Menu(null, date, restaurants[2], Set.of(dishes[5], dishes[6]));
+    public static final Menu updatedMenu = new Menu(2, date, restaurants[0], Set.of(dishes[0], dishes[1]));
     public static final List<Menu> invalidMenus = List.of(
-            new Menu(null, date, restaurants[2], Set.of(meals[5], meals[7])),
-            new Menu(null, date, restaurants[2], Set.of(meals[0], meals[6]))
+            new Menu(null, date, restaurants[2], Set.of(dishes[5], dishes[7])),
+            new Menu(null, date, restaurants[2], Set.of(dishes[0], dishes[6]))
     );
     public static final List<Menu> invalidUpdateMenus = List.of(
-            new Menu(2, date, restaurants[2], Set.of(meals[6]))
+            new Menu(2, date, restaurants[2], Set.of(dishes[6]))
     );
     private static final MatcherFactory.Matcher<Menu> MENU_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "id");
@@ -116,9 +116,9 @@ public class TestData {
     }
 
     @Bean
-    TestDataProvider<Meal> getMealProvider() {
-        return new TestDataProvider<>(List.of(meals), newMeal, updatedMeal,
-                invalidMeals, invalidUpdateMeals, MEAL_MATCHER);
+    TestDataProvider<Dish> getDishProvider() {
+        return new TestDataProvider<>(List.of(dishes), newDish, updatedDish,
+                invalidDishes, invalidUpdateDishes, DISH_MATCHER);
     }
 
     @Bean
