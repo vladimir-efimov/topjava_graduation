@@ -13,11 +13,11 @@ import java.util.Optional;
 public interface JpaVoteRepository extends JpaBaseEntityRepository<Vote> {
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.user.id=:id")
-    List<Vote> findByUser(@Param("id") int id);
+    List<Vote> getFilteredByUserWithRestaurant(@Param("id") int id);
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.date=:date")
-    List<Vote> findByDate(@Param("date") LocalDate date);
+    List<Vote> getFilteredByDateWithRestaurant(@Param("date") LocalDate date);
 
     @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.user.id=:id AND v.date=:date")
-    Optional<Vote> findByUserAndDate(@Param("id") int id, @Param("date") LocalDate date);
+    Optional<Vote> getFilteredByUserAndDateWithRestaurant(@Param("id") int id, @Param("date") LocalDate date);
 }

@@ -80,15 +80,15 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     public List<Vote> findByUser(int userId) {
-        return repository.findByUser(userId);
+        return repository.getFilteredByUserWithRestaurant(userId);
     }
 
     public List<Vote> findByDate(LocalDate date) {
-        return repository.findByDate(date);
+        return repository.getFilteredByDateWithRestaurant(date);
     }
 
     public Optional<Vote> findByUserAndDate(int userId, LocalDate date) {
-        return repository.findByUserAndDate(userId, date);
+        return repository.getFilteredByUserAndDateWithRestaurant(userId, date);
     }
 
     public Vote getTodaysVote() {

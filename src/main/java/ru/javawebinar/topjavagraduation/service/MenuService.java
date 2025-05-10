@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.JpaMenuRepository;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,16 +22,22 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         this.repository = repository;
     }
 
+    @Override
+    public Menu get(int id) {
+        return repository.getWithDishesAndRestaurant(id)
+                .orElseThrow(() -> new NotFoundException("Menu with id " + id + " is not found"));
+    }
+
     public List<Menu> findByRestaurant(int id) {
-        return repository.findByRestaurant(id);
+        return repository.getFilteredByRestaurantWithDishes(id);
     }
 
     public List<Menu> findByDate(LocalDate date) {
-        return repository.findByDate(date);
+        return repository.getFilteredByDateWithDishesAndRestaurant(date);
     }
 
     public Optional<Menu> findByRestaurantAndDate(int id, LocalDate date) {
-        return repository.findByRestaurantAndDate(id, date);
+        return repository.getFilteredByRestaurantAndDateWithDishes(id, date);
     }
 
     @Override
