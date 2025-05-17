@@ -3,7 +3,7 @@ package ru.javawebinar.topjavagraduation.data;
 import java.util.List;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
-import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
+import ru.javawebinar.topjavagraduation.utils.Matcher;
 
 
 public class TestDataProvider<T extends AbstractBaseEntity> {
@@ -13,10 +13,10 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
     private final T updatedEntity;
     private final List<T> invalidNewEntities;
     private final List<T> invalidUpdateEntities;
-    private final MatcherFactory.Matcher<T> matcher;
+    private final Matcher<T> matcher;
 
     protected TestDataProvider(List<T> entities, T newEntity, T updatedEntity,
-                               List<T> invalidNewEntities, List<T> invalidUpdateEntities, MatcherFactory.Matcher<T> matcher) {
+                               List<T> invalidNewEntities, List<T> invalidUpdateEntities, Matcher<T> matcher) {
         this.entities = entities;
         this.newEntity = newEntity;
         this.updatedEntity = updatedEntity;
@@ -53,7 +53,7 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
         return invalidUpdateEntities;
     }
 
-    public MatcherFactory.Matcher<T> getMatcher() {
+    public Matcher<T> getMatcher() {
         return matcher;
     }
 }

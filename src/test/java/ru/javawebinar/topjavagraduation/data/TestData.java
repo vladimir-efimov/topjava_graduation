@@ -3,7 +3,7 @@ package ru.javawebinar.topjavagraduation.data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.javawebinar.topjavagraduation.model.*;
-import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
+import ru.javawebinar.topjavagraduation.utils.Matcher;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,8 +26,7 @@ public class TestData {
     public static final User newUser = new User("NewUser", "newuser@restaurants.ru", Set.of(Role.USER), "newuser");
     public static final User updatedUser = new User(3, true, "TestUser1", "user1u@restaurants.ru", Set.of(Role.USER), "12345");
     public static final List<User> invalidUsers = List.of();
-    private static final MatcherFactory.Matcher<User> USER_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(User.class, "id");
+    private static final Matcher<User> USER_MATCHER = new Matcher<>(List.of("id"));
 
     public static final Restaurant disabledRestaurant =
             new Restaurant(5, false, "restaurant2", "address1");
@@ -41,8 +40,7 @@ public class TestData {
     public static final Restaurant newRestaurant = new Restaurant("cafe4", "address4");
     public static final Restaurant updatedRestaurant = new Restaurant(3, true, "fastfood2", "address2_3");
     public static final List<Restaurant> invalidRestaurants = List.of();
-    private static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "id");
+    private static final Matcher<Restaurant> RESTAURANT_MATCHER = new Matcher<>(List.of("id"));
 
     public static final Dish disabledDish =
             new Dish(8, false, "disabled_dish", 500.0f, restaurants[2]);
@@ -63,8 +61,8 @@ public class TestData {
             // change of restaurant is not allowed
             new Dish(2, true, "dish2", 250.0f, restaurants[1])
     );
-    private static final MatcherFactory.Matcher<Dish> DISH_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "id");
+    private static final Matcher<Dish> DISH_MATCHER =
+            new Matcher<>(List.of("id"), List.of("id"), List.of("restaurant"));
 
     public static final LocalDate yestarday = LocalDate.of(2024, 1, 12);
     public static final LocalDate date = LocalDate.of(2024, 1, 13);
@@ -84,8 +82,8 @@ public class TestData {
     public static final List<Menu> invalidUpdateMenus = List.of(
             new Menu(2, date, restaurants[2], Set.of(dishes[6]))
     );
-    private static final MatcherFactory.Matcher<Menu> MENU_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "id");
+    private static final Matcher<Menu> MENU_MATCHER =
+            new Matcher<>(List.of("id"), List.of("id", "dishes"), List.of("restaurant"));
 
     public static final Vote[] votes = {
             new Vote(1, date, users[1], restaurants[0]),
@@ -100,8 +98,7 @@ public class TestData {
     public static final List<Vote> invalidUpdateVotes = List.of(
             new Vote(2, date, users[2], disabledRestaurant)
     );
-    private static final MatcherFactory.Matcher<Vote> VOTE_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "id");
+    private static final Matcher<Vote> VOTE_MATCHER = new Matcher<>(List.of("id"));
 
     @Bean
     TestDataProvider<User> getUserProvider() {

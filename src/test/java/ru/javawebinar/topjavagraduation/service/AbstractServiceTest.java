@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import ru.javawebinar.topjavagraduation.data.TestDataInitializer;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
-import ru.javawebinar.topjavagraduation.topjava.MatcherFactory;
+import ru.javawebinar.topjavagraduation.utils.Matcher;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     protected final AbstractBaseEntityService<T> service;
     protected final TestDataProvider<T> dataProvider;
-    protected final MatcherFactory.Matcher<T> matcher;
+    protected final Matcher<T> matcher;
 
     @Autowired
     private TestDataInitializer dataInitializer;
@@ -50,14 +50,10 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     }
 
     @Test
-    @Disabled
     void getAll() {
         List<T> entities = service.getAll();
         List<T> expectedEntities = dataProvider.getAll();
-        assertEquals(expectedEntities.size(), entities.size());
-        for (int i = 0; i < entities.size(); i++) {
-            matcher.assertMatch(expectedEntities.get(i), entities.get(i));
-        }
+        matcher.assertMatch(expectedEntities, entities);
     }
 
     @Test
