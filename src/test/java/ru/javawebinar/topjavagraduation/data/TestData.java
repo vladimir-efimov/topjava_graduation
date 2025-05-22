@@ -90,7 +90,7 @@ public class TestData {
             new Vote(2, date, users[2], popularRestaurant),
             new Vote(3, date, users[3], popularRestaurant),
     };
-    public static final Vote newVote = new Vote(null, date, users[1], popularRestaurant);
+    public static final Vote newVote = new Vote(null, date, users[4], popularRestaurant);
     public static final Vote updatedVote = new Vote(2, date, users[2], restaurants[3]);
     public static final List<Vote> invalidNewVotes = List.of(
             new Vote(null, date, users[3], disabledRestaurant)
@@ -98,7 +98,8 @@ public class TestData {
     public static final List<Vote> invalidUpdateVotes = List.of(
             new Vote(2, date, users[2], disabledRestaurant)
     );
-    private static final Matcher<Vote> VOTE_MATCHER = new Matcher<>(List.of("id"));
+    private static final Matcher<Vote> VOTE_MATCHER =
+            new Matcher<>(List.of("id"), List.of("id"), List.of("restaurant", "user"));
 
     @Bean
     TestDataProvider<User> getUserProvider() {

@@ -46,7 +46,7 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     @Test
     void get() {
         T entity = service.get(1);
-        matcher.assertMatch(entity, dataProvider.getFirst());
+        matcher.assertMatch(dataProvider.getFirst(), entity);
     }
 
     @Test

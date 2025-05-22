@@ -10,12 +10,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
 
-@Disabled
+
 public class VotingServiceTest extends AbstractServiceTest<Vote> {
 
     private final VoteService service;
@@ -30,6 +31,7 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
     }
 
     @Test
+    @Transactional
     void delete() {
         Vote vote = dataProvider.getFirst();
         assertTrue(service.getAll().contains(vote));
@@ -49,18 +51,16 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
 
     @Test
     void updateVote() {
-        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
         LocalDateTime dateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() - 1);
         clockHolder.setDateTime(dateTime); // update vote is not allowed now
-        Vote registeredVote = service.create(vote);
-        registeredVote.setRestaurant(TestData.restaurants[2]);
-        service.update(registeredVote);
+        Integer voteId = TestData.updatedVote.getId();
+        service.update(TestData.updatedVote);
+        dataProvider.getMatcher().assertMatch(TestData.updatedVote, service.get(voteId));
     }
 
     @Test
     void tryUpdateVote() {
-        Vote vote = new Vote(TestData.users[2], TestData.restaurants[3]);
-        Vote registeredVote = service.create(vote);
+        Vote registeredVote = service.create(TestData.newVote);
         LocalDateTime tooLateTime = TestData.date.atStartOfDay().plusHours(service.getEndVotingTime().getHour() + 1);
         clockHolder.setDateTime(tooLateTime); // update vote is not allowed now
         registeredVote.setRestaurant(TestData.restaurants[2]);
