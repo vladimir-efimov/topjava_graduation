@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -13,6 +14,7 @@ import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.service.VoteService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,11 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
 
     @Autowired
     TestClockHolder clockHolder;
+
+    @AfterEach
+    void restoreClockHolder() {
+        clockHolder.setDateTime(LocalDateTime.now());
+    }
 
     @Test
     void vote() throws Exception {

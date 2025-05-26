@@ -6,7 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,11 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
         clockHolder.setDateTime(TestData.date.atStartOfDay());
     }
 
+    @AfterEach
+    void restoreClockHolder() {
+        clockHolder.setDateTime(LocalDateTime.now());
+    }
+    
     @Test
     @Transactional
     void delete() {
