@@ -7,10 +7,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {
-        @UniqueConstraint(name = "menu_unique_date_restaurant_idx", columnNames = {"date", "restaurant_id"})
+        @UniqueConstraint(name = "menu_unique_date_restaurant_idx", columnNames = {"serve_date", "restaurant_id"})
 })
 public class Menu extends AbstractBaseEntity {
-    @Column(name = "date", nullable = false)
+    @Column(name = "serve_date", nullable = false)
     LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
