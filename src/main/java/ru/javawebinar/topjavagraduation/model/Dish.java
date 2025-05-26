@@ -1,6 +1,6 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "dish")

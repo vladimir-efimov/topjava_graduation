@@ -1,8 +1,7 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import jakarta.persistence.*;
-import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.LazyInitializer;
+import javax.persistence.*;
+import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -46,18 +45,6 @@ public abstract class AbstractBaseEntity implements Cloneable {
     @Override
     public int hashCode() {
         return getClassWithoutInitializingProxy(this).hashCode();
-    }
-
-    //Method is removed in Hibernate 6
-    public static Class getClassWithoutInitializingProxy(Object object) {
-        if (object instanceof HibernateProxy) {
-            HibernateProxy proxy = (HibernateProxy) object;
-            LazyInitializer li = proxy.getHibernateLazyInitializer();
-            return li.getPersistentClass();
-        }
-        else {
-            return object.getClass();
-        }
     }
 
     /**

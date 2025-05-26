@@ -1,6 +1,6 @@
 package ru.javawebinar.topjavagraduation.web.handlers;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.NestedExceptionUtils;

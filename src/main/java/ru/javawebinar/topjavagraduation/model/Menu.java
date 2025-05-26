@@ -1,6 +1,6 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Set;
