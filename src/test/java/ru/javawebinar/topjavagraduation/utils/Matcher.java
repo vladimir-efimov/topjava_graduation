@@ -1,13 +1,12 @@
 package ru.javawebinar.topjavagraduation.utils;
 
-import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
-
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class Matcher <T> {
+public class Matcher<T> {
 
     private final String[] fieldsToIgnore;
     private final String[] fieldsToIgnoreForCollection;
@@ -31,7 +30,7 @@ public class Matcher <T> {
     public void assertMatch(List<T> expected, List<T> actual) {
         assertNotNull(actual);
         assertEquals(expected.size(), actual.size());
-        for(int i = 0; i < expected.size(); i++) {
+        for (int i = 0; i < expected.size(); i++) {
             Matcher.assertMatch(expected.get(i), actual.get(i), fieldsToIgnoreForCollection,
                     fieldsToCompareWithEquals);
         }
@@ -41,8 +40,8 @@ public class Matcher <T> {
                                         String[] fieldsToCompareWithEquals) {
         assertThat(actual).usingRecursiveComparison()
                 .withComparatorForFields(
-                        (a,e) -> e.equals(a) ? 0 : 1
-                        ,fieldsToCompareWithEquals)
+                        (a, e) -> e.equals(a) ? 0 : 1
+                        , fieldsToCompareWithEquals)
                 .ignoringFields(fieldsToIgnore).isEqualTo(expected);
     }
 }
