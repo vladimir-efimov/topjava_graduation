@@ -3,9 +3,7 @@ package ru.javawebinar.topjavagraduation.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dish", uniqueConstraints = {
-        @UniqueConstraint(name = "dish_unique_name_restaurant_idx", columnNames = {"name", "restaurant_id"})
-})
+@Table(name = "dish")
 public class Dish extends AbstractManagedEntity {
 
     @Column(name = "price", nullable = false)
