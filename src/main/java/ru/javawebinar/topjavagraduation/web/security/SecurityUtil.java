@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 
 public class SecurityUtil {

@@ -2,7 +2,7 @@ package ru.javawebinar.topjavagraduation.service;
 
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.repository.JpaBaseEntityRepository;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package ru.javawebinar.topjavagraduation.service;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 import java.util.List;
 

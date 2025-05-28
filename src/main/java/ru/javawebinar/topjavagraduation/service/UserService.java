@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 import java.util.HashSet;
 import java.util.Optional;

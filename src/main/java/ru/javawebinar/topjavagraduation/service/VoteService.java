@@ -15,8 +15,8 @@ import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
 import ru.javawebinar.topjavagraduation.repository.JpaVoteRepository;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
 

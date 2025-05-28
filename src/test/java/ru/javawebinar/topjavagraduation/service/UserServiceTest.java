@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.User;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

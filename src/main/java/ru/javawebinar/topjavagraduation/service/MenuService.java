@@ -3,8 +3,8 @@ package ru.javawebinar.topjavagraduation.service;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.JpaMenuRepository;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

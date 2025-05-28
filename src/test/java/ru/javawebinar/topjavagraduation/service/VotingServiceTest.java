@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Vote;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 
 public class VotingServiceTest extends AbstractServiceTest<Vote> {

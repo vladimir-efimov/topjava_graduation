@@ -7,7 +7,7 @@ import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
 import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjavagraduation.to.DishTo;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import java.util.HashSet;
 import java.util.Set;

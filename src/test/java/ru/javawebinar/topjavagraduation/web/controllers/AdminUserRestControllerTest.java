@@ -9,8 +9,8 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
+import ru.javawebinar.topjavagraduation.validation.ErrorInfo;
+import ru.javawebinar.topjavagraduation.validation.ErrorType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

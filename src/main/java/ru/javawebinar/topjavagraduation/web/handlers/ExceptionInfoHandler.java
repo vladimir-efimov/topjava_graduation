@@ -15,10 +15,10 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.validation.BindException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.javawebinar.topjavagraduation.validation.DataConflictMessageSource;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
-import ru.javawebinar.topjavagraduation.validation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.validation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.validation.ErrorInfo;
+import ru.javawebinar.topjavagraduation.validation.ErrorType;
+import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import java.util.Optional;
 

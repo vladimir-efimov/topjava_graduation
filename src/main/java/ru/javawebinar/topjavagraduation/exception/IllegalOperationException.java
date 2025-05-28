@@ -1,4 +1,4 @@
-package ru.javawebinar.topjavagraduation.validation.exception;
+package ru.javawebinar.topjavagraduation.exception;
 
 public class IllegalOperationException extends RuntimeException {
 

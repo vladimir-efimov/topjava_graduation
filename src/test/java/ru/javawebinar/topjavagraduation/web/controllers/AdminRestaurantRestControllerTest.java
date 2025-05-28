@@ -9,8 +9,8 @@ import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorInfo;
-import ru.javawebinar.topjavagraduation.validation.exception.ErrorType;
+import ru.javawebinar.topjavagraduation.validation.ErrorInfo;
+import ru.javawebinar.topjavagraduation.validation.ErrorType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
