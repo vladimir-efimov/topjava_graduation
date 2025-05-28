@@ -18,7 +18,6 @@ import ru.javawebinar.topjavagraduation.repository.JpaVoteRepository;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
-import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
 
 @Service
 public class VoteService extends AbstractBaseEntityService<Vote> {
@@ -91,8 +90,8 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         return repository.getFilteredByUserAndDateWithRestaurant(userId, date);
     }
 
-    public Vote getTodaysVote() {
-        return findByUserAndDate(getAuthorizedUserId(), getCurrentDateTime().toLocalDate())
+    public Vote getTodaysVote(int userId) {
+        return findByUserAndDate(userId, getCurrentDateTime().toLocalDate())
                 .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
     }
 

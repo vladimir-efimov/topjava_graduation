@@ -49,7 +49,7 @@ public class VoteRestController {
 
     @GetMapping("/todays-vote")
     public Vote getTodaysVote() {
-        return service.getTodaysVote();
+        return service.getTodaysVote(getAuthorizedUserId());
     }
 
     @PutMapping(value = "/todays-vote")
