@@ -16,6 +16,6 @@ public class NoHandlerExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorInfo> wrongRequest(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, ErrorType.WRONG_REQUEST, "Handler for provided address is not found");
+        return logAndGetErrorInfo(req, ErrorType.DATA_NOT_FOUND, "Handler for provided address is not found");
     }
 }

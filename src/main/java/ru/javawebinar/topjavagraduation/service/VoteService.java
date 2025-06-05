@@ -106,7 +106,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     public void revoke(int userId) {
-        Optional<Vote> result = findByUserAndDate(userId, LocalDate.now());
+        Optional<Vote> result = findByUserAndDate(userId, getCurrentDate());
         if (result.isPresent()) {
             delete(result.get().getId(), userId);
         } else {
@@ -130,7 +130,11 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     }
 
     private LocalDateTime getCurrentDateTime() {
-            return LocalDateTime.now(clockHolder.getClock());
+        return LocalDateTime.now(clockHolder.getClock());
+    }
+
+    private LocalDate getCurrentDate() {
+        return LocalDate.now(clockHolder.getClock());
     }
 
     private boolean beforeToday(LocalDate date) {
@@ -139,7 +143,7 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
 
     private Restaurant getRestaurant(int id) {
         return restaurantRepository.findById(id)
-                   .orElseThrow(() -> new NotFoundException("Restaurant with id = " + id + " is not found"));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id = " + id + " is not found"));
     }
 
     private User getUser(int id) {

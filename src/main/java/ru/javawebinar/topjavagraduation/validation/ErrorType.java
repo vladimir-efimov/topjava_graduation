@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorType {
 
     DATA_CONFLICT_ERROR("DATA_CONFLICT", "Failed to write data to repository due to data conflict", HttpStatus.CONFLICT),
-    DATA_NOT_FOUND("DATA_NOT_FOUND", "Data is not found", HttpStatus.UNPROCESSABLE_ENTITY),
+    DATA_NOT_FOUND("DATA_NOT_FOUND", "Resource is not found", HttpStatus.NOT_FOUND),
     ILLEGAL_OPERATION("ILLEGAL_OPERATION", "Illegal operation", HttpStatus.UNPROCESSABLE_ENTITY),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR),
     VALIDATION_ERROR("VALIDATION_ERROR", "Validation error", HttpStatus.UNPROCESSABLE_ENTITY),

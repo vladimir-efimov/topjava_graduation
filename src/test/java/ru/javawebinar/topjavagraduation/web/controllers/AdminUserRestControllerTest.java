@@ -55,7 +55,7 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/0")
                         .with(userHttpBasic(TestData.adminUser)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -126,7 +126,6 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-
 
     @Test
     void tryCreateWithDuplicatedEmail() throws Exception {

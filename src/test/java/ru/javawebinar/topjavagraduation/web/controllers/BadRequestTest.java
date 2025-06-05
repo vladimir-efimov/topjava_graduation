@@ -19,7 +19,7 @@ public class BadRequestTest extends AbstractRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/not_existed/1")
                         .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 

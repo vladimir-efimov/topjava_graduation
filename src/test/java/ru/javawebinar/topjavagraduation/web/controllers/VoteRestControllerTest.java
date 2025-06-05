@@ -79,7 +79,7 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/todays-vote")
                         .with(userHttpBasic(user)))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isNotFound());
     }
 
 }
