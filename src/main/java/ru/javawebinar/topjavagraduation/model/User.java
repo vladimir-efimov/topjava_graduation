@@ -23,8 +23,8 @@ public class User extends AbstractManagedEntity {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
     @Column(name = "role")
-    @JoinColumn
-    private Set<Role> roles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles = EnumSet.noneOf(Role.class);
 
     @Column(name = "password", nullable = false)
     @NotBlank

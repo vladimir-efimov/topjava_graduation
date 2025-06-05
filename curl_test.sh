@@ -1,4 +1,4 @@
-app="http://localhost:8080/topjava-graduation"
+app="http://localhost:8081"
 
 user_operations() {
     echo -e "\nOperations with users"

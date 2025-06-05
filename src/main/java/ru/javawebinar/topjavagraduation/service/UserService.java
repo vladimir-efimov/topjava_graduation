@@ -1,13 +1,10 @@
 package ru.javawebinar.topjavagraduation.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-import ru.javawebinar.topjavagraduation.model.Role;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,10 +13,7 @@ import java.util.Set;
 public class UserService extends AbstractManagedEntityService<User> {
 
     private final JpaUserRepository repository;
-    private static final User[] systemUsers = {
-            new User("Admin", "admin@restaurants.ru", Role.ADMIN, "admin"),
-            new User("SimpleUser", "user@restaurants.ru", Role.USER, "user1")
-    };
+    private static final Set<String> systemUserEmails = Set.of("admin@restaurants.ru", "user@restaurants.ru");
     /**
      * User can request to delete its data, but service has rights to keep anonimized voting data
      * (and use it for analytical reports for example)
@@ -27,7 +21,6 @@ public class UserService extends AbstractManagedEntityService<User> {
      * not possible
      */
     private static final User erasedUser = new User(null, false, "_erased", "_erased@restaurants.ru", Set.of(), "_erased");
-    private final Set<Integer> systemUserIds = new HashSet<>();
 
     public UserService(JpaUserRepository repository) {
         super(repository);
@@ -48,33 +41,18 @@ public class UserService extends AbstractManagedEntityService<User> {
         }
     }
 
-    static User[] getSystemUsers() {
-        return systemUsers;
-    }
-
     boolean isSystemUser(User user) {
-        return systemUserIds.contains(user.getId());
+        return systemUserEmails.contains(user.getEmail());
     }
 
     @Override
     protected void validateOperation(User user, CrudOperation operation) {
         super.validateOperation(user, operation);
         if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
-            if (isSystemUser(user)) {
+            User savedUser = get(user.getId());
+            if (isSystemUser(savedUser)) {
                 throw new IllegalOperationException("Can't " + operation + " system user");
             }
-        }
-    }
-
-    @PostConstruct
-    void init() {
-        systemUserIds.clear();
-        for (User user : systemUsers) {
-            Optional<User> result = findByEmail(user.getEmail());
-            Integer id = result.isEmpty() ?
-                    repository.save(new User(user.getName(), user.getEmail(), user.getRoles(), user.getPassword())).getId()
-                    : result.get().getId();
-            systemUserIds.add(id);
         }
     }
 }

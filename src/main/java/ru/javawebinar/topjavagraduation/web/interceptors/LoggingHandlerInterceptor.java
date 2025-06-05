@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.slf4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +13,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.safeGetAuthorizedUserId;
 
 
+@Component
 public class LoggingHandlerInterceptor implements HandlerInterceptor {
     private static final Logger log = getLogger(LoggingHandlerInterceptor.class);
 

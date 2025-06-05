@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
@@ -20,16 +19,10 @@ public class UserServiceTest extends AbstractServiceTest<User> {
         this.service = service;
     }
 
-    @BeforeEach
-    void setup() {
-        super.setup();
-        service.init();
-    }
-
     @Test
     void tryUpdateSystemUser() {
         User user = service.get(SYSTEM_USER_ID);
-        user.setEmail("system@restaurants.ru");
+        user.setEmail("user@restaurants.ru");
         assertThrows(IllegalOperationException.class, () -> service.update(user));
     }
 }

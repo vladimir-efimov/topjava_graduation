@@ -1,7 +1,5 @@
 package ru.javawebinar.topjavagraduation.web.security;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,7 +8,6 @@ import ru.javawebinar.topjavagraduation.service.UserService;
 
 
 @Service("authorizedUserService")
-@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuthorizedUserService implements UserDetailsService {
 
     UserService userService;

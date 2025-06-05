@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjavagraduation.model.Vote;
@@ -60,6 +61,7 @@ public class VoteRestController {
 
     @DeleteMapping(value = "/todays-vote")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void revoke() {
         service.revoke(getAuthorizedUserId());
     }
