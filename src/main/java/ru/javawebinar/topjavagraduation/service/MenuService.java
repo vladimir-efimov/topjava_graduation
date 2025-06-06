@@ -14,12 +14,12 @@ import java.util.Optional;
 @Service
 public class MenuService extends AbstractBaseEntityService<Menu> {
     private final JpaMenuRepository repository;
-    private LocalDateTime testingPurposeDate = null;
+    private final ClockHolder clockHolder;
 
-
-    public MenuService(JpaMenuRepository repository) {
+    public MenuService(JpaMenuRepository repository, ClockHolder clockHolder) {
         super(repository);
         this.repository = repository;
+        this.clockHolder = clockHolder;
     }
 
     @Override
@@ -56,18 +56,11 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         }
     }
 
-    void setDateTime(LocalDateTime date) {
-        testingPurposeDate = date;
-    }
-
-    private LocalDateTime getCurrentDateTime() {
-        if (testingPurposeDate == null) {
-            return LocalDateTime.now();
-        }
-        return testingPurposeDate;
+    private LocalDate getCurrentDate() {
+        return LocalDate.now(clockHolder.getClock());
     }
 
     private boolean beforeToday(LocalDate date) {
-        return date.isBefore(getCurrentDateTime().toLocalDate());
+        return date.isBefore(getCurrentDate());
     }
 }
