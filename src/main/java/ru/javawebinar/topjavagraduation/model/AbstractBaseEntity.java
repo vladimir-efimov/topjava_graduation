@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.proxy.LazyInitializer;
@@ -27,6 +28,7 @@ public abstract class AbstractBaseEntity implements Cloneable {
         this.id = id;
     }
 
+    @Hidden
     public boolean isNew() {
         return id == null;
     }

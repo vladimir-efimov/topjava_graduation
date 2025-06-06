@@ -3,8 +3,8 @@
 REST API (without frontend) for voting system for deciding where to have lunch.
 
 ## Technologies:
-- Hibernate
-- Spring/SpringMVC
+- Hibernate 6
+- Spring Boot 3
 
 ## Functionality
 
@@ -18,7 +18,9 @@ Restaurants may provide a new menu each day updated by administrators.
 
 ## REST API
 
-Unfortunately Swagger doesn't work with Jakarta. So currently REST API can be picked up from curl_test.sh.
+Application runs on port 8081 to avid conflict with Tomcat.
+Application supports Swagger V3 API available at http://localhost:8081/swagger-ui/index.html
+Examples of usages also could be picked up from curl_test.sh.
 
 ## Notes on business logic
 
