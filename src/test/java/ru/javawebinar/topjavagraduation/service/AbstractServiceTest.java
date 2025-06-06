@@ -2,6 +2,7 @@ package ru.javawebinar.topjavagraduation.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Sql(scripts = {"classpath:db/cleanupDB.sql", "classpath:data.sql"}, config = @SqlConfig(encoding = "UTF-8"),
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@ActiveProfiles("test")
 public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
     protected final AbstractBaseEntityService<T> service;
     protected final TestDataProvider<T> dataProvider;

@@ -1,5 +1,7 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
@@ -27,18 +29,26 @@ public class UserService extends AbstractManagedEntityService<User> {
         this.repository = repository;
     }
 
+    @Cacheable(value = "users")
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
     public void erase(int userId) {
         try {
+            evictCache(get(userId));
             User user = (User) erasedUser.clone();
             user.setId(userId);
             user.setEmail(user.getId() + user.getEmail());
             repository.save(user);
         } catch (CloneNotSupportedException ex) {
         }
+    }
+
+    @Override
+    public void update(User user) {
+        super.update(user);
+        evictCache(user);
     }
 
     boolean isSystemUser(User user) {
@@ -54,5 +64,9 @@ public class UserService extends AbstractManagedEntityService<User> {
                 throw new IllegalOperationException("Can't " + operation + " system user");
             }
         }
+    }
+
+    @CacheEvict(value = "users", key = "#user.email")
+    private void evictCache(User user) {
     }
 }

@@ -1,5 +1,7 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.JpaMenuRepository;
@@ -7,9 +9,9 @@ import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class MenuService extends AbstractBaseEntityService<Menu> {
@@ -37,7 +39,23 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
     }
 
     public Optional<Menu> findByRestaurantAndDate(int id, LocalDate date) {
+        if (date.equals(getCurrentDate())) {
+            return getTodaysMenu(id);
+        }
         return repository.getFilteredByRestaurantAndDateWithDishes(id, date);
+    }
+
+    @Cacheable("menus")
+    public Optional<Menu> getTodaysMenu(int restaurantId) {
+        return repository.getFilteredByRestaurantAndDateWithDishes(restaurantId, getCurrentDate());
+    }
+
+    @Override
+    public void update(Menu menu) {
+        super.update(menu);
+        if (menu.getDate().equals(getCurrentDate())) {
+            evictCache(menu);
+        }
     }
 
     @Override
@@ -62,5 +80,9 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
 
     private boolean beforeToday(LocalDate date) {
         return date.isBefore(getCurrentDate());
+    }
+
+    @CacheEvict(value = "menus", key = "#menu.restaurantId")
+    private void evictCache(Menu menu) {
     }
 }

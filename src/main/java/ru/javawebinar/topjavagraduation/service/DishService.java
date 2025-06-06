@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.service;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
@@ -23,6 +24,11 @@ public class DishService extends AbstractManagedEntityService<Dish> {
 
     public List<Dish> findByRestaurant(int id) {
         return repository.findByRestaurant(id);
+    }
+
+    @CacheEvict(value = "menus", key = "#dish.restaurant.id")
+    public void update(Dish dish) {
+        super.update(dish);
     }
 
     @Override
