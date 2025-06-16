@@ -58,14 +58,7 @@ public class Vote extends AbstractBaseEntity {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
-
-    @Override
-    public void assertValid() {
-        if (!restaurant.isEnabled()) {
-            throw new IllegalArgumentException("Vote refers to disabled restaurant");
-        }
-    }
-
+    
     @Override
     public String toString() {
         return "Vote{" +

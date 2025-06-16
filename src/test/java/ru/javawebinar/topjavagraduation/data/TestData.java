@@ -13,53 +13,45 @@ import java.util.Set;
 @Configuration
 public class TestData {
 
-    public static final User adminUser = new User(1, true, "Admin", "admin@restaurants.ru", Set.of(Role.ADMIN), "admin");
-    public static final User simpleUser = new User(2, true, "SimpleUser", "user@restaurants.ru", Set.of(Role.USER), "user1");
+    public static final User adminUser = new User(1, "Admin", "admin@restaurants.ru", Set.of(Role.ADMIN), "admin", false);
+    public static final User simpleUser = new User(2, "SimpleUser", "user@restaurants.ru", Set.of(Role.USER), "user1", false);
 
     public static final User[] users = {
             adminUser,
             simpleUser,
-            new User(3, true, "TestUser1", "user1@restaurants.ru", Set.of(Role.USER), "12345"),
-            new User(4, true, "TestUser2", "user2@restaurants.ru", Set.of(Role.USER), "12345"),
-            new User(5, true, "TestUser3", "user3@restaurants.ru", Set.of(Role.USER), "12345")
+            new User(3, "TestUser1", "user1@restaurants.ru", Set.of(Role.USER), "12345", false),
+            new User(4, "TestUser2", "user2@restaurants.ru", Set.of(Role.USER), "12345", false),
+            new User(5, "TestUser3", "user3@restaurants.ru", Set.of(Role.USER), "12345", false)
     };
     public static final User newUser = new User("NewUser", "newuser@restaurants.ru", Set.of(Role.USER), "newuser");
-    public static final User updatedUser = new User(3, true, "TestUser1", "user1u@restaurants.ru", Set.of(Role.USER), "12345");
-    public static final List<User> invalidUsers = List.of();
+    public static final User updatedUser = new User(3, "TestUser1", "user1u@restaurants.ru", Set.of(Role.USER), "12345", false);
     private static final Matcher<User> USER_MATCHER = new Matcher<>(List.of("id"));
 
-    public static final Restaurant disabledRestaurant =
-            new Restaurant(5, false, "restaurant2", "address1");
     public static final Restaurant[] restaurants = {
-            new Restaurant(1, true, "restaurant1", "address1"),
-            new Restaurant(2, true, "fastfood2", "address2_1"),
-            new Restaurant(3, true, "fastfood2", "address2_2"),
-            new Restaurant(4, true, "cafe3", "address3"),
-            disabledRestaurant
+            new Restaurant(1, "restaurant1", "address1"),
+            new Restaurant(2, "fastfood2", "address2_1"),
+            new Restaurant(3, "fastfood2", "address2_2"),
+            new Restaurant(4, "cafe3", "address3"),
     };
     public static final Restaurant newRestaurant = new Restaurant("cafe4", "address4");
-    public static final Restaurant updatedRestaurant = new Restaurant(3, true, "fastfood2", "address2_3");
-    public static final List<Restaurant> invalidRestaurants = List.of();
+    public static final Restaurant updatedRestaurant = new Restaurant(3, "fastfood2", "address2_3");
     private static final Matcher<Restaurant> RESTAURANT_MATCHER = new Matcher<>(List.of("id"));
 
-    public static final Dish disabledDish =
-            new Dish(8, false, "disabled_dish", 500.0f, restaurants[2]);
     public static final Dish[] dishes = {
-            new Dish(1, true, "dish1", 300.0f, restaurants[0]),
-            new Dish(2, true, "dish2", 200.0f, restaurants[0]),
-            new Dish(3, true, "dish3", 200.0f, restaurants[0]),
-            new Dish(4, true, "dish4", 200.0f, restaurants[1]),
-            new Dish(5, true, "dish5", 300.0f, restaurants[1]),
-            new Dish(6, true, "dish6", 300.0f, restaurants[2]),
-            new Dish(7, true, "dish7", 300.0f, restaurants[2]),
-            disabledDish
+            new Dish(1, "dish1", 300.0f, restaurants[0]),
+            new Dish(2, "dish2", 200.0f, restaurants[0]),
+            new Dish(3, "dish3", 200.0f, restaurants[0]),
+            new Dish(4, "dish4", 200.0f, restaurants[1]),
+            new Dish(5, "dish5", 300.0f, restaurants[1]),
+            new Dish(6, "dish6", 300.0f, restaurants[2]),
+            new Dish(7, "dish7", 300.0f, restaurants[2]),
     };
     public static final Dish newDish = new Dish("newDish", 115.0f, restaurants[0]);
-    public static final Dish updatedDish = new Dish(2, true, "dish2", 250.0f, restaurants[0]);
+    public static final Dish updatedDish = new Dish(2, "dish2", 250.0f, restaurants[0]);
     public static final List<Dish> invalidDishes = List.of();
     public static final List<Dish> invalidUpdateDishes = List.of(
             // change of restaurant is not allowed
-            new Dish(2, true, "dish2", 250.0f, restaurants[1])
+            new Dish(2, "dish2", 250.0f, restaurants[1])
     );
     private static final Matcher<Dish> DISH_MATCHER =
             new Matcher<>(List.of("id"), List.of("id"), List.of("restaurant"));
@@ -76,7 +68,6 @@ public class TestData {
     public static final Menu newMenu = new Menu(null, date, restaurants[2], Set.of(dishes[5], dishes[6]));
     public static final Menu updatedMenu = new Menu(2, date, restaurants[0], Set.of(dishes[0], dishes[1]));
     public static final List<Menu> invalidMenus = List.of(
-            new Menu(null, date, restaurants[2], Set.of(dishes[5], dishes[7])),
             new Menu(null, date, restaurants[2], Set.of(dishes[0], dishes[6]))
     );
     public static final List<Menu> invalidUpdateMenus = List.of(
@@ -92,25 +83,18 @@ public class TestData {
     };
     public static final Vote newVote = new Vote(null, date, users[4], popularRestaurant);
     public static final Vote updatedVote = new Vote(2, date, users[2], restaurants[3]);
-    public static final List<Vote> invalidNewVotes = List.of(
-            new Vote(null, date, users[3], disabledRestaurant)
-    );
-    public static final List<Vote> invalidUpdateVotes = List.of(
-            new Vote(2, date, users[2], disabledRestaurant)
-    );
     private static final Matcher<Vote> VOTE_MATCHER =
             new Matcher<>(List.of("id"), List.of("id"), List.of("restaurant", "user"));
 
     @Bean
     TestDataProvider<User> getUserProvider() {
-        return new TestDataProvider<>(List.of(users), newUser, updatedUser,
-                invalidUsers, invalidUsers, USER_MATCHER);
+        return new TestDataProvider<>(List.of(users), newUser, updatedUser, USER_MATCHER);
     }
 
     @Bean
     TestDataProvider<Restaurant> getRestaurantProvider() {
         return new TestDataProvider<>(List.of(restaurants), newRestaurant, updatedRestaurant,
-                invalidRestaurants, invalidRestaurants, RESTAURANT_MATCHER);
+                RESTAURANT_MATCHER);
     }
 
     @Bean
@@ -127,7 +111,6 @@ public class TestData {
 
     @Bean
     TestDataProvider<Vote> getVoteProvider() {
-        return new TestDataProvider<>(List.of(votes), newVote, updatedVote,
-                invalidNewVotes, invalidUpdateVotes, VOTE_MATCHER);
+        return new TestDataProvider<>(List.of(votes), newVote, updatedVote, VOTE_MATCHER);
     }
 }

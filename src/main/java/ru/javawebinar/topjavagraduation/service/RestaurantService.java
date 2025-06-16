@@ -11,7 +11,7 @@ import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 
 
 @Service
-public class RestaurantService extends AbstractManagedEntityService<Restaurant> {
+public class RestaurantService extends AbstractNamedEntityService<Restaurant> {
 
     private final JpaRestaurantRepository repository;
     public RestaurantService(JpaRestaurantRepository repository) {
@@ -21,8 +21,8 @@ public class RestaurantService extends AbstractManagedEntityService<Restaurant> 
 
     @Override
     @Cacheable("restaurants")
-    public List<Restaurant> getEnabled() {
-        return super.getEnabled();
+    public List<Restaurant> getAll() {
+        return super.getAll();
     }
 
     @Override

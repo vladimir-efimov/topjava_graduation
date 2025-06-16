@@ -28,7 +28,7 @@ public class AdminDishRestControllerTest extends AbstractRestControllerTest {
     @Test
     void createWithLocation() throws Exception {
         var restaurant = restaurantService.create(new Restaurant("NewRestaurant", "Restaurant street"));
-        var dishto = new DishTo(null, "dish1", true, 100.0f, restaurant.getId());
+        var dishto = new DishTo(null, "dish1", 100.0f, restaurant.getId());
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(dishto))
@@ -45,7 +45,7 @@ public class AdminDishRestControllerTest extends AbstractRestControllerTest {
         var restaurant = restaurantService.create(new Restaurant("NewRestaurant", "Restaurant street"));
         var dish = dishService.create(new Dish("dish1", 100.0f, restaurant));
         Integer dishId = dish.getId();
-        var dishto = new DishTo(dishId, "dish1", true, 111.0f, restaurant.getId());
+        var dishto = new DishTo(dishId, "dish1", 111.0f, restaurant.getId());
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + dishId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(dishto))
@@ -56,5 +56,4 @@ public class AdminDishRestControllerTest extends AbstractRestControllerTest {
         assertEquals(dishto.getPrice(), updated.getPrice());
         assertEquals(dishId, updated.getId());
     }
-
 }

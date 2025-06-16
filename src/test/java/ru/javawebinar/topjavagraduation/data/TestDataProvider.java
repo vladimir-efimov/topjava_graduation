@@ -25,6 +25,10 @@ public class TestDataProvider<T extends AbstractBaseEntity> {
         this.matcher = matcher;
     }
 
+    protected TestDataProvider(List<T> entities, T newEntity, T updatedEntity, Matcher<T> matcher) {
+        this(entities, newEntity, updatedEntity, List.of(), List.of(), matcher);
+    }
+
     public T getNew() {
         try {
             return (T) newEntity.clone();

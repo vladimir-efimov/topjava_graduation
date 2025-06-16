@@ -35,7 +35,7 @@ public class ProfileRestController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete() {
-        service.erase(getAuthorizedUserId());
+        service.delete(getAuthorizedUserId());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

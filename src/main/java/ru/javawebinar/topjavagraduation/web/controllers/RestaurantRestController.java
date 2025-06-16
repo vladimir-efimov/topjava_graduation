@@ -22,11 +22,6 @@ public class RestaurantRestController {
         return service.get(id);
     }
 
-    @GetMapping("/enabled")
-    public List<Restaurant> getEnabled() {
-        return service.getEnabled();
-    }
-
     @GetMapping
     public List<Restaurant> filter(@Nullable @RequestParam String name, @Nullable @RequestParam String address) {
         if (name != null) {

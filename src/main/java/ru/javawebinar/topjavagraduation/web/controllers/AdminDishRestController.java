@@ -54,10 +54,4 @@ public class AdminDishRestController {
         Dish created = service.create(dish);
         return buildResponseEntity(created, REST_URL);
     }
-
-    @GetMapping("/enabled")
-    public List<DishTo> getEnabled() {
-        return service.getEnabled().stream().map(ConverterUtils::convertDish).toList();
-    }
-
 }

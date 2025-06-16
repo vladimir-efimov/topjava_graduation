@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.service.UserService;
 import ru.javawebinar.topjavagraduation.to.Profile;
@@ -54,10 +55,10 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void tryLoginWithDisabledUser() throws Exception {
+    void tryLoginWithBlockedUser() throws Exception {
         User newUser = (User) TestData.newUser.clone();
         newUser.setEmail("loginWithNewUser@restaurants.ru");
-        newUser.setEnabled(false);
+        newUser.setBlocked(true);
         service.create(newUser);
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
                         .with(userHttpBasic(newUser)))
@@ -74,7 +75,6 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
                         .with(userHttpBasic(newUser)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        User erasedUser = service.get(newUser.getId());
-        assertFalse(erasedUser.isEnabled());
+        assertThrows(NotFoundException.class, () -> service.get(newUser.getId()));
     }
 }

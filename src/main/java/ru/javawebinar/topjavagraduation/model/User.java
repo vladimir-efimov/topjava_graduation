@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}, name = "user_email_idx")})
-public class User extends AbstractManagedEntity {
+public class User extends AbstractNamedEntity {
 
     @Column(name = "email", nullable = false, length = 64)
     @Email
@@ -31,18 +31,22 @@ public class User extends AbstractManagedEntity {
     @Size(min = 5, max = 64)
     private String password;
 
+    @Column(name = "blocked", nullable = false)
+    private boolean blocked = true;
+
     public User() {
     }
 
-    public User(Integer id, boolean enabled, String name, String email, Set<Role> roles, String password) {
-        super(id, enabled, name);
+    public User(Integer id, String name, String email, Set<Role> roles, String password, boolean blocked) {
+        super(id, name);
         this.email = email;
         this.roles = roles;
         this.password = password;
+        this.blocked = blocked;
     }
 
     public User(String name, String email, Set<Role> roles, String password) {
-        this(null, true, name, email, roles, password);
+        this(null, name, email, roles, password, false);
     }
 
     public User(String name, String email, Role role, String password) {
@@ -73,14 +77,22 @@ public class User extends AbstractManagedEntity {
         this.password = password;
     }
 
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", email=" + email +
                 ", name=" + name +
-                ", enabled=" + enabled +
                 ", roles=" + roles +
+                ", blocked=" + blocked +
                 '}';
     }
 }

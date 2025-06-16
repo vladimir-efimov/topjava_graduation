@@ -14,8 +14,6 @@ public class DishTo {
     @Size(max = 64)
     private String name;
     @NotNull
-    private Boolean enabled;
-    @NotNull
     @Range(min = 0, max = 100000)
     private Float price;
     @NotNull
@@ -24,10 +22,9 @@ public class DishTo {
     public DishTo() {
     }
 
-    public DishTo(Integer id, String name, Boolean enabled, Float price, Integer restaurantId) {
+    public DishTo(Integer id, String name, Float price, Integer restaurantId) {
         this.id = id;
         this.name = name;
-        this.enabled = enabled;
         this.price = price;
         this.restaurantId = restaurantId;
     }
@@ -46,14 +43,6 @@ public class DishTo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Float getPrice() {

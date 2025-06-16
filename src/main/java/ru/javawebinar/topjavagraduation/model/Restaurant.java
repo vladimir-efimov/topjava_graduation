@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 @Table(name = "restaurant", uniqueConstraints = {
         @UniqueConstraint(name = "restaurant_unique_name_address_idx", columnNames = {"name", "address"})
 })
-public class Restaurant extends AbstractManagedEntity {
+public class Restaurant extends AbstractNamedEntity {
 
     @Column(name = "address", nullable = false, length = 128)
     @NotBlank
@@ -21,13 +21,13 @@ public class Restaurant extends AbstractManagedEntity {
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, boolean enabled, String name, String address) {
-        super(id, enabled, name);
+    public Restaurant(Integer id, String name, String address) {
+        super(id, name);
         this.address = address;
     }
 
     public Restaurant(String name, String address) {
-        this(null, true, name, address);
+        this(null, name, address);
     }
 
     public String getAddress() {
@@ -44,7 +44,6 @@ public class Restaurant extends AbstractManagedEntity {
                 "id=" + id +
                 ", name=" + name +
                 ", address=" + address +
-                ", enabled=" + enabled +
                 '}';
     }
 }

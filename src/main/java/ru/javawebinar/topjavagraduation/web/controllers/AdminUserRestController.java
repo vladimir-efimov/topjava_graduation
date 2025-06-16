@@ -62,10 +62,4 @@ public class AdminUserRestController {
         User created = service.create(user);
         return buildResponseEntity(created, REST_URL);
     }
-    
-    @GetMapping("/enabled")
-    public List<User> getEnabled() {
-        return service.getEnabled();
-    }
-
 }

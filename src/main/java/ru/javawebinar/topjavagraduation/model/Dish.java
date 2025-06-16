@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "dish")
-public class Dish extends AbstractManagedEntity {
+public class Dish extends AbstractNamedEntity {
 
     @Column(name = "price", nullable = false)
     private float price;
@@ -17,11 +17,11 @@ public class Dish extends AbstractManagedEntity {
     }
 
     public Dish(String name, float price, Restaurant restaurant) {
-        this(null, true, name, price, restaurant);
+        this(null, name, price, restaurant);
     }
 
-    public Dish(Integer id, boolean enabled, String name, float price, Restaurant restaurant) {
-        super(id, enabled, name);
+    public Dish(Integer id, String name, float price, Restaurant restaurant) {
+        super(id, name);
         this.price = price;
         this.restaurant = restaurant;
     }
@@ -43,19 +43,11 @@ public class Dish extends AbstractManagedEntity {
     }
 
     @Override
-    public void assertValid() {
-        if (!restaurant.isEnabled()) {
-            throw new IllegalArgumentException("Dish refers to disabled restaurant");
-        }
-    }
-
-    @Override
     public String toString() {
         return "Dish{" +
                 "id=" + id +
                 ", name=" + name +
                 ", price=" + price +
-                ", enabled=" + enabled +
                 ", restaurant=" + restaurant +
                 '}';
     }

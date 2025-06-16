@@ -41,16 +41,6 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void getEnabled() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/enabled")
-                        .with(userHttpBasic(TestData.adminUser)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-        ;
-    }
-
-    @Test
     void getNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/0")
                         .with(userHttpBasic(TestData.adminUser)))

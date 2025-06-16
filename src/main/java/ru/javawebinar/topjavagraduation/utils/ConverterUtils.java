@@ -18,11 +18,11 @@ public class ConverterUtils {
     public static Dish convertDishTo(DishTo dishTo, JpaRestaurantRepository restaurantRepository) {
         var restaurant = restaurantRepository.findById(dishTo.getRestaurantId())
                 .orElseThrow(() -> new NotFoundException("Can't find restaurant with id " + dishTo.getRestaurantId()));
-        return new Dish(dishTo.getId(), dishTo.getEnabled(), dishTo.getName(), dishTo.getPrice(), restaurant);
+        return new Dish(dishTo.getId(), dishTo.getName(), dishTo.getPrice(), restaurant);
     }
 
     public static DishTo convertDish(Dish dish) {
-        return new DishTo(dish.getId(), dish.getName(), dish.isEnabled(), dish.getPrice(), dish.getRestaurant().getId());
+        return new DishTo(dish.getId(), dish.getName(), dish.getPrice(), dish.getRestaurant().getId());
     }
 
     public static Menu convertMenuTo(MenuTo menuTo, JpaDishRepository dishRepository) {

@@ -8,8 +8,9 @@ import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
 import java.util.List;
 
+
 @Service
-public class DishService extends AbstractManagedEntityService<Dish> {
+public class DishService extends AbstractNamedEntityService<Dish> {
     private final JpaDishRepository repository;
 
     public DishService(JpaDishRepository repository) {

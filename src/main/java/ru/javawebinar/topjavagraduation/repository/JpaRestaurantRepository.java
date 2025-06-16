@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Transactional(readOnly = true)
-public interface JpaRestaurantRepository extends JpaManagedEntityRepository<Restaurant> {
+public interface JpaRestaurantRepository extends JpaNamedEntityRepository<Restaurant> {
 
     @Query("SELECT r from Restaurant r WHERE r.address=:address")
     List<Restaurant> findByAddress(@Param("address") String address);

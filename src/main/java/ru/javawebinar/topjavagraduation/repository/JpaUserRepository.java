@@ -6,7 +6,7 @@ import ru.javawebinar.topjavagraduation.model.User;
 
 import java.util.Optional;
 
-public interface JpaUserRepository extends JpaManagedEntityRepository<User> {
+public interface JpaUserRepository extends JpaNamedEntityRepository<User> {
 
     @Query("SELECT u FROM User u WHERE u.email=:email")
     Optional<User> findByEmail(@Param("email") String email);
