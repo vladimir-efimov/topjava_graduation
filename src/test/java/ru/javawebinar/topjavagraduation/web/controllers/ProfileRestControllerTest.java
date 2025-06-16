@@ -37,6 +37,7 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isCreated());
         User registeredUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
         assertNotNull(registeredUser.getId());
+        assertFalse(registeredUser.isBlocked());
         assertEquals(profile.getName(), registeredUser.getName());
         assertEquals(profile.getEmail(), registeredUser.getEmail());
     }

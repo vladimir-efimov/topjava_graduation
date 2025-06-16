@@ -32,7 +32,7 @@ public class User extends AbstractNamedEntity {
     private String password;
 
     @Column(name = "blocked", nullable = false)
-    private boolean blocked = true;
+    private boolean blocked = false;
 
     public User() {
     }
