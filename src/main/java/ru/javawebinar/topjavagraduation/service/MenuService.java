@@ -58,6 +58,15 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         }
     }
 
+    public void delete(int id) {
+        Menu menu = get(id);
+        validateOperation(menu, CrudOperation.DELETE);
+        repository.delete(menu);
+        if (menu.getDate().equals(getCurrentDate())) {
+            evictCache(menu);
+        }
+    }
+
     @Override
     protected void validateOperation(Menu menu, CrudOperation operation) {
         super.validateOperation(menu, operation);

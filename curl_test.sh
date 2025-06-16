@@ -324,6 +324,10 @@ menu_operations() {
     curl -s ${app}/rest/menus?"restaurantId=1&date=${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
+    echo "Delete menu with id = 1"
+    curl -s -i -X DELETE ${app}/rest/admin/menus/1 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
     echo "Get all menus"
     curl -s ${app}/rest/menus --user user@restaurants.ru:user1
 }
