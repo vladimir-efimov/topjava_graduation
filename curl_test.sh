@@ -28,12 +28,12 @@ user_operations() {
 
     echo -e "\n"
     echo "Get added user"
-    curl -s ${app}/rest/admin/users/3 --user admin@restaurants.ru:admin
+    curl -s ${app}/rest/admin/users/6 --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Update user"
     curl -s -i -X PUT \
-      -d '{"id":3, "name":"New User","email":"New_User@mail.ru","password":"test-passwd", "enabled":"false"}' \
+      -d '{"id":3, "name":"New User","email":"New_User@mail.ru","password":"test-passwd", "blocked":"true"}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
        ${app}/rest/admin/users/3 --user admin@restaurants.ru:admin
 
@@ -138,7 +138,7 @@ profile_illegal_operations() {
     echo -e "Illegal operations with profile"
 
     echo -e "\n"
-    echo "Try get profile for disabled user"
+    echo "Try get profile for blocked user"
     curl -s ${app}/rest/profile --user "New_User@mail.r:test-passwd"
 }
 
@@ -178,10 +178,6 @@ restaurant_operations() {
     echo -e "\n"
     echo "Get all restaurants"
     curl -s ${app}/rest/restaurants --user user@restaurants.ru:user1
-
-    echo -e "\n"
-    echo "Get enabled restaurants"
-    curl -s ${app}/rest/restaurants/enabled --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Find by name"
@@ -227,7 +223,7 @@ dish_operations() {
     echo "Add dish"
     for i in 1 2; do
         curl -s -i -X POST \
-          -d "{\"name\":\"dish${i}\", \"price\":100.0, \"enabled\": \"true\", \"restaurantId\":1}" \
+          -d "{\"name\":\"dish${i}\", \"price\":100.0, \"restaurantId\":1}" \
           -H 'Content-Type:application/json;charset=UTF-8' \
           ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
         echo ""
@@ -236,17 +232,13 @@ dish_operations() {
     echo -e "\n"
     echo "Update dish"
     curl -s -i -X PUT \
-      -d '{"id":1, "name":"dish1", "price":111.5, "enabled": "true", "restaurantId":1}' \
+      -d '{"id":1, "name":"dish1", "price":111.5, "restaurantId":1}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
        ${app}/rest/admin/dishes/1 --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get first dish"
     curl -s ${app}/rest/admin/dishes/1 --user admin@restaurants.ru:admin
-
-    echo -e "\n"
-    echo "Get enabled dishes"
-    curl -s ${app}/rest/admin/dishes/enabled --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Get dishes for restaurant with id=1"
@@ -265,35 +257,35 @@ dish_illegal_operations() {
     echo -e "\n"
     echo "Add dish without name"
     curl -s -i -X POST \
-     -d '{"price":100.0, "enabled": "true", "restaurantId":1}' \
+     -d '{"price":100.0, "restaurantId":1}' \
      -H 'Content-Type:application/json;charset=UTF-8' \
      ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Add dish without price"
     curl -s -i -X POST \
-     -d '{"name": "new_dish", "enabled": "true", "restaurantId":1}' \
+     -d '{"name": "new_dish", "restaurantId":1}' \
      -H 'Content-Type:application/json;charset=UTF-8' \
      ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Add dish without restaurant Id and price"
     curl -s -i -X POST \
-     -d '{"name": "new_dish", "enabled": "true"}' \
+     -d '{"name": "new_dish"}' \
      -H 'Content-Type:application/json;charset=UTF-8' \
      ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Add dish with bad price"
     curl -s -i -X POST \
-     -d '{"name": "new_dish", "enabled": "true", "restaurantId":1, "price":"100.0 - 5% discount"}' \
+     -d '{"name": "new_dish", "restaurantId":1, "price":"100.0 - 5% discount"}' \
      -H 'Content-Type:application/json;charset=UTF-8' \
      ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Update dish but loose id"
     curl -s -i -X PUT \
-      -d '{"name":"dish1", "price":666.0, "enabled": "true", "restaurantId":1}' \
+      -d '{"name":"dish1", "price":666.0, "restaurantId":1}' \
       -H 'Content-Type:application/json;charset=UTF-8' \
        ${app}/rest/admin/dishes/1 --user admin@restaurants.ru:admin
 }
