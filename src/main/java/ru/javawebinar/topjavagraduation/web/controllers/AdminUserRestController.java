@@ -62,4 +62,10 @@ public class AdminUserRestController {
         User created = service.create(user);
         return buildResponseEntity(created, REST_URL);
     }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        service.delete(id);
+    }
 }

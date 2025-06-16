@@ -40,6 +40,10 @@ user_operations() {
     echo -e "\n"
     echo "Get updated user"
     curl -s ${app}/rest/admin/users/3 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
+    echo "Delete new user"
+    curl -s -i -X DELETE ${app}/rest/admin/users/6 --user admin@restaurants.ru:admin
 }
 
 

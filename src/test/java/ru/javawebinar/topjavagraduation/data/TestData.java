@@ -25,7 +25,7 @@ public class TestData {
     };
     public static final User newUser = new User("NewUser", "newuser@restaurants.ru", Set.of(Role.USER), "newuser");
     public static final User updatedUser = new User(3, "TestUser1", "user1u@restaurants.ru", Set.of(Role.USER), "12345", false);
-    private static final Matcher<User> USER_MATCHER = new Matcher<>(List.of("id"));
+    private static final Matcher<User> USER_MATCHER = new Matcher<>(List.of("id", "votes"));
 
     public static final Restaurant[] restaurants = {
             new Restaurant(1, "restaurant1", "address1"),
