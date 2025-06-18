@@ -3,7 +3,7 @@ package ru.javawebinar.topjavagraduation.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {
@@ -20,13 +20,16 @@ public class Menu extends AbstractBaseEntity {
     @ManyToMany
     @JoinTable(name = "menu_dish",
             joinColumns = {@JoinColumn(name = "menu_id")},
-            inverseJoinColumns = {@JoinColumn(name = "dish_id")})
-    Set<Dish> dishes;
+            inverseJoinColumns = {@JoinColumn(name = "dish_id")},
+            uniqueConstraints = {
+                    @UniqueConstraint(name = "menu_dish_unique_idx", columnNames = {"menu_id", "dish_id"})
+            })
+    List<Dish> dishes;
 
     public Menu() {
     }
 
-    public Menu(Integer id, LocalDate date, Restaurant restaurant, Set<Dish> dishes) {
+    public Menu(Integer id, LocalDate date, Restaurant restaurant, List<Dish> dishes) {
         super(id);
         this.date = date;
         this.restaurant = restaurant;
@@ -41,7 +44,7 @@ public class Menu extends AbstractBaseEntity {
         return restaurant;
     }
 
-    public Set<Dish> getDishes() {
+    public List<Dish> getDishes() {
         return dishes;
     }
 
@@ -53,7 +56,7 @@ public class Menu extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public void setDishes(Set<Dish> dishes) {
+    public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
     }
 

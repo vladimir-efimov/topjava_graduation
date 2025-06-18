@@ -9,8 +9,7 @@ import ru.javawebinar.topjavagraduation.to.DishTo;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 public class ConverterUtils {
@@ -28,7 +27,7 @@ public class ConverterUtils {
     public static Menu convertMenuTo(MenuTo menuTo, JpaDishRepository dishRepository) {
         var restaurant = new Restaurant(); //todo: read from repository?
         restaurant.setId(menuTo.getRestaurantId());
-        Set<Dish> dishes = new HashSet<>(dishRepository.findAllById(menuTo.getDishes()));
+        List<Dish> dishes = dishRepository.findAllById(menuTo.getDishes());
         return new Menu(menuTo.getId(), menuTo.getDate(), restaurant, dishes);
     }
 }

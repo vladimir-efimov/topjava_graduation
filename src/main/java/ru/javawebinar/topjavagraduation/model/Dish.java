@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.List;
 
 
 @Entity
@@ -18,13 +18,16 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "menu_dish",
             joinColumns = {@JoinColumn(name = "dish_id")},
-            inverseJoinColumns = {@JoinColumn(name = "menu_id")})
+            inverseJoinColumns = {@JoinColumn(name = "menu_id")},
+            uniqueConstraints = {
+                    @UniqueConstraint(name = "menu_dish_unique_idx", columnNames = {"menu_id", "dish_id"})
+            })
     @Hidden
     @JsonIgnore
-    Set<Menu> menus;
+    List<Menu> menus;
 
     public Dish() {
     }
