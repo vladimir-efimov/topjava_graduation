@@ -1,11 +1,12 @@
 package ru.javawebinar.topjavagraduation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant", uniqueConstraints = {
@@ -17,6 +18,21 @@ public class Restaurant extends AbstractNamedEntity {
     @NotBlank
     @Size(max = 128)
     private String address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @Schema(hidden = true)
+    @JsonIgnore
+    private List<Menu> menus;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @Schema(hidden = true)
+    @JsonIgnore
+    private List<Dish> dishes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @Schema(hidden = true)
+    @JsonIgnore
+    private List<Vote> votes;
 
     public Restaurant() {
     }

@@ -12,7 +12,6 @@ import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -44,10 +43,8 @@ public class MenuServiceTest extends AbstractServiceTest<Menu> {
 
     @Test
     void delete() {
-        Menu newMenu = service.create(dataProvider.getNew());
-        Menu obtainedMenu = service.get(newMenu.getId());
-        assertEquals(newMenu, obtainedMenu);
-        service.delete(newMenu.getId());
-        assertThrows(NotFoundException.class, () -> service.get(newMenu.getId()));
+        Menu menu = dataProvider.getFirst();
+        service.delete(menu.getId());
+        assertThrows(NotFoundException.class, () -> service.get(menu.getId()));
     }
 }

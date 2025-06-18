@@ -44,4 +44,10 @@ public class RestaurantService extends AbstractNamedEntityService<Restaurant> {
     public Optional<Restaurant> findByNameAndAddress(String name, String address) {
         return repository.findByNameAndAddress(name, address);
     }
+
+    @CacheEvict(value = "restaurants", allEntries = true)
+    public void delete(int id) {
+        Restaurant restaurant = get(id);
+        repository.delete(restaurant);
+    }
 }

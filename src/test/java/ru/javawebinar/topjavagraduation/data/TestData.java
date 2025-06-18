@@ -35,7 +35,8 @@ public class TestData {
     };
     public static final Restaurant newRestaurant = new Restaurant("cafe4", "address4");
     public static final Restaurant updatedRestaurant = new Restaurant(3, "fastfood2", "address2_3");
-    private static final Matcher<Restaurant> RESTAURANT_MATCHER = new Matcher<>(List.of("id"));
+    private static final Matcher<Restaurant> RESTAURANT_MATCHER =
+            new Matcher<>(List.of("id", "menus", "dishes", "votes"));
 
     public static final Dish[] dishes = {
             new Dish(1, "dish1", 300.0f, restaurants[0]),
