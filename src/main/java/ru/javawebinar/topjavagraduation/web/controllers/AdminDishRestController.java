@@ -54,4 +54,10 @@ public class AdminDishRestController {
         Dish created = service.create(dish);
         return buildResponseEntity(created, REST_URL);
     }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        service.delete(id);
+    }
 }

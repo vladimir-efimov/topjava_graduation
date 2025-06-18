@@ -1,6 +1,11 @@
 package ru.javawebinar.topjavagraduation.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
+
+import java.util.Set;
+
 
 @Entity
 @Table(name = "dish")
@@ -12,6 +17,14 @@ public class Dish extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+
+    @ManyToMany
+    @JoinTable(name = "menu_dish",
+            joinColumns = {@JoinColumn(name = "dish_id")},
+            inverseJoinColumns = {@JoinColumn(name = "menu_id")})
+    @Hidden
+    @JsonIgnore
+    Set<Menu> menus;
 
     public Dish() {
     }

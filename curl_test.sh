@@ -249,6 +249,10 @@ dish_operations() {
     curl -s ${app}/rest/admin/dishes?restaurantId=1 --user admin@restaurants.ru:admin
 
     echo -e "\n"
+    echo "Delete dish with id = 9"
+    curl -s -i -X DELETE ${app}/rest/admin/dishes/9 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
     echo "Get all dishes"
     curl -s ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 }

@@ -55,7 +55,7 @@ public class TestData {
             new Dish(2, "dish2", 250.0f, restaurants[1])
     );
     private static final Matcher<Dish> DISH_MATCHER =
-            new Matcher<>(List.of("id"), List.of("id"), List.of("restaurant"));
+            new Matcher<>(List.of("id", "menus"), List.of("id", "menus"), List.of("restaurant"));
 
     public static final LocalDate yestarday = LocalDate.of(2024, 1, 12);
     public static final LocalDate date = LocalDate.of(2024, 1, 13);

@@ -2,6 +2,7 @@ package ru.javawebinar.topjavagraduation.service;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
@@ -20,7 +21,8 @@ public class DishService extends AbstractNamedEntityService<Dish> {
 
     @Override
     public Dish get(int id) {
-        return repository.getWithRestaurant(id);
+        return repository.getWithRestaurant(id)
+                .orElseThrow(() -> new NotFoundException("Dish with id " + id + " is not found"));
     }
 
     public List<Dish> findByRestaurant(int id) {
@@ -32,6 +34,13 @@ public class DishService extends AbstractNamedEntityService<Dish> {
         super.update(dish);
     }
 
+    public void delete(int id) {
+        Dish dish = get(id);
+        validateOperation(dish, CrudOperation.DELETE);
+        repository.delete(dish);
+        evictCache(dish);
+    }
+
     @Override
     protected void validateOperation(Dish dish, CrudOperation operation) {
         super.validateOperation(dish, operation);
@@ -41,5 +50,9 @@ public class DishService extends AbstractNamedEntityService<Dish> {
                 throw new IllegalOperationException("Can't substitute restaurant");
             }
         }
+    }
+
+    @CacheEvict(value = "menus", key = "#dish.restaurant.id")
+    private void evictCache(Dish dish) {
     }
 }
