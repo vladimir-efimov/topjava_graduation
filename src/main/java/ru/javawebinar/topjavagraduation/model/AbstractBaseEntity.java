@@ -61,10 +61,4 @@ public abstract class AbstractBaseEntity implements Cloneable {
             return object.getClass();
         }
     }
-
-    /**
-     * Override and throw Exception if entity is not valid
-     */
-    public void assertValid() {
-    }
 }

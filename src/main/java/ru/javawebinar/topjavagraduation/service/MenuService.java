@@ -3,6 +3,7 @@ package ru.javawebinar.topjavagraduation.service;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.JpaMenuRepository;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
@@ -57,6 +58,13 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
             if (beforeToday(menu.getDate())) {
                 throw new IllegalOperationException("Can't operate with menu for the past date");
             }
+            for (Dish dish : menu.getDishes()) {
+                if (!menu.getRestaurant().getId().equals(dish.getRestaurant().getId())) {
+                    throw new IllegalArgumentException("Menu contains dish with id=" + dish.getId() +
+                            " which belongs to another restaurant");
+                }
+            }
+
         }
         if (operation == CrudOperation.UPDATE) {
             Menu savedMenu = get(menu.getId());
