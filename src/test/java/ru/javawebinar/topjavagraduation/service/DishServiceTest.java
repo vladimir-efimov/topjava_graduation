@@ -4,10 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
-import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
-import ru.javawebinar.topjavagraduation.model.Menu;
 
 import java.util.List;
 
@@ -42,12 +40,5 @@ public class DishServiceTest extends AbstractServiceTest<Dish> {
         for (int i = 0; i < dishes.size(); i++) {
             matcher.assertMatch(expectedDishes.get(i), dishes.get(i));
         }
-    }
-
-    @Test
-    void delete() {
-        int id = dataProvider.getFirst().getId();
-        service.delete(id);
-        assertThrows(NotFoundException.class, () -> service.get(id));
     }
 }

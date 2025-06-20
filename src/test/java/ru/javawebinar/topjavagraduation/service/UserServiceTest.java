@@ -40,8 +40,9 @@ public class UserServiceTest extends AbstractServiceTest<User> {
     }
 
     @Test
+    @Override
     void delete() {
-        User newUser = service.create(dataProvider.getNew());
+        User newUser = service.create(dataProvider.getNew()); // use new user instead of first as first is system user
         User obtainedUser = service.get(newUser.getId());
         assertEquals(newUser, obtainedUser);
         service.delete(newUser.getId());

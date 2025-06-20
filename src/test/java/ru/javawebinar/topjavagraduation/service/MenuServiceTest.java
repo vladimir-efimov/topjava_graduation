@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
-import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.exception.IllegalOperationException;
 
@@ -39,12 +38,5 @@ public class MenuServiceTest extends AbstractServiceTest<Menu> {
     void tryUpdateInvalid() {
         List<Menu> invalidEntities = dataProvider.getUpdatedInvalid();
         invalidEntities.forEach(enity -> assertThrows(IllegalOperationException.class, () -> service.update(enity)));
-    }
-
-    @Test
-    void delete() {
-        Menu menu = dataProvider.getFirst();
-        service.delete(menu.getId());
-        assertThrows(NotFoundException.class, () -> service.get(menu.getId()));
     }
 }

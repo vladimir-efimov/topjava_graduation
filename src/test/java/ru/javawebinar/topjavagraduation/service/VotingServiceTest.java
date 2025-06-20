@@ -34,15 +34,6 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
     void restoreClockHolder() {
         clockHolder.setDateTime(LocalDateTime.now());
     }
-    
-    @Test
-    @Transactional
-    void delete() {
-        Vote vote = dataProvider.getFirst();
-        assertTrue(service.getAll().contains(vote));
-        service.delete(vote.getId(), vote.getUser().getId());
-        assertFalse(service.getAll().contains(vote));
-    }
 
     @Test
     void tryUpdateNotOwnVote() {

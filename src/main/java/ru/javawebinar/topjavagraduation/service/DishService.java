@@ -29,18 +29,6 @@ public class DishService extends AbstractNamedEntityService<Dish> {
         return repository.findByRestaurant(id);
     }
 
-    @CacheEvict(value = "menus", key = "#dish.restaurant.id")
-    public void update(Dish dish) {
-        super.update(dish);
-    }
-
-    public void delete(int id) {
-        Dish dish = get(id);
-        validateOperation(dish, CrudOperation.DELETE);
-        repository.delete(dish);
-        evictCache(dish);
-    }
-
     @Override
     protected void validateOperation(Dish dish, CrudOperation operation) {
         super.validateOperation(dish, operation);
@@ -52,7 +40,9 @@ public class DishService extends AbstractNamedEntityService<Dish> {
         }
     }
 
-    @CacheEvict(value = "menus", key = "#dish.restaurant.id")
-    private void evictCache(Dish dish) {
+    @Override
+    protected void evictCache(Dish dish) {
+        cacheManager.getCache("menus").evictIfPresent(dish.getRestaurant().getId());
+        log.debug("Evict menus cache for restaurants with id " + dish.getRestaurant().getId());
     }
 }

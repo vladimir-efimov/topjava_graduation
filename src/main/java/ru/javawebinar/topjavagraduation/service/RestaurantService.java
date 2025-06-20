@@ -3,7 +3,6 @@ package ru.javawebinar.topjavagraduation.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
@@ -25,18 +24,6 @@ public class RestaurantService extends AbstractNamedEntityService<Restaurant> {
         return super.getAll();
     }
 
-    @Override
-    @CacheEvict(value = "restaurants", allEntries = true)
-    public Restaurant create(Restaurant restaurant) {
-        return super.create(restaurant);
-    }
-
-    @Override
-    @CacheEvict(value = "restaurants", allEntries = true)
-    public void update(Restaurant restaurant) {
-        super.update(restaurant);
-    }
-
     public List<Restaurant> findByAddress(String address) {
         return repository.findByAddress(address);
     }
@@ -45,9 +32,9 @@ public class RestaurantService extends AbstractNamedEntityService<Restaurant> {
         return repository.findByNameAndAddress(name, address);
     }
 
-    @CacheEvict(value = "restaurants", allEntries = true)
-    public void delete(int id) {
-        Restaurant restaurant = get(id);
-        repository.delete(restaurant);
+    @Override
+    protected void evictCache(Restaurant restaurant) {
+        cacheManager.getCache("restaurants").clear();
+        log.debug("Evict cache for restaurants");
     }
 }

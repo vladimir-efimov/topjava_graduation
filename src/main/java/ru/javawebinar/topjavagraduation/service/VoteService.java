@@ -95,23 +95,14 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
                 .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
     }
 
-    public void delete(int id, int userId) {
-        Vote entity = get(id, userId);
-        validateOperation(entity, CrudOperation.DELETE);
-        repository.delete(entity);
-    }
-
     public LocalTime getEndVotingTime() {
         return endVotingTime;
     }
 
     public void revoke(int userId) {
-        Optional<Vote> result = findByUserAndDate(userId, getCurrentDate());
-        if (result.isPresent()) {
-            delete(result.get().getId(), userId);
-        } else {
-            throw new NotFoundException("No votes found to revoke");
-        }
+        Vote vote = findByUserAndDate(userId, getCurrentDate())
+                .orElseThrow(() -> new NotFoundException("Today's vote for user is not found"));
+        delete(vote.getId());
     }
 
     @Override

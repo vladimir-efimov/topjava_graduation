@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.service;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.User;
@@ -27,19 +26,6 @@ public class UserService extends AbstractNamedEntityService<User> {
         return repository.findByEmail(email);
     }
 
-    public void delete(int userId) {
-        User user = get(userId);
-        validateOperation(user, CrudOperation.DELETE);
-        repository.delete(user);
-        evictCache(user);
-    }
-
-    @Override
-    public void update(User user) {
-        super.update(user);
-        evictCache(user);
-    }
-
     boolean isSystemUser(User user) {
         return systemUserEmails.contains(user.getEmail());
     }
@@ -55,7 +41,9 @@ public class UserService extends AbstractNamedEntityService<User> {
         }
     }
 
-    @CacheEvict(value = "users", key = "#user.email")
-    private void evictCache(User user) {
+    @Override
+    protected void evictCache(User user) {
+        cacheManager.getCache("users").evictIfPresent(user.getEmail());
+        log.debug("Evict cache for user with e-mail " + user.getEmail());
     }
 }

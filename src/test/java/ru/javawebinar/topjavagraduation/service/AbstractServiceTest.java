@@ -6,7 +6,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
+import ru.javawebinar.topjavagraduation.exception.NotFoundException;
 import ru.javawebinar.topjavagraduation.model.AbstractBaseEntity;
 import ru.javawebinar.topjavagraduation.utils.Matcher;
 
@@ -57,6 +59,14 @@ public abstract class AbstractServiceTest<T extends AbstractBaseEntity> {
         service.update(updatedEntity);
         T entity = service.get(updatedEntity.getId());
         matcher.assertMatch(updatedEntity, entity);
+    }
+
+    @Test
+    @Transactional
+    void delete() {
+        int id = dataProvider.getFirst().getId();
+        service.delete(id);
+        assertThrows(NotFoundException.class, () -> service.get(id));
     }
 
     @Test

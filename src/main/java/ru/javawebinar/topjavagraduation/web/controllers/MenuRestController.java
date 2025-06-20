@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Menu;
+import ru.javawebinar.topjavagraduation.service.ClockHolder;
 import ru.javawebinar.topjavagraduation.service.MenuService;
 
 import java.time.LocalDate;
@@ -17,9 +18,12 @@ public class MenuRestController {
 
     public static final String REST_URL = "/rest/menus";
     private final MenuService service;
+    private final ClockHolder clockHolder;
 
-    public MenuRestController(MenuService service) {
+
+    public MenuRestController(MenuService service, ClockHolder clockHolder) {
         this.service = service;
+        this.clockHolder = clockHolder;
     }
 
     @GetMapping(value = "/{id}")
@@ -28,17 +32,24 @@ public class MenuRestController {
     }
 
     @GetMapping
-    public List<Menu> filter(@Nullable @RequestParam("restaurantId") Integer id,
+    public List<Menu> filter(@Nullable @RequestParam("restaurantId") Integer restaurantId,
                            @Nullable @RequestParam("date") LocalDate date) {
-        if (id != null) {
+        if (restaurantId != null) {
             if (date != null) {
-                Optional<Menu> result = service.findByRestaurantAndDate(id, date);
+                Optional<Menu> result = date.equals(getCurrentDate())
+                        ? service.getTodaysMenu(restaurantId)
+                        : service.findByRestaurantAndDate(restaurantId, date);
                 return result.isPresent() ? List.of(result.get()) : List.of();
             } else {
-                return service.findByRestaurant(id);
+                return service.findByRestaurant(restaurantId);
             }
         } else {
             return date != null ? service.findByDate(date) : service.getAll();
         }
     }
+
+    private LocalDate getCurrentDate() {
+        return LocalDate.now(clockHolder.getClock());
+    }
+
 }

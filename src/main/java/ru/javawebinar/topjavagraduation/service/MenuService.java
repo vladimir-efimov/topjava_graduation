@@ -51,23 +51,6 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
     }
 
     @Override
-    public void update(Menu menu) {
-        super.update(menu);
-        if (menu.getDate().equals(getCurrentDate())) {
-            evictCache(menu);
-        }
-    }
-
-    public void delete(int id) {
-        Menu menu = get(id);
-        validateOperation(menu, CrudOperation.DELETE);
-        repository.delete(menu);
-        if (menu.getDate().equals(getCurrentDate())) {
-            evictCache(menu);
-        }
-    }
-
-    @Override
     protected void validateOperation(Menu menu, CrudOperation operation) {
         super.validateOperation(menu, operation);
         if (operation == CrudOperation.CREATE || operation == CrudOperation.UPDATE) {
@@ -91,7 +74,12 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         return date.isBefore(getCurrentDate());
     }
 
-    @CacheEvict(value = "menus", key = "#menu.restaurantId")
-    private void evictCache(Menu menu) {
+    @Override
+    protected void evictCache(Menu menu) {
+        if (menu.getDate().equals(getCurrentDate())) {
+            int restaurantId = menu.getRestaurant().getId();
+            cacheManager.getCache("menus").evictIfPresent(restaurantId);
+            log.debug("Evict menus cache for restaurants id " + restaurantId);
+        }
     }
 }
