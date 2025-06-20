@@ -45,14 +45,6 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
         this.endVotingTime = endVotingTime;
     }
 
-    public Vote get(int id, int userId) {
-        Vote vote = super.get(id);
-        if (!vote.getUser().getId().equals(userId)) {
-            throw new SecurityException("User with id=" + userId + ":attempt to access not owned vote");
-        }
-        return vote;
-    }
-
     @Override
     public Vote create(Vote vote) {
         Vote modifiedVote = new Vote(vote.getId(), getCurrentDateTime().toLocalDate(), vote.getUser(), vote.getRestaurant());
@@ -109,14 +101,17 @@ public class VoteService extends AbstractBaseEntityService<Vote> {
     protected void validateOperation(Vote vote, CrudOperation operation) {
         super.validateOperation(vote, operation);
 
-        if (operation == CrudOperation.UPDATE || operation == CrudOperation.DELETE) {
-            get(vote.getId(), vote.getUser().getId()); // assert vote belongs to user
-        }
-        if (operation == CrudOperation.UPDATE && !getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
-            throw new IllegalOperationException("Updating vote is not allowed after " + endVotingTime);
-        }
-        if (beforeToday(vote.getDate())) {
-            throw new IllegalOperationException("Can't operate with date in the past");
+        if (operation == CrudOperation.UPDATE) {
+            Vote savedVote = get(vote.getId());
+            if (!savedVote.getUser().getId().equals(vote.getUser().getId())) {
+                throw new SecurityException("Can't substitute user");
+            }
+            if (!getCurrentDateTime().toLocalTime().isBefore(endVotingTime)) {
+                throw new IllegalOperationException("Updating vote is not allowed after " + endVotingTime);
+            }
+            if (beforeToday(vote.getDate())) {
+                throw new IllegalOperationException("Can't operate with date in the past");
+            }
         }
     }
 

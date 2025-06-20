@@ -10,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.data.TestDataProvider;
 import ru.javawebinar.topjavagraduation.model.Vote;
@@ -36,11 +35,9 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
     }
 
     @Test
-    void tryUpdateNotOwnVote() {
+    void trySubstituteUser() {
         Vote vote = dataProvider.getFirst();
         assertNotEquals(TestData.users[3], vote.getUser());
-        // correct setting of user is responsibility of controller,
-        // but user can send incorrect id of vote
         Vote corruptedVote = new Vote(vote.getId(), TestData.date, TestData.users[3], TestData.restaurants[0]);
         assertThrows(SecurityException.class, () -> service.update(corruptedVote));
     }
@@ -61,11 +58,6 @@ public class VotingServiceTest extends AbstractServiceTest<Vote> {
         clockHolder.setDateTime(tooLateTime); // update vote is not allowed now
         registeredVote.setRestaurant(TestData.restaurants[2]);
         assertThrows(IllegalOperationException.class, () -> service.update(registeredVote));
-    }
-
-    @Test
-    void getNotOwned() {
-        assertThrows(SecurityException.class, () -> service.get(dataProvider.getFirst().getId(), 999));
     }
 
     @Test
