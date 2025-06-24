@@ -45,10 +45,10 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
     @Test
     void loginWithNewUser() throws Exception {
         User newUser = (User) TestData.newUser.clone();
-        newUser.setEmail("loginWithNewUser@restaurants.ru");
         service.create(newUser);
+        assertTrue(newUser.getPassword().startsWith("{")); // check that password encoder works
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
-                        .with(userHttpBasic(newUser)))
+                        .with(userHttpBasic(TestData.newUser)))
                 .andDo(print())
                 .andExpect(status().isOk());
         User registeredUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
@@ -58,11 +58,10 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
     @Test
     void tryLoginWithBlockedUser() throws Exception {
         User newUser = (User) TestData.newUser.clone();
-        newUser.setEmail("loginWithNewUser@restaurants.ru");
         newUser.setBlocked(true);
         service.create(newUser);
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
-                        .with(userHttpBasic(newUser)))
+                        .with(userHttpBasic(TestData.newUser)))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -70,10 +69,9 @@ public class ProfileRestControllerTest extends AbstractRestControllerTest {
     @Test
     void delete() throws Exception {
         User newUser = (User) TestData.newUser.clone();
-        newUser.setEmail("delete@restaurants.ru");
         service.create(newUser);
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL)
-                        .with(userHttpBasic(newUser)))
+                        .with(userHttpBasic(TestData.newUser)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> service.get(newUser.getId()));

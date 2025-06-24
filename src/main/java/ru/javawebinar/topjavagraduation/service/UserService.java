@@ -1,6 +1,7 @@
 package ru.javawebinar.topjavagraduation.service;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.repository.JpaUserRepository;
@@ -14,11 +15,30 @@ import java.util.Set;
 public class UserService extends AbstractNamedEntityService<User> {
 
     private final JpaUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
     private static final Set<String> systemUserEmails = Set.of("admin@restaurants.ru", "user@restaurants.ru");
 
-    public UserService(JpaUserRepository repository) {
+    public UserService(JpaUserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return super.create(user);
+    }
+
+    @Override
+    public void update(User user) {
+        if (user.getId() != null) {
+            User savedUser = get(user.getId());
+            if (!savedUser.getPassword().equals(user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+        }
+        super.update(user);
     }
 
     @Cacheable(value = "users")

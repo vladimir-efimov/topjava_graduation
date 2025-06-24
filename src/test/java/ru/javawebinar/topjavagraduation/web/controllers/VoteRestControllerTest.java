@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjavagraduation.data.TestData;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.model.User;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.RestaurantService;
 import ru.javawebinar.topjavagraduation.service.TestClockHolder;
@@ -44,13 +43,12 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     @Test
     void vote() throws Exception {
         int restaurantId = restaurantService.create(new Restaurant("Cafe1", "Vote street")).getId();
-        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
         mockMvc.perform(MockMvcRequestBuilders.post(VoteRestController.REST_URL)
                         .param("restaurantId", Integer.toString(restaurantId))
-                        .with(userHttpBasic(user)))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        Optional<Vote> result = service.findByUserAndDate(TestData.simpleUser.getId(), LocalDate.now());
         assertTrue(result.isPresent());
         assertEquals(restaurantId, result.get().getRestaurant().getId());
     }
@@ -59,27 +57,24 @@ public class VoteRestControllerTest extends AbstractRestControllerTest {
     void revoke() throws Exception {
         int restaurantId = restaurantService.create(new Restaurant("Cafe2", "Vote street")).getId();
         clockHolder.setDateTime(LocalDate.now().atStartOfDay());
-        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
-        service.create(user.getId(), restaurantId);
+        service.create(TestData.simpleUser.getId(), restaurantId);
         mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/todays-vote")
-                        .with(userHttpBasic(user)))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        Optional<Vote> result = service.findByUserAndDate(TestData.simpleUser.getId(), LocalDate.now());
         assertTrue(result.isEmpty());
     }
 
     @Test
     void tryRevoke() throws Exception {
-        User user = userService.findByEmail(TestData.simpleUser.getEmail()).get();
-        Optional<Vote> result = service.findByUserAndDate(user.getId(), LocalDate.now());
+        Optional<Vote> result = service.findByUserAndDate(TestData.simpleUser.getId(), LocalDate.now());
         if (result.isPresent()) {
-            service.revoke(user.getId());
+            service.revoke(TestData.simpleUser.getId());
         }
         mockMvc.perform(MockMvcRequestBuilders.delete(VoteRestController.REST_URL + "/todays-vote")
-                        .with(userHttpBasic(user)))
+                        .with(userHttpBasic(TestData.simpleUser)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
-
 }

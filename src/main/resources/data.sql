@@ -1,9 +1,9 @@
 INSERT INTO USERS (name, email, password, blocked)
-VALUES ('Admin', 'admin@restaurants.ru', 'admin', false),
-       ('SimpleUser', 'user@restaurants.ru', 'user1', false),
-       ('TestUser1', 'user1@restaurants.ru', '12345', false),
-       ('TestUser2', 'user2@restaurants.ru', '12345', false),
-       ('TestUser3', 'user3@restaurants.ru',  '12345', false);
+VALUES ('Admin', 'admin@restaurants.ru', '{noop}admin', false),
+       ('SimpleUser', 'user@restaurants.ru', '{noop}user1', false),
+       ('TestUser1', 'user1@restaurants.ru', '{noop}12345', false),
+       ('TestUser2', 'user2@restaurants.ru', '{noop}12345', false),
+       ('TestUser3', 'user3@restaurants.ru',  '{noop}12345', false);
 
 INSERT INTO USER_ROLE (role, user_id)
 VALUES ('ADMIN', 1),

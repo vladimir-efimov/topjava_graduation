@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.javawebinar.topjavagraduation.data.TestData.newUser;
 import static ru.javawebinar.topjavagraduation.web.controllers.AdminUserRestController.REST_URL;
 
 
@@ -59,31 +58,33 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
     void createWithLocation() throws Exception {
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(MAPPER.writeValueAsString(newUser))
+                        .content(MAPPER.writeValueAsString(TestData.newUser))
                         .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isCreated());
         User receivedUser = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), User.class);
-        testDataProvider.getMatcher().assertMatch(newUser, receivedUser);
+        testDataProvider.getMatcher().assertMatch(TestData.newUser, receivedUser);
         assertNotNull(receivedUser.getId());
     }
 
     @Test
     void update() throws Exception {
-        User user = service.create((User) newUser.clone());
+        User user = service.create((User) TestData.newUser.clone());
         user.setEmail("updated_email@restaurants.ru");
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(user))
                         .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isNoContent());
-        testDataProvider.getMatcher().assertMatch(user, service.get(user.getId()));
+        User savedUser = service.get(user.getId());
+        testDataProvider.getMatcher().assertMatch(savedUser, user);
+        assertEquals(user.getPassword(), savedUser.getPassword());
     }
 
     @Test
     void updateWithNullId() throws Exception {
-        User user = (User) newUser.clone();
+        User user = (User) TestData.newUser.clone();
         Integer userId = service.create(user).getId();
-        User modifiedUser = new User(user.getName(),"updated_email2@restaurants.ru", user.getRoles(), user.getPassword());
+        User modifiedUser = new User(user.getName(), "updated_email2@restaurants.ru", user.getRoles(), user.getPassword());
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(modifiedUser))
@@ -91,6 +92,25 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
         testDataProvider.getMatcher().assertMatch(modifiedUser, service.get(userId));
+    }
+
+    @Test
+    void resetPassword()  throws Exception {
+        final String password = "123456";
+        final int userId = 4;
+        User user = (User) TestData.users[userId - 1].clone();
+        user.setPassword(password);
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(MAPPER.writeValueAsString(user))
+                        .with(userHttpBasic(TestData.adminUser)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        // ensure password is properly updated
+        mockMvc.perform(MockMvcRequestBuilders.get(ProfileRestController.REST_URL)
+                        .with(userHttpBasic(user)))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -106,7 +126,7 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void tryCreateWithNotNullId() throws Exception {
-        User user = (User) newUser.clone();
+        User user = (User) TestData.newUser.clone();
         user.setId(999);
         user.setEmail(user.getEmail());
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
@@ -120,7 +140,7 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
     @Test
     void tryCreateWithDuplicatedEmail() throws Exception {
         User systemUser = service.get(1);
-        User user = (User) newUser.clone();
+        User user = (User) TestData.newUser.clone();
         user.setEmail(systemUser.getEmail());
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -137,7 +157,7 @@ public class AdminUserRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     void tryCreateWithNullName() throws Exception {
-        User user = (User) newUser.clone();
+        User user = (User) TestData.newUser.clone();
         user.setName(null);
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
