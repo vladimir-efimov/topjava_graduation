@@ -19,6 +19,6 @@ Restaurants may provide a new menu each day updated by administrators.
 
 ## REST API
 
-Application runs on port 8081 to avid conflict with Tomcat.
+Application runs on port 8081 to avoid conflict with Tomcat.
 Application supports Swagger V3 API available at http://localhost:8081/swagger-ui/index.html
 Examples of usages also could be picked up from curl_test.sh.

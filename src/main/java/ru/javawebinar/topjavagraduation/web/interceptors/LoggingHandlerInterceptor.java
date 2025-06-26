@@ -21,7 +21,7 @@ public class LoggingHandlerInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) {
         var optional = safeGetAuthorizedUserId();
         String userString = optional.isPresent() ? "user with id=" + optional.get() : "anonymous user";
-        log.info("Requested " + request.getRequestURL().toString() + " from " + request.getRemoteHost() + " by " + userString);
+        log.info(request.getMethod() + " request " + request.getRequestURL().toString() + " from " + request.getRemoteHost() + " by " + userString);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class LoggingHandlerInterceptor implements HandlerInterceptor {
         if (status != HttpStatus.OK.value() && status != HttpStatus.NO_CONTENT.value()) {
             var optional = safeGetAuthorizedUserId();
             String userString = optional.isPresent() ? "user with id=" + optional.get() : "anonymous user";
-            log.info("Request " + request.getRequestURL().toString() + " from " + request.getRemoteHost() +
+            log.info(request.getMethod() + " request " + request.getRequestURL().toString() + " from " + request.getRemoteHost() +
                     " by " + userString + " finished with status " + status);
         }
     }
