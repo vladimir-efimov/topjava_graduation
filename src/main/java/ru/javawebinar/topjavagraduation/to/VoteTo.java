@@ -9,16 +9,13 @@ public class VoteTo {
     @NotNull
     private LocalDate date;
 
-    private int userId;
-
     private int restaurantId;
 
     public VoteTo() {
     }
 
-    public VoteTo(LocalDate date, int userId, int restaurantId) {
+    public VoteTo(LocalDate date, int restaurantId) {
         this.date = date;
-        this.userId = userId;
         this.restaurantId = restaurantId;
     }
 
@@ -28,14 +25,6 @@ public class VoteTo {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getRestaurantId() {

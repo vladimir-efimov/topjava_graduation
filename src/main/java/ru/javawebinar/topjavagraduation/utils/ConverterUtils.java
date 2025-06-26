@@ -3,11 +3,13 @@ package ru.javawebinar.topjavagraduation.utils;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
+import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
 import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjavagraduation.to.DishTo;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 import ru.javawebinar.topjavagraduation.exception.NotFoundException;
+import ru.javawebinar.topjavagraduation.to.VoteTo;
 
 import java.util.List;
 
@@ -29,5 +31,9 @@ public class ConverterUtils {
         restaurant.setId(menuTo.getRestaurantId());
         List<Dish> dishes = dishRepository.findAllById(menuTo.getDishes());
         return new Menu(menuTo.getId(), menuTo.getDate(), restaurant, dishes);
+    }
+
+    public static VoteTo convertVote(Vote vote) {
+        return new VoteTo(vote.getDate(), vote.getRestaurant().getId());
     }
 }

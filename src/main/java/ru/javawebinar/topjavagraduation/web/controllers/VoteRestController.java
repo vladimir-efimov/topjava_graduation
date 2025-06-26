@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjavagraduation.model.Vote;
 import ru.javawebinar.topjavagraduation.service.VoteService;
+import ru.javawebinar.topjavagraduation.to.VoteTo;
+import ru.javawebinar.topjavagraduation.utils.ConverterUtils;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.javawebinar.topjavagraduation.utils.ConverterUtils.convertVote;
 import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuthorizedUserId;
 
 
@@ -29,28 +32,28 @@ public class VoteRestController {
     private VoteService service;
 
     @GetMapping
-    public List<Vote> filter(@Nullable @RequestParam LocalDate date) {
+    public List<VoteTo> filter(@Nullable @RequestParam LocalDate date) {
         int userId = getAuthorizedUserId();
         if (date != null) {
             Optional<Vote> result = service.findByUserAndDate(userId, date);
-            return result.isPresent() ? List.of(result.get()) : List.of();
+            return result.isPresent() ? List.of(convertVote(result.get())) : List.of();
         } else {
-            return service.findByUser(userId);
+            return service.findByUser(userId).stream().map(ConverterUtils::convertVote).toList();
         }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Vote> createWithLocation(@RequestParam int restaurantId) {
+    public ResponseEntity<VoteTo> createWithLocation(@RequestParam int restaurantId) {
         Vote vote = service.create(getAuthorizedUserId(), restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/todays-vote}").build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(vote);
+        return ResponseEntity.created(uriOfNewResource).body(convertVote(vote));
     }
 
     @GetMapping("/todays-vote")
-    public Vote getTodaysVote() {
-        return service.getTodaysVote(getAuthorizedUserId());
+    public VoteTo getTodaysVote() {
+        return convertVote(service.getTodaysVote(getAuthorizedUserId()));
     }
 
     @PutMapping(value = "/todays-vote")
