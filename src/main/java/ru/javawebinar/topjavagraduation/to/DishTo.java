@@ -14,7 +14,7 @@ public class DishTo {
     @Size(max = 64)
     private String name;
     @NotNull
-    @Range(min = 0, max = 100000)
+    @Range(min = 0)
     private Float price;
     @NotNull
     private Integer restaurantId;
