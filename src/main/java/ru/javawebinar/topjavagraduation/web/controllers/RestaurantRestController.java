@@ -15,7 +15,7 @@ import java.util.List;
 public class RestaurantRestController {
     public static final String REST_URL = "/rest/restaurants";
     @Autowired
-    RestaurantService service;
+    protected RestaurantService service;
 
     @GetMapping(value = "/{id}")
     public Restaurant get(@PathVariable int id) {

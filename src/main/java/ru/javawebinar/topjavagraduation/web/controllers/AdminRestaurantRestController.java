@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Restaurant;
-import ru.javawebinar.topjavagraduation.service.RestaurantService;
 
 import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.buildResponseEntity;
 import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.checkIdOnUpdate;
@@ -15,10 +14,8 @@ import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.c
 
 @RestController
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminRestaurantRestController {
+public class AdminRestaurantRestController extends RestaurantRestController {
     public static final String REST_URL = "/rest/admin/restaurants";
-    @Autowired
-    private RestaurantService service;
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

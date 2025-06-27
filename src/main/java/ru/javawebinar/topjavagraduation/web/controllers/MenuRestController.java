@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,10 @@ import java.util.Optional;
 public class MenuRestController {
 
     public static final String REST_URL = "/rest/menus";
-    private final MenuService service;
-    private final ClockHolder clockHolder;
-
-
-    public MenuRestController(MenuService service, ClockHolder clockHolder) {
-        this.service = service;
-        this.clockHolder = clockHolder;
-    }
+    @Autowired
+    protected MenuService service;
+    @Autowired
+    protected ClockHolder clockHolder;
 
     @GetMapping(value = "/{id}")
     public Menu get(@PathVariable int id) {
@@ -32,19 +29,15 @@ public class MenuRestController {
     }
 
     @GetMapping
-    public List<Menu> filter(@Nullable @RequestParam("restaurantId") Integer restaurantId,
+    public List<Menu> filter(@RequestParam("restaurantId") Integer restaurantId,
                            @Nullable @RequestParam("date") LocalDate date) {
-        if (restaurantId != null) {
-            if (date != null) {
-                Optional<Menu> result = date.equals(getCurrentDate())
-                        ? service.getTodaysMenu(restaurantId)
-                        : service.findByRestaurantAndDate(restaurantId, date);
-                return result.isPresent() ? List.of(result.get()) : List.of();
-            } else {
-                return service.findByRestaurant(restaurantId);
-            }
+        if (date != null) {
+            Optional<Menu> result = date.equals(getCurrentDate())
+                    ? service.getTodaysMenu(restaurantId)
+                    : service.findByRestaurantAndDate(restaurantId, date);
+            return result.isPresent() ? List.of(result.get()) : List.of();
         } else {
-            return date != null ? service.findByDate(date) : service.getAll();
+            return service.findByRestaurant(restaurantId);
         }
     }
 

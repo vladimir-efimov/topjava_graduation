@@ -184,6 +184,10 @@ restaurant_operations() {
     curl -s ${app}/rest/restaurants --user user@restaurants.ru:user1
 
     echo -e "\n"
+    echo "Get all restaurants"
+    curl -s ${app}/rest/admin/restaurants --user admin@restaurants.ru:admin
+
+    echo -e "\n"
     echo "Find by name"
     curl -s ${app}/rest/restaurants?name=cafe2 --user user@restaurants.ru:user1
 
@@ -221,7 +225,7 @@ restaurant_illegal_operations() {
 
 dish_operations() {
     echo -e "\n\n"
-    echo -e "Operations with dishs"
+    echo -e "Operations with dishes"
 
     echo -e "\n"
     echo "Add dish"
@@ -252,15 +256,16 @@ dish_operations() {
     echo "Delete dish with id = 9"
     curl -s -i -X DELETE ${app}/rest/admin/dishes/9 --user admin@restaurants.ru:admin
 
-    echo -e "\n"
-    echo "Get all dishes"
-    curl -s ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 }
 
 
 dish_illegal_operations() {
     echo -e "\n\n"
     echo -e "Illegal operations with dishes"
+
+    echo -e "\n"
+    echo "Request dishes without restaurantId"
+    curl -s ${app}/rest/admin/dishes --user admin@restaurants.ru:admin
 
     echo -e "\n"
     echo "Add dish without name"
@@ -312,16 +317,16 @@ menu_operations() {
       ${app}/rest/admin/menus --user admin@restaurants.ru:admin
 
     echo -e "\n"
-    echo "Get single menu"
-    curl -s ${app}/rest/menus/1 --user user@restaurants.ru:user1
-
-    echo -e "\n"
     echo "Get menus for restaurant"
     curl -s ${app}/rest/menus?restaurantId=1 --user user@restaurants.ru:user1
 
     echo -e "\n"
-    echo "Get menus for date"
-    curl -s ${app}/rest/menus?date="${today}" --user user@restaurants.ru:user1
+    echo "Get menus for restaurant"
+    curl -s ${app}/rest/admin/menus?restaurantId=1 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
+    echo "Get single menu"
+    curl -s ${app}/rest/menus/1 --user user@restaurants.ru:user1
 
     echo -e "\n"
     echo "Get menus for restaurant and date"
@@ -330,10 +335,6 @@ menu_operations() {
     echo -e "\n"
     echo "Delete menu with id = 1"
     curl -s -i -X DELETE ${app}/rest/admin/menus/1 --user admin@restaurants.ru:admin
-
-    echo -e "\n"
-    echo "Get all menus"
-    curl -s ${app}/rest/menus --user user@restaurants.ru:user1
 }
 
 
@@ -344,6 +345,10 @@ menu_illegal_operations() {
     echo -e "\n"
     echo "Request not existed menu"
     curl -s ${app}/rest/menus/11 --user admin@restaurants.ru:admin
+
+    echo -e "\n"
+    echo "Request menus without restaurantId"
+    curl -s ${app}/rest/menus?date="${today}" --user user@restaurants.ru:user1
 
     echo -e "\n"
     today=$(date '+%Y-%m-%d')

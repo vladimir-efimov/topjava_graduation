@@ -1,6 +1,7 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -20,11 +21,8 @@ import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.c
 @RequestMapping(value = AdminUserRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUserRestController {
     public static final String REST_URL = "/rest/admin/users";
-    private final UserService service;
-
-    public AdminUserRestController(UserService service) {
-        this.service = service;
-    }
+    @Autowired
+    private UserService service;
 
     @GetMapping
     public List<User> filter(@Nullable @RequestParam String name, @Nullable @RequestParam String email) {

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjavagraduation.model.Menu;
 import ru.javawebinar.topjavagraduation.repository.JpaDishRepository;
+import ru.javawebinar.topjavagraduation.service.ClockHolder;
 import ru.javawebinar.topjavagraduation.service.MenuService;
 import ru.javawebinar.topjavagraduation.to.MenuTo;
 
@@ -18,13 +19,11 @@ import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.c
 
 @RestController
 @RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminMenuRestController {
+public class AdminMenuRestController extends MenuRestController {
 
     public static final String REST_URL = "/rest/admin/menus";
     @Autowired
     private JpaDishRepository dishRepository;
-    @Autowired
-    private MenuService service;
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

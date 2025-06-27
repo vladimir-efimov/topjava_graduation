@@ -1,6 +1,7 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,8 @@ import static ru.javawebinar.topjavagraduation.web.security.SecurityUtil.getAuth
 @RequestMapping(value = ProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileRestController {
     static final String REST_URL = "/rest/profile";
-    private final UserService service;
-
-    public ProfileRestController(UserService service) {
-        this.service = service;
-    }
+    @Autowired
+    private UserService service;
 
     @GetMapping
     public User get() {

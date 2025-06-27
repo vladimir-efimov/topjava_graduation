@@ -7,16 +7,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjavagraduation.model.Dish;
 import ru.javawebinar.topjavagraduation.repository.JpaRestaurantRepository;
 import ru.javawebinar.topjavagraduation.service.DishService;
 import ru.javawebinar.topjavagraduation.to.DishTo;
 import ru.javawebinar.topjavagraduation.utils.ConverterUtils;
 
+import java.net.URI;
 import java.util.List;
 
+import static ru.javawebinar.topjavagraduation.utils.ConverterUtils.convertDish;
 import static ru.javawebinar.topjavagraduation.utils.ConverterUtils.convertDishTo;
-import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.buildResponseEntity;
 import static ru.javawebinar.topjavagraduation.web.controllers.ControllerUtils.checkIdOnUpdate;
 
 
@@ -30,13 +32,13 @@ public class AdminDishRestController {
     private JpaRestaurantRepository restaurantRepository;
 
     @GetMapping(value = "/{id}")
-    public Dish get(@PathVariable int id) {
-        return service.get(id);
+    public DishTo get(@PathVariable int id) {
+        return convertDish(service.get(id));
     }
 
     @GetMapping
-    public List<DishTo> filter(@Nullable @RequestParam("restaurantId") Integer id) {
-        List<Dish> dishes = id != null ? service.findByRestaurant(id) : service.getAll();
+    public List<DishTo> filter(@RequestParam("restaurantId") Integer id) {
+        List<Dish> dishes = service.findByRestaurant(id);
         return dishes.stream().map(ConverterUtils::convertDish).toList();
     }
 
@@ -49,10 +51,13 @@ public class AdminDishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo to) {
+    public ResponseEntity<DishTo> createWithLocation(@Valid @RequestBody DishTo to) {
         Dish dish = convertDishTo(to, restaurantRepository);
         Dish created = service.create(dish);
-        return buildResponseEntity(created, REST_URL);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(convertDish(created));
     }
 
     @DeleteMapping(value = "/{id}")

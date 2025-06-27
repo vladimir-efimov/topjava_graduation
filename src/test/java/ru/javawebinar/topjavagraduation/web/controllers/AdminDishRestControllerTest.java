@@ -34,10 +34,10 @@ public class AdminDishRestControllerTest extends AbstractRestControllerTest {
                         .content(MAPPER.writeValueAsString(dishto))
                         .with(userHttpBasic(TestData.adminUser)))
                 .andExpect(status().isCreated());
-        Dish dish = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), Dish.class);
-        assertEquals(dishto.getName(), dish.getName());
-        assertEquals(dishto.getPrice(), dish.getPrice());
-        assertNotNull(dish.getId());
+        DishTo created = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), DishTo.class);
+        assertEquals(dishto.getName(), created.getName());
+        assertEquals(dishto.getPrice(), created.getPrice());
+        assertNotNull(created.getId());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class AdminDishRestControllerTest extends AbstractRestControllerTest {
         var dish = dishService.create(new Dish("dish1", 100.0f, restaurant));
         Integer dishId = dish.getId();
         var dishto = new DishTo(dishId, "dish1", 111.0f, restaurant.getId());
-        ResultActions action = mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + dishId)
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + dishId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(MAPPER.writeValueAsString(dishto))
                         .with(userHttpBasic(TestData.adminUser)))

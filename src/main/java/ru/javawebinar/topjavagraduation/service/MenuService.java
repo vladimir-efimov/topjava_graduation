@@ -1,6 +1,5 @@
 package ru.javawebinar.topjavagraduation.service;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjavagraduation.model.Dish;
@@ -27,16 +26,12 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
 
     @Override
     public Menu get(int id) {
-        return repository.getWithDishesAndRestaurant(id)
+        return repository.getWithDishes(id)
                 .orElseThrow(() -> new NotFoundException("Menu with id " + id + " is not found"));
     }
 
     public List<Menu> findByRestaurant(int id) {
-        return repository.getFilteredByRestaurantWithDishes(id);
-    }
-
-    public List<Menu> findByDate(LocalDate date) {
-        return repository.getFilteredByDateWithDishesAndRestaurant(date);
+        return repository.getFilteredByRestaurant(id);
     }
 
     public Optional<Menu> findByRestaurantAndDate(int id, LocalDate date) {
@@ -68,7 +63,7 @@ public class MenuService extends AbstractBaseEntityService<Menu> {
         }
         if (operation == CrudOperation.UPDATE) {
             Menu savedMenu = get(menu.getId());
-            if (!savedMenu.getRestaurant().equals(menu.getRestaurant())) {
+            if (!menu.getRestaurant().equals(savedMenu.getRestaurant())) {
                 throw new IllegalOperationException("Can't substitute restaurant");
             }
         }

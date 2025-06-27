@@ -1,5 +1,6 @@
 package ru.javawebinar.topjavagraduation.web.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,18 @@ public class MenuRestControllerTest extends AbstractRestControllerTest {
     TestDataProvider<Menu> dataProvider;
 
     @Test
-    void getAll() throws Exception {
+    void getForRestaurant() throws Exception {
 
         ResultActions action =  mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
-                        .with(userHttpBasic(TestData.adminUser)))
+                        .with(userHttpBasic(TestData.adminUser))
+                        .param("restaurantId", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
         List menus = MAPPER.readValue(action.andReturn().getResponse().getContentAsString(), List.class);
-        assertEquals(TestData.menus.length, menus.size());
+        List<Menu> expectedMenus = Arrays.stream(TestData.menus)
+                .filter(menu -> menu.getRestaurant().getId() == 1).toList();
+        assertEquals(expectedMenus.size(), menus.size());
     }
 }
